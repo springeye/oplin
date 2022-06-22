@@ -1,0 +1,147 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:3012258286018335801",
+      "lastPropertyId": "13:4376089639566966696",
+      "name": "Note",
+      "properties": [
+        {
+          "id": "1:7775219446737320582",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:7312636168272559029",
+          "name": "uuid",
+          "type": 9,
+          "flags": 2048,
+          "indexId": "1:542079099268664184"
+        },
+        {
+          "id": "3:1178406778336845374",
+          "name": "title",
+          "type": 9
+        },
+        {
+          "id": "4:9060688304225128672",
+          "name": "synced",
+          "type": 1
+        },
+        {
+          "id": "5:9085887119849854662",
+          "name": "content",
+          "type": 9
+        },
+        {
+          "id": "6:9066827933604967001",
+          "name": "notebookId",
+          "type": 9
+        },
+        {
+          "id": "7:3796715598458150820",
+          "name": "createTime",
+          "type": 10
+        },
+        {
+          "id": "8:3737786213298641196",
+          "name": "updateTime",
+          "type": 10
+        },
+        {
+          "id": "9:6494571222369768426",
+          "name": "deleted",
+          "type": 1
+        },
+        {
+          "id": "10:24080081291860311",
+          "name": "version",
+          "type": 6
+        },
+        {
+          "id": "11:2425801320460584492",
+          "name": "sticky",
+          "type": 1
+        },
+        {
+          "id": "12:553612629074884291",
+          "name": "syncTime",
+          "type": 10
+        },
+        {
+          "id": "13:4376089639566966696",
+          "name": "conflict",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:5226346128073536163",
+      "lastPropertyId": "8:6365720830571446228",
+      "name": "Notebook",
+      "properties": [
+        {
+          "id": "1:1329120285121785376",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:5818052819333124427",
+          "name": "uuid",
+          "type": 9,
+          "flags": 2048,
+          "indexId": "2:9198425297800975164"
+        },
+        {
+          "id": "3:587732048673187962",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "4:6083180360774585694",
+          "name": "synced",
+          "type": 1
+        },
+        {
+          "id": "5:1511192544412318552",
+          "name": "parentId",
+          "type": 9
+        },
+        {
+          "id": "6:7244152113840002312",
+          "name": "deleted",
+          "type": 1
+        },
+        {
+          "id": "7:1910076271887859010",
+          "name": "createTime",
+          "type": 10
+        },
+        {
+          "id": "8:6365720830571446228",
+          "name": "sticky",
+          "type": 1
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "2:5226346128073536163",
+  "lastIndexId": "3:291590735518755115",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [
+    291590735518755115
+  ],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}

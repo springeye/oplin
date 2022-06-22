@@ -1,0 +1,47 @@
+{
+  "app_name": "Notebook",
+  "settings": "Settings",
+  "notebook": "Notebook: {name}",
+  "@notebook": {
+    "description": "notebook page title",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "MyFolder"
+      }
+    }
+  },
+  "create_notebook": "Create a notebook",
+  "create": "Create",
+  "create_note": "Create Note",
+  "update_note": "Update Note",
+  "unfiled": "Unfiled",
+  "select_notebook": "Select Notebook",
+  "ok": "Ok",
+  "sticky": "Sticky",
+  "delete": "Delete",
+  "move_to": "Move to",
+  "cancel": "Cancel",
+  "appearance": "Appearance",
+  "select_lang": "Select language",
+  "select_style": "Style",
+  "sync": "Sync",
+  "server": "Server",
+  "address": "Address",
+  "username": "Username",
+  "password": "Password",
+  "languages": "{lang,select,en{English},zh{简体中文},other{Auto}}",
+  "@languages": {
+    "description": "select language",
+    "placeholders": {
+      "lang": {
+        "type": "String"
+      }
+    }
+  },
+  "lang_en": "English",
+  "lang_zh": "简体中文",
+  "lang_other": "Auto",
+  "webdav_settings": "Settings for WebDAV",
+  "webdav_settings_tips": "Please provide login credentials for the WebDAV folder you want to synchronize."
+}
