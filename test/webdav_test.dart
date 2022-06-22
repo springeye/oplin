@@ -6,6 +6,7 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:oplin/common/logging.dart';
 import 'package:oplin/db/models.dart';
 import 'package:oplin/server/webdav/webdav.dart';
 import 'package:uuid/uuid.dart';
@@ -39,10 +40,10 @@ Future<void> main() async {
       expect(note.content.isNotEmpty, true);
     });
     test("sync", () async {
-      print("create");
+      appLog.debug("create");
       Note note = Note.create();
       note.uuid = uuid.v4();
-      print("uuid=>>>>${note.uuid}");
+      appLog.debug("uuid=>>>>${note.uuid}");
       note.version = 1;
       note.content = "hello word";
       await client.uploadNote(note);
@@ -50,9 +51,9 @@ Future<void> main() async {
       note.content = "hello\ntest";
       var removeNote = await client.getNote(note.uuid);
       if (removeNote.version > note.version) {
-        print("有冲突");
+        appLog.debug("有冲突");
       } else if (note.version > removeNote.version) {
-        print("update remote node ");
+        appLog.debug("update remote node ");
         await client.uploadNote(note);
         var remoteNote = await client.getNote(note.uuid);
         expect(remoteNote.content, "hello\ntest");

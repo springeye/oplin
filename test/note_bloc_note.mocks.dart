@@ -6,6 +6,7 @@ import 'dart:async' as _i3;
 
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:oplin/db/models.dart' as _i4;
+import 'package:oplin/repository/book_repository.dart' as _i5;
 import 'package:oplin/repository/note_repository.dart' as _i2;
 
 // ignore_for_file: type=lint
@@ -61,6 +62,42 @@ class MockNoteRepository extends _i1.Mock implements _i2.NoteRepository {
           {bool? physics = false}) =>
       (super.noSuchMethod(
           Invocation.method(#batchDeleteNote, [uuids], {#physics: physics}),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i3.Future<void>);
+}
+
+/// A class which mocks [BookRepository].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockBookRepository extends _i1.Mock implements _i5.BookRepository {
+  MockBookRepository() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i3.Future<List<_i4.Notebook>> getBooks() =>
+      (super.noSuchMethod(Invocation.method(#getBooks, []),
+              returnValue: Future<List<_i4.Notebook>>.value(<_i4.Notebook>[]))
+          as _i3.Future<List<_i4.Notebook>>);
+  @override
+  _i3.Future<_i4.Notebook?> findBook(String? uuid) => (super.noSuchMethod(
+      Invocation.method(#findBook, [uuid]),
+      returnValue: Future<_i4.Notebook?>.value()) as _i3.Future<_i4.Notebook?>);
+  @override
+  _i3.Future<void> saveBook(_i4.Notebook? book) =>
+      (super.noSuchMethod(Invocation.method(#saveBook, [book]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i3.Future<void>);
+  @override
+  _i3.Future<void> deleteBook(String? uuid, {bool? physics = false}) => (super
+      .noSuchMethod(Invocation.method(#deleteBook, [uuid], {#physics: physics}),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i3.Future<void>);
+  @override
+  _i3.Future<void> batchDeleteBook(List<String>? uuid,
+          {bool? physics = false}) =>
+      (super.noSuchMethod(
+          Invocation.method(#batchDeleteBook, [uuid], {#physics: physics}),
           returnValue: Future<void>.value(),
           returnValueForMissingStub: Future<void>.value()) as _i3.Future<void>);
 }

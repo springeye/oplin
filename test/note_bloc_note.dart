@@ -2,12 +2,14 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:oplin/bloc/book_bloc.dart';
 import 'package:oplin/bloc/note_bloc.dart';
+import 'package:oplin/repository/book_repository.dart';
 import 'package:oplin/repository/note_repository.dart';
 
 import 'note_bloc_note.mocks.dart';
 
-@GenerateMocks([NoteRepository])
+@GenerateMocks([NoteRepository, BookRepository])
 Future<void> main() async {
   group("note_bloc", () {
     late NoteBloc bloc;
@@ -17,6 +19,7 @@ Future<void> main() async {
       when(noteApi.getNotes()).thenAnswer((_) => Stream.value([]));
       bloc = NoteBloc(
         noteRepository: noteApi,
+        bookBloc: BookBloc(bookRepository: MockBookRepository()),
       );
     });
     tearDown(() async {});

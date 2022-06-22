@@ -45,4 +45,11 @@ class MockBookRepository extends _i1.Mock implements _i2.BookRepository {
       .noSuchMethod(Invocation.method(#deleteBook, [uuid], {#physics: physics}),
           returnValue: Future<void>.value(),
           returnValueForMissingStub: Future<void>.value()) as _i3.Future<void>);
+  @override
+  _i3.Future<void> batchDeleteBook(List<String>? uuid,
+          {bool? physics = false}) =>
+      (super.noSuchMethod(
+          Invocation.method(#batchDeleteBook, [uuid], {#physics: physics}),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i3.Future<void>);
 }
