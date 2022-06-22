@@ -68,7 +68,7 @@ class _EditNoteWidgetState extends State<EditNoteWidget> {
                         content: jsonEncode(content),
                         notebookId: widget.book?.uuid));
                   }
-                  Navigator.pop(context, true);
+                  Navigator.pop(context);
                 },
                 icon: const Icon(Icons.save))
           ],
