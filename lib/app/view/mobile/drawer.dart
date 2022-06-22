@@ -24,7 +24,8 @@ Widget buildDrawer(BuildContext context) {
         ListTile(
           title: Text(S.of(context).settings),
           onTap: () {
-            Navigator.push(context, AppPageRoute(builder: (context) {
+            Navigator.push(context,
+                AppPageRoute<SettingWidget>(builder: (context) {
               return const SettingWidget();
             }));
           },

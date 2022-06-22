@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:oplin/bloc/book_bloc.dart';
 
 import '../../../../../db/models.dart';
 import '../../../../../l10n/S.dart';
@@ -36,63 +38,68 @@ Widget _cardButton(BuildContext context,
 
 void showMoveToFolderDialog(
   BuildContext context, {
-  required List<Notebook> notebooks,
   Function? onCreatePressed,
   Function(Notebook? notebook)? onNotebookPressed,
 }) {
-  showModalBottomSheet(
+  showModalBottomSheet<Widget>(
     isScrollControlled: true,
     context: context,
     builder: (context) {
-      return Padding(
-        padding: MediaQuery.of(context).viewInsets,
-        child: Container(
-          height: 420,
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              Text(
-                S.of(context).select_notebook,
-                style: Theme.of(context).textTheme.headline6,
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 20, left: 35, right: 35),
-                  child: GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 15,
-                      crossAxisSpacing: 15,
-                      childAspectRatio: 1 / 1.5,
-                    ),
-                    itemCount: notebooks.length + 2,
-                    itemBuilder: (BuildContext context, int idx) {
-                      int index = idx;
-                      if (index == 0) {
-                        return _cardButton(context, onPressed: () {
-                          onCreatePressed?.call();
-                        },
-                            icon: Icons.create_new_folder,
-                            text: S.of(context).create);
-                      }
-                      if (index == 1) {
-                        return _cardButton(context, onPressed: () {
-                          onNotebookPressed?.call(null);
-                        }, icon: Icons.folder, text: S.of(context).unfiled);
-                      }
-                      index = index - 2;
-                      var notebook = notebooks[index];
-                      return _cardButton(context, onPressed: () {
-                        onNotebookPressed?.call(notebook);
-                      }, icon: Icons.folder, text: notebook.name);
-                    },
+      return BlocBuilder<BookBloc, BooksState>(
+        builder: (context, state) {
+          var books = state.filteredTodos.toList();
+          return Padding(
+            padding: MediaQuery.of(context).viewInsets,
+            child: Container(
+              height: 420,
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  Text(
+                    S.of(context).select_notebook,
+                    style: Theme.of(context).textTheme.headline6,
                   ),
-                ),
+                  Expanded(
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.only(top: 20, left: 35, right: 35),
+                      child: GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 15,
+                          crossAxisSpacing: 15,
+                          childAspectRatio: 1 / 1.5,
+                        ),
+                        itemCount: books.length + 2,
+                        itemBuilder: (BuildContext context, int idx) {
+                          int index = idx;
+                          if (index == 0) {
+                            return _cardButton(context, onPressed: () {
+                              onCreatePressed?.call();
+                            },
+                                icon: Icons.create_new_folder,
+                                text: S.of(context).create);
+                          }
+                          if (index == 1) {
+                            return _cardButton(context, onPressed: () {
+                              onNotebookPressed?.call(null);
+                            }, icon: Icons.folder, text: S.of(context).unfiled);
+                          }
+                          index = index - 2;
+                          var notebook = books[index];
+                          return _cardButton(context, onPressed: () {
+                            onNotebookPressed?.call(notebook);
+                          }, icon: Icons.folder, text: notebook.name);
+                        },
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       );
     },
   );
@@ -103,7 +110,7 @@ void showCreateNotebookDialog(
   Function(String name) onOk,
 ) {
   var container = TextEditingController();
-  showModalBottomSheet(
+  showModalBottomSheet<Widget>(
     isScrollControlled: true,
     context: context,
     builder: (context) {
@@ -162,8 +169,8 @@ void showCreateNotebookDialog(
   );
 }
 
-showLoading(BuildContext context) {
-  showDialog(
+void showLoading(BuildContext context) {
+  showDialog<Widget>(
       context: context,
       barrierDismissible: false,
       builder: (context) {

@@ -41,7 +41,7 @@ class _SettingWidgetState extends State<SettingWidget> {
                     trailing: const Icon(Icons.navigate_next),
                     value: Text(lang.languages(langCode)),
                     onPressed: (context) {
-                      showDialog(
+                      showDialog<AlertDialog>(
                           context: context,
                           builder: (context) {
                             return AlertDialog(
@@ -95,7 +95,7 @@ class _SettingWidgetState extends State<SettingWidget> {
                       color: Theme.of(context).primaryColor,
                     ),
                     onPressed: (context) {
-                      showDialog(
+                      showDialog<AlertDialog>(
                           context: context,
                           builder: (context) {
                             return AlertDialog(
@@ -144,9 +144,14 @@ class _SettingWidgetState extends State<SettingWidget> {
                     title: Text(lang.server),
                     value: const Text('WebDAV'),
                     onPressed: (context) {
-                      Navigator.push(context, AppPageRoute(builder: (context) {
-                        return const SettingWebDAV();
-                      }));
+                      Navigator.push(
+                        context,
+                        AppPageRoute<SettingWebDAV>(
+                          builder: (context) {
+                            return const SettingWebDAV();
+                          },
+                        ),
+                      );
                     },
                   ),
                 ],

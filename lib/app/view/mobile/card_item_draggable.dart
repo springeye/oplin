@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:oplin/common/logging.dart';
 
 class DraggableCard<T extends Object> extends StatelessWidget {
   final T data;
@@ -36,14 +37,14 @@ class DraggableCard<T extends Object> extends StatelessWidget {
     return LongPressDraggable(
       onDragStarted: onDragStarted,
       onDragCompleted: () {
-        print("onDragCompleted");
+        appLog.debug("onDragCompleted");
       },
       onDragEnd: onDragEnd,
       onDraggableCanceled: (Velocity velocity, Offset offset) {
-        print("onDraggableCanceled");
+        appLog.debug("onDraggableCanceled");
       },
       onDragUpdate: (details) {
-        print("onDragUpdate");
+        appLog.debug("onDragUpdate");
       },
 
       // axis: Axis.vertical,

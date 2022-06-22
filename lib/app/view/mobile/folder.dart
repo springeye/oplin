@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oplin/app/view/mobile/edit.dart';
 import 'package:oplin/app/view/mobile/note_list.dart';
 import 'package:oplin/app/view/mobile/route.dart';
+import 'package:oplin/bloc/book_bloc.dart';
 import 'package:oplin/bloc/note_bloc.dart';
 import 'package:oplin/db/models.dart';
 import 'package:oplin/ext/AssetGenImage.dart';
@@ -72,19 +73,20 @@ class _FolderWidgetState extends State<FolderWidget> {
   @override
   Widget build(BuildContext context) {
     var repository = context.read<NoteRepository>();
+    var bookBloc = context.read<BookBloc>();
     return BlocProvider<NoteBloc>(
       create: (context) {
-        return NoteBloc(noteRepository: repository)..setNotebook(widget.book);
+        return NoteBloc(noteRepository: repository, bookBloc: bookBloc)
+          ..setNotebook(widget.book);
       },
       child: Scaffold(
         appBar: _buildAppBar(context),
         body: BlocBuilder<NoteBloc, NotesState>(
           builder: (context, state) {
             return NoteList(
-              state.filteredTodos.toList(),
-              const [],
               notebook: widget.book,
               key: noteListKey,
+              showFolder: false,
               modelCallback: (editType) {
                 setState(() {
                   this.editType = editType;
@@ -101,15 +103,17 @@ class _FolderWidgetState extends State<FolderWidget> {
         floatingActionButton: editType != EditType.none
             ? null
             : FloatingActionButton(
-                onPressed: () {
+                onPressed: () async {
                   Navigator.push(
                     context,
-                    AppPageRoute(
+                    AppPageRoute<EditNoteWidget>(
                       builder: (context) => EditNoteWidget(
                         book: widget.book,
                       ),
                     ),
-                  ).then((value) => noteListKey.currentState?.refresh());
+                  ).then((value) => context
+                      .read<NoteBloc>()
+                      .add(const NotesSubscriptionRequested()));
                 },
                 child: const Icon(Icons.add),
               ),

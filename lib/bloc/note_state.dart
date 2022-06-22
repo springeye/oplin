@@ -15,7 +15,7 @@ class NotesState extends Equatable {
 
   @override
   String toString() {
-    return 'NotesState{status: $status, notes: $notes, filter: $filter, lastUpdatedNote: $lastUpdatedNote}';
+    return 'NotesState{status: $status, notes: ${notes.length}, filter: $filter, lastUpdatedNote: $lastUpdatedNote}';
   } //last add or update note
 
   final Note? lastUpdatedNote;

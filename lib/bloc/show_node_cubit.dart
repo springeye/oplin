@@ -5,7 +5,7 @@ import '../../../db/models.dart';
 class ShowNodeCubit extends Cubit<Note?> {
   ShowNodeCubit() : super(null);
 
-  setNewNote(Note? note) {
+  void setNewNote(Note? note) {
     title = note?.title;
     content = note?.content;
     emit(note);

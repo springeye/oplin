@@ -7,8 +7,8 @@ import 'package:oplin/app/view/desktop/vertical_splite_view.dart';
 import 'package:oplin/app/view/mobile/route.dart';
 import 'package:oplin/app/view/mobile/settings.dart';
 import 'package:oplin/bloc/app_cubit.dart';
+import 'package:oplin/bloc/book_bloc.dart';
 import 'package:oplin/bloc/note_bloc.dart';
-import 'package:oplin/bloc/notebook_cubit.dart';
 
 class DesktopHomePage extends StatefulWidget {
   const DesktopHomePage({Key? key}) : super(key: key);
@@ -29,7 +29,7 @@ class _DesktopHomePageState extends State<DesktopHomePage> {
 
     var noteBloc = context.read<NoteBloc>();
     noteBloc.add(const NotesSubscriptionRequested());
-    context.read<NotebookCubit>().refresh();
+    context.read<BookBloc>().add(const BookSubscriptionRequested());
     return Column(
       children: [
         Row(
@@ -75,9 +75,8 @@ class _DesktopHomePageState extends State<DesktopHomePage> {
               PlatformMenuItem(
                   label: 'Settings',
                   onSelected: () {
-                    print("click settings");
-                    Navigator.push(context,
-                        AppPageRoute(builder: (BuildContext context) {
+                    Navigator.push(context, AppPageRoute<SettingWidget>(
+                        builder: (BuildContext context) {
                       return const SettingWidget();
                     }));
                   }),

@@ -8,32 +8,34 @@ import '../objectbox.dart';
 class StorageBookRepository extends ObjectBoxX implements BookRepository {
   StorageBookRepository(super.store);
 
-  /// Provides a [Stream] of all books.
   @override
-  Future<List<Notebook>> getBooks() async =>
-      await reader<Notebook, List<Notebook>>((box) => box.getAll());
+  List<Notebook> getBooks() {
+    var books = getBox<Notebook>().getAll();
+    var box = getBox<Note>();
+    for (var book in books) {
+      book.count =
+          box.query(Note_.notebookId.equals(book.uuid)).build().count();
+    }
+    return books;
+  }
 
   @override
-  Future<Notebook?> findBook(String uuid) async =>
-      await reader<Notebook, Notebook?>((box) {
-        return box.query(Notebook_.uuid.equals(uuid)).build().findFirst();
-      });
+  Notebook? findBook(String uuid) =>
+      getBox<Notebook>().query(Notebook_.uuid.equals(uuid)).build().findFirst();
 
   /// Saves a [book].
   ///
   /// If a [book] with the same id already exists, it will be replaced.
   @override
-  Future<void> saveBook(Notebook book) async {
-    var newNote = await writer<Notebook, Notebook>((box) {
-      if (book.uuid.isEmpty) {
-        book.uuid = const Uuid().v4();
-        book.id = 0;
-        box.put(book, mode: PutMode.insert);
-      } else {
-        box.put(book, mode: PutMode.put);
-      }
-      return book;
-    });
+  void saveBook(Notebook book) {
+    var box = getBox<Notebook>();
+    if (book.uuid.isEmpty) {
+      book.uuid = const Uuid().v4();
+      book.id = 0;
+      box.put(book, mode: PutMode.insert);
+    } else {
+      box.put(book, mode: PutMode.put);
+    }
   }
 
   /// Deletes the book with the given id.
@@ -41,39 +43,57 @@ class StorageBookRepository extends ObjectBoxX implements BookRepository {
   /// If no book with the given id exists, a [BookNotFoundException] error is
   /// thrown.
   @override
-  Future<void> deleteBook(String uuid, {bool physics = false}) async {
-    await writer<Notebook, Notebook?>((box) {
-      Notebook? newNotes =
-          box.query(Notebook_.uuid.equals(uuid)).build().findFirst();
-      if (newNotes == null) return null;
-      if (physics) {
-        box.remove(newNotes.id);
-        return newNotes;
-      }
-      newNotes.deleted = true;
-      newNotes.synced = false;
-      box.put(newNotes, mode: PutMode.update);
-      return newNotes;
-    });
+  void deleteBook(String uuid, {bool physics = false}) {
+    batchDeleteBook([uuid], physics: physics);
   }
 
-  move(List<String> bookIds, String? bookId) async {
+  void move(List<String> bookIds, String? bookId) {
     for (var uuid in bookIds) {
-      var book = await findBook(uuid);
+      var book = findBook(uuid);
       if (book != null) {
         book.parentId = bookId;
-        await saveBook(book);
+        saveBook(book);
       }
     }
   }
 
-  sticky(List<String> bookIds) async {
+  void sticky(List<String> bookIds) {
     for (var uuid in bookIds) {
-      var book = await findBook(uuid);
+      var book = findBook(uuid);
       if (book != null) {
         book.sticky = !book.sticky;
-        await saveBook(book);
+        saveBook(book);
       }
     }
+  }
+
+  @override
+  void batchDeleteBook(List<String> uuids, {bool physics = false}) {
+    store.runInTransaction(TxMode.write, () {
+      var bookBox = store.box<Notebook>();
+      List<Notebook> books =
+          bookBox.query(Notebook_.uuid.oneOf(uuids)).build().find();
+      if (physics) {
+        bookBox.removeMany(books.map((e) => e.id).toList());
+      } else {
+        for (var book in books) {
+          book.deleted = true;
+          book.synced = false;
+        }
+        bookBox.putMany(books, mode: PutMode.update);
+      }
+      //clear notebookId on notes
+      var noteBox = store.box<Note>();
+      for (var book in books) {
+        List<Note> notes =
+            noteBox.query(Note_.notebookId.equals(book.uuid)).build().find();
+        for (var element in notes) {
+          element.notebookId = null;
+        }
+        assert(noteBox.putMany(notes, mode: PutMode.update).length ==
+            notes.length);
+      }
+      return books;
+    });
   }
 }

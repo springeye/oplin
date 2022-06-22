@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oplin/app/view/mobile/edit.dart';
 import 'package:oplin/app/view/mobile/route.dart';
+import 'package:oplin/bloc/book_bloc.dart';
 import 'package:oplin/bloc/note_bloc.dart';
-import 'package:oplin/bloc/notebook_cubit.dart';
 import 'package:oplin/ext/AssetGenImage.dart';
 import 'package:oplin/gen/assets.gen.dart';
 
@@ -20,12 +20,10 @@ class NoteList extends StatefulWidget {
   final Notebook? notebook;
   final Function(EditType editType)? modelCallback;
   final Function(List<String> selected)? selectedCallback;
-  final List<Note> notes;
-  final List<Notebook> books;
+  final bool showFolder;
 
-  const NoteList(
-    this.notes,
-    this.books, {
+  const NoteList({
+    required this.showFolder,
     Key? key,
     this.modelCallback,
     this.selectedCallback,
@@ -47,20 +45,19 @@ class NoteListState extends State<NoteList> {
   List<String> selected = [];
 
   Future<void> addFolder(String name) async {
-    var read = context.read<NotebookCubit>();
-    await read.add(name);
-    await read.list("");
+    BookBloc read = context.read<BookBloc>();
+    read.add(BookAdded(name: name));
   }
 
-  Future<void> refresh() async {
-    await context.read<NotebookCubit>().refresh();
+  Future<void> _refresh() async {
+    // context.read<BookBloc>().add(const BookSubscriptionRequested());
+    context.read<NoteBloc>().add(const NotesSubscriptionRequested());
   }
 
   @override
   void initState() {
     super.initState();
-    refresh();
-    context.read<NoteBloc>().add(const NotesSubscriptionRequested());
+    _refresh();
   }
 
   @override
@@ -69,7 +66,7 @@ class NoteListState extends State<NoteList> {
     listView = RefreshIndicator(
         child: listView,
         onRefresh: () async {
-          refresh();
+          _refresh();
           // await Future.delayed(const Duration(seconds: 3), () {});
         });
     return WillPopScope(
@@ -84,14 +81,18 @@ class NoteListState extends State<NoteList> {
     );
   }
 
-  buildListView(BuildContext context) {
-    List items = [...widget.books];
-    items.addAll(widget.notes);
+  ListView buildListView(BuildContext context) {
+    var notes = context.watch<NoteBloc>().state.filteredTodos.toList();
+    List<Notebook> books = widget.showFolder
+        ? context.watch<BookBloc>().state.filteredTodos.toList()
+        : [];
+    List<dynamic> items = <dynamic>[...books];
+    items.addAll(notes);
 
     return ListView.builder(
       itemCount: items.length,
       itemBuilder: (context, index) {
-        var e = items[index];
+        dynamic e = items[index];
         Widget item;
         if (e is Note) {
           //笔记
@@ -109,11 +110,13 @@ class NoteListState extends State<NoteList> {
               } else if (editType == EditType.none) {
                 await Navigator.push(
                   context,
-                  AppPageRoute(builder: (context) {
-                    return EditNoteWidget(
-                      note: e,
-                    );
-                  }),
+                  AppPageRoute<EditNoteWidget>(
+                    builder: (context) {
+                      return EditNoteWidget(
+                        note: e,
+                      );
+                    },
+                  ),
                 );
 
                 exitEditModel();
@@ -170,13 +173,13 @@ class NoteListState extends State<NoteList> {
               } else if (editType == EditType.none) {
                 await Navigator.push(
                   context,
-                  AppPageRoute(builder: (context) {
+                  AppPageRoute<FolderWidget>(builder: (context) {
                     return FolderWidget(
                       book: e,
                     );
                   }),
                 ).then((value) {
-                  refresh();
+                  _refresh();
                 });
                 exitEditModel();
               }
@@ -268,7 +271,7 @@ class NoteListState extends State<NoteList> {
 
   Widget _buildBottomBar(Widget listView) {
     var noteLogic = context.read<NoteBloc>();
-    var notebookLogic = context.read<NotebookCubit>();
+    var notebookLogic = context.watch<BookBloc>();
     return Column(
       children: [
         Expanded(child: listView),
@@ -278,11 +281,6 @@ class NoteListState extends State<NoteList> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              if (false)
-                IconButton(
-                  onPressed: () {},
-                  icon: const ImageIcon(AssetImage("icons/lock.png")),
-                ),
               _bottomButtonItem(
                 context: context,
                 onPressed: () async {
@@ -302,7 +300,7 @@ class NoteListState extends State<NoteList> {
                     noteLogic.add(NotesNoteDeleted(selected));
                     exitEditModel();
                   } else if (editType == EditType.folder) {
-                    await notebookLogic.delete(selected);
+                    notebookLogic.add(BookDeleted(selected));
                     exitEditModel();
                   }
                   setState(() {
@@ -318,16 +316,12 @@ class NoteListState extends State<NoteList> {
                 _bottomButtonItem(
                   context: context,
                   onPressed: () {
-                    showMoveToFolderDialog(context, notebooks: widget.books,
-                        onCreatePressed: () {
-                      showCreateNotebookDialog(context, (name) async {
-                        var notebook = await notebookLogic.add(name);
-                        noteLogic.add(NotesMoved(selected, notebook.uuid));
-                        exitEditModel();
-                        Navigator.pop(context);
+                    showMoveToFolderDialog(context, onCreatePressed: () {
+                      showCreateNotebookDialog(context, (name) {
+                        notebookLogic.add(BookAdded(name: name));
                         Navigator.pop(context);
                       });
-                    }, onNotebookPressed: (Notebook? notebook) async {
+                    }, onNotebookPressed: (Notebook? notebook) {
                       noteLogic.add(NotesMoved(selected, notebook?.uuid));
                       exitEditModel();
                       Navigator.pop(context);
@@ -343,15 +337,14 @@ class NoteListState extends State<NoteList> {
     );
   }
 
-  exitEditModel() {
+  void exitEditModel() {
     setState(() {
       editType = EditType.none;
       selected.clear();
     });
     widget.modelCallback?.call(editType);
     widget.selectedCallback?.call(selected);
-    print("refresh");
-    refresh();
+    _refresh();
   }
 
   void unselectAll() {
@@ -362,12 +355,11 @@ class NoteListState extends State<NoteList> {
   }
 
   void selectAll() {
+    var notes = context.read<NoteBloc>().state.filteredTodos.toList();
     setState(() {
       if (editType == EditType.note) {
-        var notes = widget.notes;
         selected.addAll(notes.map((e) => e.uuid));
       } else if (editType == EditType.folder) {
-        var notes = widget.notes;
         selected.addAll(notes.map((e) => e.uuid));
       }
     });

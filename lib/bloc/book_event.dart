@@ -27,12 +27,12 @@ class BookUpdated extends BookEvent {
 }
 
 class BookDeleted extends BookEvent {
-  final String uuid;
+  final List<String> uuids;
 
-  const BookDeleted(this.uuid);
+  BookDeleted(List<String> _uuids) : uuids = [..._uuids];
 
   @override
-  List<Object> get props => [uuid];
+  List<Object> get props => [uuids];
 }
 
 class BookMoved extends BookEvent {

@@ -51,7 +51,7 @@ class _NoteEditWidgetState extends State<NoteEditWidget> {
         _quillController?.dispose();
         _titleController = TextEditingController(text: note?.title);
         if (note != null) {
-          var data = jsonDecode(note.content);
+          List<dynamic> data = jsonDecode(note.content);
           var document2 = Document.fromJson(data);
           _quillController = QuillController(
               document: document2,
@@ -146,13 +146,13 @@ class _SaveButton extends StatefulWidget {
 class _SaveButtonState extends State<_SaveButton> {
   bool showSave = false;
 
-  show() {
+  void show() {
     setState(() {
       showSave = true;
     });
   }
 
-  hide() {
+  void hide() {
     setState(() {
       showSave = false;
     });

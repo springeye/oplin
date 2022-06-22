@@ -64,7 +64,7 @@ class _SettingWebDAVState extends State<SettingWebDAV> {
                   )
                   .then((value) => Navigator.of(context).pop())
                   .catchError(
-                (e) {
+                (Object e) {
                   if (e is HttpException) {
                     setState(() {
                       error = e.message;

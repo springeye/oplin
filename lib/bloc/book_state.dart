@@ -19,7 +19,7 @@ class BooksState extends Equatable {
 
   @override
   String toString() {
-    return 'BooksState{status: $status, books: $books, filter: $filter, lastUpdatedBook: $lastUpdatedBook}';
+    return 'BooksState{status: $status, books: ${books.length}, filter: $filter, lastUpdatedBook: $lastUpdatedBook}';
   }
 
   BooksState copyWith({

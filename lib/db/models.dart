@@ -26,7 +26,7 @@ class Note {
 
   Note();
 
-  static create() {
+  static Note create() {
     var note = Note();
     note.uuid = const Uuid().v4();
     note.createTime = DateTime.now();

@@ -5,17 +5,11 @@ abstract class ObjectBoxX {
 
   ObjectBoxX(this.store);
 
-  Future<R> reader<M, R>(R Function(Box<M> box) runner) async {
-    return runner(store.box<M>());
+  List<T> query<T>(Condition<T>? conditions) {
+    return store.box<T>().query(conditions).build().find();
   }
 
-  Future<R> writer<M, R>(R Function(Box<M> box) runner) async {
-    return runner(store.box<M>());
-  }
-
-  Future<List<T>> query<T>(Condition<T>? conditions) {
-    return reader<T, List<T>>((box) {
-      return box.query(conditions).build().find();
-    });
+  Box<T> getBox<T>() {
+    return store.box<T>();
   }
 }

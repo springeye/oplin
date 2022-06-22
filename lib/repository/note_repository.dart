@@ -8,26 +8,26 @@ abstract class NoteRepository {
   const NoteRepository();
 
   /// Provides a [Stream] of all notes.
-  Stream<List<Note>> getNotes();
+  List<Note> getNotes();
 
-  Future<Note?> findNote(String uuid);
+  Note? findNote(String uuid);
 
-  Future<List<Note>> findNotes(List<String> uuid);
+  List<Note> findNotes(List<String> uuid);
 
   /// Saves a [note].
   ///
   /// If a [note] with the same id already exists, it will be replaced.
-  Future<void> saveNote(Note note);
+  void saveNote(Note note);
 
-  Future<void> batchSaveNote(List<Note> notes);
+  void batchSaveNote(List<Note> notes);
 
   /// Deletes the note with the given id.
   ///
   /// If no note with the given id exists, a [NoteNotFoundException] error is
   /// thrown.
-  Future<void> deleteNote(String uuids, {bool physics = false});
+  void deleteNote(String uuids, {bool physics = false});
 
-  Future<void> batchDeleteNote(List<String> uuids, {bool physics = false});
+  void batchDeleteNote(List<String> uuids, {bool physics = false});
 }
 
 class NoteNotFoundException implements Exception {}

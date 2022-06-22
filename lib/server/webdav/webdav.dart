@@ -58,7 +58,7 @@ class WebDAVClient {
     return encoder.convert(map);
   }
 
-  delete(Note note, {bool recycled = true}) async {
+  void delete(Note note, {bool recycled = true}) async {
     await check();
     if (recycled) {
       return await client.rename("${note.uuid}$_suffixNote",

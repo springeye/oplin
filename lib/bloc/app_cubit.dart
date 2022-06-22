@@ -16,7 +16,7 @@ class WebDAVConfig {
       {required this.url, required this.username, required this.password});
 
   Map<String, dynamic> toMap() {
-    return {
+    return <String, String>{
       'url': url,
       'username': username,
       'password': password,

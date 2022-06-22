@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:oplin/app/view/mobile/dialog.dart';
 import 'package:oplin/app/view/mobile/drawer.dart';
 import 'package:oplin/app/view/mobile/edit.dart';
+import 'package:oplin/bloc/book_bloc.dart';
 import 'package:oplin/bloc/note_bloc.dart';
-import 'package:oplin/bloc/notebook_cubit.dart';
 import 'package:oplin/db/models.dart';
 import 'package:oplin/ext/AssetGenImage.dart';
 
@@ -77,12 +78,10 @@ class _MobileHomePageState extends State<MobileHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+    var noteState = context.watch<NoteBloc>();
+    var bookState = context.watch<BookBloc>();
+    var notes = noteState.state.filteredTodos.toList();
+    var books = bookState.state.filteredTodos.toList();
     return Scaffold(
       appBar: _buildAppBar(),
       floatingActionButton: editType != EditType.none
@@ -92,35 +91,28 @@ class _MobileHomePageState extends State<MobileHomePage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  AppPageRoute(
+                  AppPageRoute<EditNoteWidget>(
                     builder: (context) => const EditNoteWidget(),
                   ),
-                ).then((value) => noteListKey.currentState?.refresh());
+                ).then((value) => context
+                    .read<NoteBloc>()
+                    .add(const NotesSubscriptionRequested()));
               },
               child: const Icon(Icons.add),
             ),
       drawer: editType != EditType.none ? null : buildDrawer(context),
-      body: BlocBuilder<NoteBloc, NotesState>(
-        builder: (context, state) {
-          return BlocBuilder<NotebookCubit, List<Notebook>>(
-            builder: (context, books) {
-              return NoteList(
-                state.filteredTodos.toList(),
-                books,
-                key: noteListKey,
-                modelCallback: (isEditing) {
-                  setState(() {
-                    editType = isEditing;
-                  });
-                },
-                selectedCallback: (selected) {
-                  setState(() {
-                    this.selected = selected;
-                  });
-                },
-              );
-            },
-          );
+      body: NoteList(
+        key: noteListKey,
+        showFolder: true,
+        modelCallback: (isEditing) {
+          setState(() {
+            editType = isEditing;
+          });
+        },
+        selectedCallback: (selected) {
+          setState(() {
+            this.selected = selected;
+          });
         },
       ),
     );

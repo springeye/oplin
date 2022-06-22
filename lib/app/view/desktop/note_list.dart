@@ -22,10 +22,10 @@ class NoteListWidget extends StatefulWidget {
 class _NoteListWidgetState extends State<NoteListWidget> {
   final _searchController = TextEditingController();
 
-  _clickNote(BuildContext context, ShowNodeCubit showLogic, Note note) {
+  void _clickNote(BuildContext context, ShowNodeCubit showLogic, Note note) {
     var oldNote = showLogic.state;
     if (showLogic.changed) {
-      showDialog(
+      showDialog<AlertDialog>(
           context: context,
           builder: (context) {
             return AlertDialog(
@@ -48,13 +48,12 @@ class _NoteListWidgetState extends State<NoteListWidget> {
                     var bloc = context.read<NoteBloc>();
                     id ??= const Uuid().v4();
                     bloc.add(NotesUpdated(id, title: title, content: content));
-                    var note = oldNote ??= Note.create();
-                    showLogic.setNewNote(note!
+                    Note note = oldNote ??= Note.create();
+                    showLogic.setNewNote(note
                       ..uuid = id
                       ..title = title
                       ..content = content);
                     Navigator.of(context).pop();
-                    bloc.refresh();
                   },
                 ),
               ],
