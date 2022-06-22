@@ -1,25 +1,17 @@
-# oplin
-
+# Oplin Notebook
+[Joplin](https://joplinapp.org/) is a very good software. with a learning attitude, I use flutter to develop similar software, named 'oplin'
 A new Flutter project.
 
 ## Getting Started
+1. flutter 3.0 or higher
+2. enable desktop support [https://flutter.dev/desktop](https://flutter.dev/desktop)
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials, samples, guidance on
-app.view.mobile development, and a full API reference.
-
-## Run before
-
+## Run before  
 ```bash
 flutter pub run build_runner build --delete-conflicting-outputs
 ```
+### test objectbox preinstall
 ```
+#Run on linux,cygwin,mssys,git-bash
 bash <(curl -s https://raw.githubusercontent.com/objectbox/objectbox-dart/main/install.sh)
 ```
