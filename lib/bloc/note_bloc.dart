@@ -10,6 +10,7 @@ import '../repository/note_repository.dart';
 import '../repository/note_view_filter.dart';
 
 part 'note_event.dart';
+
 part 'note_state.dart';
 
 class NoteBloc extends BaseBloc<NoteEvent, NotesState> {
@@ -54,6 +55,7 @@ class NoteBloc extends BaseBloc<NoteEvent, NotesState> {
   ) async {
     appLog.debug("delete notes ${event.uuids}");
     await _noteRepository.batchDeleteNote(event.uuids);
+    add(const NotesSubscriptionRequested());
   }
 
   void _onFilterChanged(
@@ -86,6 +88,7 @@ class NoteBloc extends BaseBloc<NoteEvent, NotesState> {
       note.notebookId = event.notebookId;
       await _noteRepository.saveNote(note);
     }
+    add(const NotesSubscriptionRequested());
   }
 
   FutureOr<void> _onSticky(NotesSticky event, Emitter<NotesState> emit) async {
@@ -94,6 +97,7 @@ class NoteBloc extends BaseBloc<NoteEvent, NotesState> {
       value.sticky = !value.sticky;
     }
     await _noteRepository.batchSaveNote(notes);
+    add(const NotesSubscriptionRequested());
   }
 
   FutureOr<void> _onMoved(NotesMoved event, Emitter<NotesState> emit) async {
@@ -102,6 +106,7 @@ class NoteBloc extends BaseBloc<NoteEvent, NotesState> {
       value.notebookId = event.notebookId;
     }
     await _noteRepository.batchSaveNote(notes);
+    add(const NotesSubscriptionRequested());
   }
 
   FutureOr<void> _onNoteAdded(
@@ -111,6 +116,7 @@ class NoteBloc extends BaseBloc<NoteEvent, NotesState> {
     note.content = event.content;
     note.notebookId = event.notebookId;
     await _noteRepository.saveNote(note);
+    add(const NotesSubscriptionRequested());
   }
 
   void setNotebook(Notebook? notebook) {

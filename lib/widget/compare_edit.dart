@@ -1,5 +1,5 @@
-import 'package:flutter/widgets.dart';
 import 'package:diff_match_patch/diff_match_patch.dart';
+import 'package:flutter/widgets.dart';
 
 class CompareEditWidget extends StatefulWidget {
   const CompareEditWidget({Key? key}) : super(key: key);

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class DraggableCard<T extends Object> extends StatelessWidget {
   final T data;
   final Widget child;

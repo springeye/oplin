@@ -8,6 +8,7 @@ import '../repository/book_repository.dart';
 import '../repository/book_view_filter.dart';
 
 part 'book_event.dart';
+
 part 'book_state.dart';
 
 class BookBloc extends Bloc<BookEvent, BooksState> {

@@ -120,7 +120,7 @@ class _NoteListWidgetState extends State<NoteListWidget> {
             child: Row(
               children: [
                 Text("Total ${notes.length}"),
-                Spacer(),
+                const Spacer(),
                 DropdownButton<ViewSortType>(
                   value: state.filter.sort,
                   onChanged: (v) {
@@ -212,7 +212,7 @@ class _NoteListWidgetState extends State<NoteListWidget> {
                                 "2019-08-02 11:22:03",
                                 style: bodyStyle,
                               ),
-                              Divider(
+                              const Divider(
                                 height: 10,
                                 color: Colors.transparent,
                               )
@@ -237,7 +237,7 @@ class _NoteListWidgetState extends State<NoteListWidget> {
           onTap: () {
             cubit.setNewNote(null);
           },
-          child: Icon(
+          child: const Icon(
             Icons.add,
             size: 30,
           ),
@@ -265,20 +265,20 @@ class _NoteListWidgetState extends State<NoteListWidget> {
             },
             decoration: InputDecoration(
                 isDense: true,
-                border: OutlineInputBorder(
+                border: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.white),
                     gapPadding: 1,
                     borderRadius: BorderRadius.all(Radius.circular(15))),
                 hintText: 'Input keyword to search',
                 labelText: 'Search',
-                prefixIcon: Icon(
+                prefixIcon: const Icon(
                   Icons.search,
                 ),
                 prefixText: ' ',
                 contentPadding: const EdgeInsets.all(1),
                 suffixIcon: state.filter.search?.isNotEmpty == true
                     ? IconButton(
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.clear,
                         ),
                         onPressed: () {

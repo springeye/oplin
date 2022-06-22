@@ -13,6 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oplin/bloc/note_bloc.dart';
 import 'package:oplin/common/logging.dart';
 import 'package:oplin/db/objectbox.g.dart';
+import 'package:oplin/repository/note_repository.dart';
 import 'package:oplin/repository/storage/storage_note_repository.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -45,12 +46,12 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
         () async {
           var store =
               await openStore(directory: (await getTemporaryDirectory()).path);
-          var noteRepository = StorageNoteRepository(store);
-          var noteLogic = NoteBloc(
+          NoteRepository noteRepository = StorageNoteRepository(store);
+          NoteBloc noteLogic = NoteBloc(
             noteRepository: noteRepository,
           );
-          var notebookLogic = NotebookCubit(store);
-          var appConfig = await AppCubit.getDefaultConfig();
+          NotebookCubit notebookLogic = NotebookCubit(store);
+          AppConfig appConfig = await AppCubit.getDefaultConfig();
           runApp(
             MultiBlocProvider(
               providers: [

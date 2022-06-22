@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oplin/app/view/desktop/folder_list.dart';
@@ -35,11 +34,11 @@ class _DesktopHomePageState extends State<DesktopHomePage> {
       children: [
         Row(
           mainAxisSize: MainAxisSize.min,
-          children: [
+          children: const [
             Padding(
-              padding: const EdgeInsets.only(left: 30),
+              padding: EdgeInsets.only(left: 30),
             ),
-            const Spacer(),
+            Spacer(),
           ],
         ),
         Expanded(

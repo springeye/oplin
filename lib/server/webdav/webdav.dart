@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:dio/dio.dart';
 import 'package:oplin/db/models.dart';
 import 'package:webdav_client/webdav_client.dart';
-import 'package:dio/dio.dart';
 
 const String _dirLock = ".lock";
 const String _dirRecycled = ".recycled";

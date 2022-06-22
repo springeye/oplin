@@ -71,16 +71,17 @@ class _FolderWidgetState extends State<FolderWidget> {
 
   @override
   Widget build(BuildContext context) {
+    var repository = context.read<NoteRepository>();
     return BlocProvider<NoteBloc>(
-      create: (context) =>
-          NoteBloc(noteRepository: context.read<NoteRepository>())
-            ..setNotebook(widget.book),
+      create: (context) {
+        return NoteBloc(noteRepository: repository)..setNotebook(widget.book);
+      },
       child: Scaffold(
         appBar: _buildAppBar(context),
         body: BlocBuilder<NoteBloc, NotesState>(
           builder: (context, state) {
             return NoteList(
-              state.notes,
+              state.filteredTodos.toList(),
               const [],
               notebook: widget.book,
               key: noteListKey,
