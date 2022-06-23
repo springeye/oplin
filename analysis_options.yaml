@@ -28,6 +28,14 @@ linter:
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
 analyzer:
+  plugins:
+    - string_literal_finder
   exclude: [ build/**, lib/**.freezed.dart, lib/**.g.dart,lib/l10n/**.dart ]
   strong-mode:
     implicit-dynamic: false
+string_literal_finder:
+  exclude_globs:
+    - 'build/**'
+    - '**/*.freezed.dart'
+    - 'lib/**.g.dart'
+    - 'lib/l10n/**.dart'
