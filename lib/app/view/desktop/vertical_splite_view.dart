@@ -12,7 +12,7 @@ class VerticalSplitView extends StatefulWidget {
 
   //ratio 0.0-1.0
   final double maxSize;
-  final Widget? divider;
+  final LayoutWidgetBuilder? divider;
 
   const VerticalSplitView(
       {Key? key,
@@ -57,11 +57,11 @@ class _VerticalSplitViewState extends State<VerticalSplitView> {
 
       var width1 = _ratio * maxWidth;
       var divider = widget.divider ??
-          SizedBox(
-            width: _dividerWidth,
-            height: constraints.maxHeight,
-            child: const Icon(Icons.drag_handle),
-          );
+          (context, constraints) => SizedBox(
+                width: _dividerWidth,
+                height: constraints.maxHeight,
+                child: const Icon(Icons.drag_handle),
+              );
 
       return SizedBox(
         width: constraints.maxWidth,
@@ -91,7 +91,7 @@ class _VerticalSplitViewState extends State<VerticalSplitView> {
                     hasMouse = false;
                   });
                 },
-                child: divider,
+                child: divider(context, constraints),
               ),
               onPanUpdate: (DragUpdateDetails details) {
                 setState(() {

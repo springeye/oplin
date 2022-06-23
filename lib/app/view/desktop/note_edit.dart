@@ -84,49 +84,57 @@ class _NoteEditWidgetState extends State<NoteEditWidget> {
           }
         });
         return Scaffold(
-          body: Container(
-            color: Colors.white,
-            child: Column(
-              children: [
-                TextField(
-                  style: Theme.of(context).textTheme.titleLarge,
-                  controller: _titleController,
-                  decoration: InputDecoration(
-                    hintText: S.of(context).hint_enter_title,
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-                  ),
-                ),
-                if (showToolbar)
-                  Container(
-                    color: Colors.grey.shade100,
-                    child: SingleChildScrollView(
-                      controller: ScrollController(),
-                      scrollDirection: Axis.horizontal,
-                      child: QuillToolbar.basic(
-                        toolbarIconAlignment: WrapAlignment.start,
-                        controller: _quillController!,
-                        iconTheme: QuillIconTheme(
-                            iconUnselectedFillColor: Colors.grey.shade100),
-                      ),
+          backgroundColor: Colors.transparent,
+          body: ClipRRect(
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+            child: Container(
+              color: Colors.white,
+              child: Column(
+                children: [
+                  TextField(
+                    style: Theme.of(context).textTheme.titleLarge,
+                    controller: _titleController,
+                    decoration: InputDecoration(
+                      hintText: S.of(context).hint_enter_title,
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 10),
                     ),
                   ),
-                Expanded(
-                  // child:
-                  // QuillEditor.basic(controller: quillController, readOnly: false),
-                  child: QuillEditor(
-                    controller: _quillController!,
-                    scrollController: ScrollController(),
-                    scrollable: true,
-                    focusNode: focusNode,
-                    autoFocus: true,
-                    readOnly: false,
-                    expands: true,
-                    padding: const EdgeInsets.all(10),
-                    keyboardAppearance: Brightness.light,
-                    showCursor: true,
-                  ),
-                )
-              ],
+                  if (showToolbar)
+                    Container(
+                      color: Colors.grey.shade100,
+                      child: SingleChildScrollView(
+                        controller: ScrollController(),
+                        scrollDirection: Axis.horizontal,
+                        child: QuillToolbar.basic(
+                          toolbarIconAlignment: WrapAlignment.start,
+                          controller: _quillController!,
+                          iconTheme: QuillIconTheme(
+                              iconUnselectedFillColor: Colors.grey.shade100),
+                        ),
+                      ),
+                    ),
+                  Expanded(
+                    // child:
+                    // QuillEditor.basic(controller: quillController, readOnly: false),
+                    child: QuillEditor(
+                      controller: _quillController!,
+                      scrollController: ScrollController(),
+                      scrollable: true,
+                      focusNode: focusNode,
+                      autoFocus: true,
+                      readOnly: false,
+                      expands: true,
+                      padding: const EdgeInsets.all(10),
+                      keyboardAppearance: Brightness.light,
+                      showCursor: true,
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
           floatingActionButton: _SaveButton(

@@ -19,15 +19,22 @@ class DesktopHomePage extends StatefulWidget {
 }
 
 class _DesktopHomePageState extends State<DesktopHomePage> {
+  LayoutWidgetBuilder divider =
+      (BuildContext context, BoxConstraints constraints) {
+    var config = context.watch<AppCubit>().state;
+
+    return Container(
+      height: double.infinity,
+      padding: const EdgeInsets.only(top: 15),
+      width: 2,
+      child: Container(
+        color: Colors.transparent,
+      ),
+    );
+  };
+
   @override
   Widget build(BuildContext context) {
-    var config = context.watch<AppCubit>().state;
-    var divider = Container(
-      color: config.primarySwatch.shade200,
-      height: double.infinity,
-      width: 2,
-    );
-
     var noteBloc = context.read<NoteBloc>();
     noteBloc.add(const NotesSubscriptionRequested());
     context.read<BookBloc>().add(const BookSubscriptionRequested());
