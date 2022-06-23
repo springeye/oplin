@@ -17,7 +17,7 @@ import 'S_zh.dart';
 /// supportedLocales list. For example:
 ///
 /// ```
-/// import 'l10n/S.dart';
+/// import 'gen/S.dart';
 ///
 /// return MaterialApp(
 ///   localizationsDelegates: S.localizationsDelegates,
@@ -110,7 +110,7 @@ abstract class S {
   ///
   /// In en, this message translates to:
   /// **'Notebook: {name}'**
-  String notebook(String name);
+  String notebook_by_name(String name);
 
   /// No description provided for @create_notebook.
   ///
@@ -261,6 +261,138 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Please provide login credentials for the WebDAV folder you want to synchronize.'**
   String get webdav_settings_tips;
+
+  /// No description provided for @tips.
+  ///
+  /// In en, this message translates to:
+  /// **'Tips'**
+  String get tips;
+
+  /// No description provided for @save_message.
+  ///
+  /// In en, this message translates to:
+  /// **'The notes have been modified. Do you want to save?'**
+  String get save_message;
+
+  /// No description provided for @notebook.
+  ///
+  /// In en, this message translates to:
+  /// **'Notebook'**
+  String get notebook;
+
+  /// No description provided for @other.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get other;
+
+  /// No description provided for @all.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get all;
+
+  /// No description provided for @hint_enter_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter title'**
+  String get hint_enter_title;
+
+  /// No description provided for @hint_enter_search.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter keyword to search'**
+  String get hint_enter_search;
+
+  /// No description provided for @search.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get search;
+
+  /// No description provided for @toast_save_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Save success'**
+  String get toast_save_success;
+
+  /// total notes count
+  ///
+  /// In en, this message translates to:
+  /// **'Total: {count}'**
+  String total_notes(int count);
+
+  /// total notes count
+  ///
+  /// In en, this message translates to:
+  /// **'Select {count} notes'**
+  String select_note_count(int count);
+
+  /// total notes books
+  ///
+  /// In en, this message translates to:
+  /// **'Select {count} books'**
+  String select_book_count(int count);
+
+  /// No description provided for @empty_notes.
+  ///
+  /// In en, this message translates to:
+  /// **'No notes'**
+  String get empty_notes;
+
+  /// format datetime
+  ///
+  /// In en, this message translates to:
+  /// **'{time}'**
+  String datetime_format(DateTime time);
+
+  /// format datetime
+  ///
+  /// In en, this message translates to:
+  /// **'{time}'**
+  String time_format(DateTime time);
+
+  /// format datetime
+  ///
+  /// In en, this message translates to:
+  /// **'{time}'**
+  String date_format(DateTime time);
+
+  /// No description provided for @select_color.
+  ///
+  /// In en, this message translates to:
+  /// **'Select color'**
+  String get select_color;
+
+  /// No description provided for @label_url.
+  ///
+  /// In en, this message translates to:
+  /// **'Url'**
+  String get label_url;
+
+  /// url
+  ///
+  /// In en, this message translates to:
+  /// **'Url: {url}'**
+  String url(String url);
+
+  /// No description provided for @example_url.
+  ///
+  /// In en, this message translates to:
+  /// **'example: https://www.example.com/'**
+  String get example_url;
+
+  /// No description provided for @example_username.
+  ///
+  /// In en, this message translates to:
+  /// **'example: admin'**
+  String get example_username;
+
+  /// No description provided for @hint_password.
+  ///
+  /// In en, this message translates to:
+  /// **'your password'**
+  String get hint_password;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

@@ -10,7 +10,7 @@ import 'package:oplin/ext/AssetGenImage.dart';
 import 'package:oplin/repository/note_repository.dart';
 
 import '../../../gen/assets.gen.dart';
-import '../../../l10n/S.dart';
+import 'package:oplin/gen/S.dart';
 
 class FolderWidget extends StatefulWidget {
   final Notebook book;
@@ -33,11 +33,11 @@ class _FolderWidgetState extends State<FolderWidget> {
 
   AppBar _buildAppBar(BuildContext context) {
     var titleStyle = Theme.of(context).appBarTheme.titleTextStyle;
-    var title = S.of(context).notebook(widget.book.name);
+    var title = S.of(context).notebook_by_name(widget.book.name);
     if (editType == EditType.note) {
-      title = "选择了${selected.length}个笔记";
+      title = S.of(context).select_note_count(selected.length);
     } else if (editType == EditType.folder) {
-      title = "选择了${selected.length}个笔记本";
+      title = S.of(context).select_book_count(selected.length);
     }
     return AppBar(
       title: Text(

@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oplin/app/view/mobile/dialog.dart';
 import 'package:oplin/bloc/app_cubit.dart';
 
-import '../../../l10n/S.dart';
+import 'package:oplin/gen/S.dart';
 
 class SettingWebDAV extends StatefulWidget {
   const SettingWebDAV({Key? key}) : super(key: key);
@@ -99,12 +99,12 @@ class _SettingWebDAVState extends State<SettingWebDAV> {
                   controller: urlController,
                   keyboardType: TextInputType.url,
                   textCapitalization: TextCapitalization.none,
-                  decoration: const InputDecoration(
-                    label: Text("URL"),
-                    hintStyle: TextStyle(fontSize: 17),
-                    hintText: '例如: https://www.example.com/',
-                    contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                    border: OutlineInputBorder(
+                  decoration: InputDecoration(
+                    label: Text(S.of(context).label_url),
+                    hintStyle: const TextStyle(fontSize: 17),
+                    hintText: S.of(context).example_url,
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+                    border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(8.0)),
                     ),
                   ),
@@ -112,7 +112,7 @@ class _SettingWebDAVState extends State<SettingWebDAV> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 10, bottom: 10),
-                  child: Text("地址: $_url"),
+                  child: Text(S.of(context).url(_url)),
                 ),
               ],
             ),
@@ -121,12 +121,12 @@ class _SettingWebDAVState extends State<SettingWebDAV> {
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               controller: usernameController,
-              decoration: const InputDecoration(
-                hintStyle: TextStyle(fontSize: 17),
-                label: Text("用户名"),
-                hintText: '例如: admin',
-                contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                border: OutlineInputBorder(
+              decoration: InputDecoration(
+                hintStyle: const TextStyle(fontSize: 17),
+                label: Text(S.of(context).username),
+                hintText: S.of(context).example_username,
+                contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+                border: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(8.0)),
                 ),
               ),
@@ -139,7 +139,7 @@ class _SettingWebDAVState extends State<SettingWebDAV> {
               controller: passwordController,
               obscureText: !showPassword,
               decoration: InputDecoration(
-                label: const Text("密码"),
+                label: Text(S.of(context).password),
                 suffixIcon: IconButton(
                   icon: Icon(showPassword == true
                       ? Icons.visibility
@@ -151,7 +151,7 @@ class _SettingWebDAVState extends State<SettingWebDAV> {
                   },
                 ),
                 hintStyle: const TextStyle(fontSize: 17),
-                hintText: '输入密码',
+                hintText: S.of(context).hint_password,
                 contentPadding: const EdgeInsets.symmetric(horizontal: 10),
                 border: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(8.0)),

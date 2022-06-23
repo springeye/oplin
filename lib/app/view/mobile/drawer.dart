@@ -6,7 +6,7 @@ import 'package:oplin/app/view/mobile/settings.dart';
 import 'package:oplin/bloc/app_cubit.dart';
 import 'package:oplin/bloc/sync_cubit.dart';
 
-import '../../../l10n/S.dart';
+import 'package:oplin/gen/S.dart';
 
 Widget buildDrawer(BuildContext context) {
   return Drawer(

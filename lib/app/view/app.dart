@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import '../../../../l10n/S.dart';
+import 'package:oplin/gen/S.dart';
 import '../../bloc/app_cubit.dart';
 
 class App extends StatelessWidget {

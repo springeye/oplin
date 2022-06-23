@@ -11,6 +11,7 @@ import 'package:uuid/uuid.dart';
 import '../../../bloc/app_cubit.dart';
 import '../../../bloc/show_node_cubit.dart';
 import '../../../db/models.dart';
+import 'package:oplin/gen/S.dart';
 
 class NoteListWidget extends StatefulWidget {
   const NoteListWidget({Key? key}) : super(key: key);
@@ -29,18 +30,18 @@ class _NoteListWidgetState extends State<NoteListWidget> {
           context: context,
           builder: (context) {
             return AlertDialog(
-              title: const Text("提示"),
-              content: const Text("文件已修改，是否保存?"),
+              title: Text(S.of(context).tips),
+              content: Text(S.of(context).save_message),
               actions: [
                 TextButton(
-                  child: const Text("取消"),
+                  child: Text(S.of(context).cancel),
                   onPressed: () {
                     showLogic.setNewNote(note);
                     Navigator.of(context).pop();
                   },
                 ),
                 TextButton(
-                  child: const Text("确定"),
+                  child: Text(S.of(context).ok),
                   onPressed: () async {
                     var id = oldNote?.uuid;
                     var title = showLogic.title!;
@@ -75,13 +76,12 @@ class _NoteListWidgetState extends State<NoteListWidget> {
         ?.copyWith(fontSize: 14, color: Colors.grey);
     var selectNote = context.watch<ShowNodeCubit>().state;
     var state = context.watch<NoteBloc>().state;
-    appLog.debug("build note list");
     var login = context.read<ShowNodeCubit>();
     var notes = state.filteredTodos.toList();
-    var book = "全部笔记";
+    var book = S.of(context).all;
     if (state.filter.notebook != null) {
       if (state.filter.notebook!.isOther) {
-        book = "未分类";
+        book = S.of(context).other;
       } else {
         book = state.filter.notebook!.name;
       }
@@ -127,7 +127,7 @@ class _NoteListWidgetState extends State<NoteListWidget> {
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
-                    Text("Total ${notes.length}"),
+                    Text(S.of(context).total_notes(notes.length)),
                     const Spacer(),
                     DropdownButton<ViewSortType>(
                       value: state.filter.sort,
@@ -163,9 +163,9 @@ class _NoteListWidgetState extends State<NoteListWidget> {
               ),
               //notes list
               notes.isEmpty
-                  ? const Expanded(
+                  ? Expanded(
                       child: Center(
-                        child: Text("No Notes"),
+                        child: Text(S.of(context).empty_notes),
                       ),
                     )
                   : Expanded(
@@ -186,7 +186,6 @@ class _NoteListWidgetState extends State<NoteListWidget> {
                           var selected = selectNote?.uuid == notes[index].uuid;
                           return Material(
                             child: ListTile(
-                              tileColor: Colors.white,
                               selectedTileColor: selectedColor,
                               hoverColor: selectedColor.withAlpha(50),
                               selected: selected,
@@ -213,7 +212,8 @@ class _NoteListWidgetState extends State<NoteListWidget> {
                                     style: bodyStyle,
                                   ),
                                   Text(
-                                    "2019-08-02 11:22:03",
+                                    S.of(context).datetime_format(
+                                        notes[index].updateTime),
                                     style: bodyStyle,
                                   ),
                                   const Divider(
@@ -275,12 +275,11 @@ class _NoteListWidgetState extends State<NoteListWidget> {
                     borderSide: BorderSide(color: Colors.white),
                     gapPadding: 1,
                     borderRadius: BorderRadius.all(Radius.circular(15))),
-                hintText: 'Input keyword to search',
-                labelText: 'Search',
+                hintText: S.of(context).hint_enter_search,
+                labelText: S.of(context).search,
                 prefixIcon: const Icon(
                   Icons.search,
                 ),
-                prefixText: ' ',
                 contentPadding: const EdgeInsets.all(1),
                 suffixIcon: state.filter.search?.isNotEmpty == true
                     ? IconButton(

@@ -10,7 +10,7 @@ import 'package:oplin/db/models.dart';
 import 'package:oplin/ext/AssetGenImage.dart';
 
 import '../../../gen/assets.gen.dart';
-import '../../../l10n/S.dart';
+import 'package:oplin/gen/S.dart';
 import 'note_list.dart';
 import 'route.dart';
 
@@ -30,9 +30,9 @@ class _MobileHomePageState extends State<MobileHomePage> {
     var titleStyle = Theme.of(context).appBarTheme.titleTextStyle;
     var title = S.of(context).app_name;
     if (editType == EditType.note) {
-      title = "选择了${selected.length}个笔记";
+      title = S.of(context).select_note_count(selected.length);
     } else if (editType == EditType.folder) {
-      title = "选择了${selected.length}个笔记本";
+      title = S.of(context).select_book_count(selected.length);
     }
     return AppBar(
       title: Text(

@@ -7,7 +7,7 @@ import 'package:oplin/app/view/editor/toolbar.dart';
 import 'package:oplin/bloc/note_bloc.dart';
 
 import '../../../db/models.dart';
-import '../../../l10n/S.dart';
+import 'package:oplin/gen/S.dart';
 
 class EditNoteWidget extends StatefulWidget {
   final Note? note;

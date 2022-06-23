@@ -8,7 +8,7 @@ import 'view/desktop/home.dart';
 import 'view/mobile/home.dart';
 import 'window.dart';
 
-export 'view/app.dart';
+export 'view/app.dart'; // NON-NLS
 
 Widget buildMainWindow(BuildContext context) {
   var targetPlatform = Theme.of(context).platform;

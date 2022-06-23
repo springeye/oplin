@@ -9,6 +9,7 @@ import 'package:oplin/app/view/mobile/settings.dart';
 import 'package:oplin/bloc/app_cubit.dart';
 import 'package:oplin/bloc/book_bloc.dart';
 import 'package:oplin/bloc/note_bloc.dart';
+import 'package:oplin/gen/S.dart';
 
 class DesktopHomePage extends StatefulWidget {
   const DesktopHomePage({Key? key}) : super(key: key);
@@ -68,12 +69,12 @@ class _DesktopHomePageState extends State<DesktopHomePage> {
   List<PlatformMenu> _buildMacosMenuBar(BuildContext context) {
     return [
       PlatformMenu(
-        label: "app",
+        label: S.of(context).app_name,
         menus: [
           PlatformMenuItemGroup(
             members: [
               PlatformMenuItem(
-                  label: 'Settings',
+                  label: S.of(context).settings,
                   onSelected: () {
                     Navigator.push(context, AppPageRoute<SettingWidget>(
                         builder: (BuildContext context) {

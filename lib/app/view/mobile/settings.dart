@@ -5,7 +5,7 @@ import 'package:oplin/app/view/mobile/route.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 import '../../../bloc/app_cubit.dart';
-import '../../../l10n/S.dart';
+import 'package:oplin/gen/S.dart';
 import 'settings_webdav.dart';
 
 class SettingWidget extends StatefulWidget {
@@ -99,7 +99,7 @@ class _SettingWidgetState extends State<SettingWidget> {
                           context: context,
                           builder: (context) {
                             return AlertDialog(
-                              title: const Text("Select color"),
+                              title: Text(S.of(context).select_color),
                               content: BlockPicker(
                                 availableColors: const [
                                   Colors.red,

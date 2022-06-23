@@ -1,8 +1,8 @@
 {
   "app_name": "Notebook",
   "settings": "Settings",
-  "notebook": "Notebook: {name}",
-  "@notebook": {
+  "notebook_by_name": "Notebook: {name}",
+  "@notebook_by_name": {
     "description": "notebook page title",
     "placeholders": {
       "name": {
@@ -43,5 +43,92 @@
   "lang_zh": "简体中文",
   "lang_other": "Auto",
   "webdav_settings": "Settings for WebDAV",
-  "webdav_settings_tips": "Please provide login credentials for the WebDAV folder you want to synchronize."
+  "webdav_settings_tips": "Please provide login credentials for the WebDAV folder you want to synchronize.",
+  "tips": "Tips",
+  "save_message": "The notes have been modified. Do you want to save?",
+  "notebook": "Notebook",
+  "other": "Other",
+  "all": "All",
+  "hint_enter_title": "Enter title",
+  "hint_enter_search": "Enter keyword to search",
+  "search": "Search",
+  "toast_save_success": "Save success",
+  "total_notes": "Total: {count}",
+  "@total_notes": {
+    "description": "total notes count",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "99"
+      }
+    }
+  },
+  "select_note_count": "Select {count} notes",
+  "@select_note_count": {
+    "description": "total notes count",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "99"
+      }
+    }
+  },
+  "select_book_count": "Select {count} books",
+  "@select_book_count": {
+    "description": "total notes books",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "99"
+      }
+    }
+  },
+  "empty_notes": "No notes",
+  "datetime_format": "{time}",
+  "@datetime_format": {
+    "description": "format datetime",
+    "placeholders": {
+      "time": {
+        "type": "DateTime",
+        "format": "yyyy-MM-dd HH:mm:ss",
+        "isCustomDateFormat": "true"
+      }
+    }
+  },
+  "time_format": "{time}",
+  "@time_format": {
+    "description": "format datetime",
+    "placeholders": {
+      "time": {
+        "type": "DateTime",
+        "format": "HH:mm:ss",
+        "isCustomDateFormat": "true"
+      }
+    }
+  },
+  "date_format": "{time}",
+  "@date_format": {
+    "description": "format datetime",
+    "placeholders": {
+      "time": {
+        "type": "DateTime",
+        "format": "yyyy-MM-dd",
+        "isCustomDateFormat": "true"
+      }
+    }
+  },
+  "select_color": "Select color",
+  "label_url": "Url",
+  "url": "Url: {url}",
+  "@url": {
+    "description": "url",
+    "placeholders": {
+      "url": {
+        "type": "String"
+      }
+    }
+  },
+  "example_url": "example: https://www.example.com/",
+  "example_username": "example: admin",
+  "hint_password": "your password"
 }

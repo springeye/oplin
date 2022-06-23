@@ -26,8 +26,8 @@
   },
   "move_to": "移动到",
   "@move_to": {},
-  "notebook": "笔记本: {name}",
-  "@notebook": {
+  "notebook_by_name": "笔记本: {name}",
+  "@notebook_by_name": {
     "description": "笔记本页面标题",
     "placeholders": {
       "name": {

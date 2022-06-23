@@ -9,7 +9,7 @@ import 'package:oplin/gen/assets.gen.dart';
 
 import '../../../common/utils.dart';
 import '../../../db/models.dart';
-import '../../../l10n/S.dart';
+import 'package:oplin/gen/S.dart';
 import 'build_note.dart';
 import 'card_item_draggable.dart';
 import 'card_item_target.dart';
@@ -237,7 +237,7 @@ class NoteListState extends State<NoteList> {
           ],
         );
       },
-    );
+    ); // NON-NLS // NON-NLS
   }
 
   Widget _buildNoteBookItem(Notebook book, bool opened) {

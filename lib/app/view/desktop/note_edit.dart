@@ -4,9 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_quill/flutter_quill.dart';
+import 'package:oplin/bloc/book_bloc.dart';
+import 'package:oplin/bloc/note_bloc.dart';
 import 'package:oplin/bloc/show_node_cubit.dart';
 import 'package:oplin/common/logging.dart';
 import 'package:oplin/db/models.dart';
+import 'package:oplin/gen/S.dart';
 
 class NoteEditWidget extends StatefulWidget {
   const NoteEditWidget({Key? key}) : super(key: key);
@@ -46,7 +49,7 @@ class _NoteEditWidgetState extends State<NoteEditWidget> {
   Widget build(BuildContext context) {
     return BlocBuilder<ShowNodeCubit, Note?>(
       builder: (context, note) {
-        appLog.debug("当前编辑的笔记是: ${note.toString()}");
+        var showLogic = context.read<ShowNodeCubit>();
         _titleController?.dispose();
         _quillController?.dispose();
         _titleController = TextEditingController(text: note?.title);
@@ -62,10 +65,10 @@ class _NoteEditWidgetState extends State<NoteEditWidget> {
         _saveButtonKey.currentState?.hide();
         _quillController!.changes.listen((event) {
           appLog.debug(event.toString());
-          var editCubit = context.read<ShowNodeCubit>();
-          editCubit.content =
+
+          showLogic.content =
               jsonEncode(_quillController!.document.toDelta().toJson());
-          if (editCubit.changed) {
+          if (showLogic.changed) {
             _saveButtonKey.currentState?.show();
           } else {
             _saveButtonKey.currentState?.hide();
@@ -86,14 +89,11 @@ class _NoteEditWidgetState extends State<NoteEditWidget> {
             child: Column(
               children: [
                 TextField(
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .titleLarge,
+                  style: Theme.of(context).textTheme.titleLarge,
                   controller: _titleController,
-                  decoration: const InputDecoration(
-                    hintText: 'Enter title',
-                    contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                  decoration: InputDecoration(
+                    hintText: S.of(context).hint_enter_title,
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 10),
                   ),
                 ),
                 if (showToolbar)
@@ -121,10 +121,9 @@ class _NoteEditWidgetState extends State<NoteEditWidget> {
                     autoFocus: true,
                     readOnly: false,
                     expands: true,
-                    padding: EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(10),
                     keyboardAppearance: Brightness.light,
                     showCursor: true,
-
                   ),
                 )
               ],
@@ -133,7 +132,17 @@ class _NoteEditWidgetState extends State<NoteEditWidget> {
           floatingActionButton: _SaveButton(
             key: _saveButtonKey,
             onPressed: () {
-              EasyLoading.showToast("click save button");
+              var oldNote = note;
+              var id = oldNote?.uuid;
+              var title = showLogic.title!;
+              var content = showLogic.content!;
+              context
+                  .read<NoteBloc>()
+                  .add(NotesUpdated(id!, title: title, content: content));
+              showLogic.setNewNote(showLogic.state!
+                ..title = title
+                ..content = content);
+              EasyLoading.showToast(S.of(context).toast_save_success);
             },
           ),
         );
@@ -171,9 +180,9 @@ class _SaveButtonState extends State<_SaveButton> {
     return Container(
       child: showSave
           ? FloatingActionButton(
-        onPressed: widget.onPressed,
-        child: const Icon(Icons.save),
-      )
+              onPressed: widget.onPressed,
+              child: const Icon(Icons.save),
+            )
           : null,
     );
   }
