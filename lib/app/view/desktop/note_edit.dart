@@ -86,8 +86,15 @@ class _NoteEditWidgetState extends State<NoteEditWidget> {
             child: Column(
               children: [
                 TextField(
-                  style: Theme.of(context).textTheme.titleLarge,
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .titleLarge,
                   controller: _titleController,
+                  decoration: const InputDecoration(
+                    hintText: 'Enter title',
+                    contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                  ),
                 ),
                 if (showToolbar)
                   Container(
@@ -114,9 +121,10 @@ class _NoteEditWidgetState extends State<NoteEditWidget> {
                     autoFocus: true,
                     readOnly: false,
                     expands: true,
-                    padding: EdgeInsets.zero,
+                    padding: EdgeInsets.all(10),
                     keyboardAppearance: Brightness.light,
                     showCursor: true,
+
                   ),
                 )
               ],
@@ -163,9 +171,9 @@ class _SaveButtonState extends State<_SaveButton> {
     return Container(
       child: showSave
           ? FloatingActionButton(
-              onPressed: widget.onPressed,
-              child: const Icon(Icons.save),
-            )
+        onPressed: widget.onPressed,
+        child: const Icon(Icons.save),
+      )
           : null,
     );
   }

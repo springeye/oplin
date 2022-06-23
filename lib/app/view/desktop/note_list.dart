@@ -67,8 +67,7 @@ class _NoteListWidgetState extends State<NoteListWidget> {
   @override
   Widget build(BuildContext context) {
     var primaryColor = context.watch<AppCubit>().state.primarySwatch;
-    var selectedColor = primaryColor.shade300;
-    var normalColor = primaryColor.shade50;
+    var selectedColor = primaryColor.shade50;
     var titleStyle = Theme.of(context).textTheme.titleMedium;
     var bodyStyle = Theme.of(context)
         .textTheme
@@ -79,7 +78,7 @@ class _NoteListWidgetState extends State<NoteListWidget> {
     appLog.debug("build note list");
     var login = context.read<ShowNodeCubit>();
     var notes = state.filteredTodos.toList();
-    var book = "ALL";
+    var book = "全部笔记";
     if (state.filter.notebook != null) {
       if (state.filter.notebook!.isOther) {
         book = "未分类";
@@ -88,141 +87,149 @@ class _NoteListWidgetState extends State<NoteListWidget> {
       }
     }
     return Container(
-      color: normalColor,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          //folder name
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              book,
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-          ),
-          //op toolbar
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                _buildSearch(context),
-                Padding(
-                  padding: const EdgeInsets.only(left: 8),
-                  child: _buildCreateButton(context),
+      padding: const EdgeInsets.symmetric(horizontal: 5),
+      child: ClipRRect(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+        child: Container(
+          color: Colors.white,
+          // padding: const EdgeInsets.all(5),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              //folder name
+              Container(
+                padding: const EdgeInsets.all(8.0),
+                height: 40,
+                alignment: Alignment.center,
+                child: Text(
+                  book,
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Text("Total ${notes.length}"),
-                const Spacer(),
-                DropdownButton<ViewSortType>(
-                  value: state.filter.sort,
-                  onChanged: (v) {
-                    context.read<NoteBloc>().add(
-                          NotesFilterChanged(
-                            state.filter.copyWith(sort: () => v!),
-                          ),
-                        );
-                  },
-                  underline: Container(),
-                  items: <ViewSortType>[
-                    ViewSortType.updatedDesc,
-                    ViewSortType.updated,
-                    ViewSortType.createdDesc,
-                    ViewSortType.created,
-                    ViewSortType.titleDesc,
-                    ViewSortType.title
-                  ]
-                      .map<DropdownMenuItem<ViewSortType>>(
-                        (e) => DropdownMenuItem(
-                          value: e,
-                          child: Text(e.getTitle(context)),
-                        ),
-                      )
-                      .toList(),
+              ),
+              //op toolbar
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    _buildSearch(context),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: _buildCreateButton(context),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-          const Divider(),
-          //notes list
-          notes.isEmpty
-              ? const Expanded(
-                  child: Center(
-                    child: Text("No Notes"),
-                  ),
-                )
-              : Expanded(
-                  child: ListView.separated(
-                    separatorBuilder: (BuildContext context, int index) {
-                      return Divider(
-                        indent: 10.0,
-                        thickness: 0.0,
-                        endIndent: 10.0,
-                        height: 0.0,
-                        color: Colors.grey.withAlpha(200),
-                      );
-                    },
-                    controller: ScrollController(),
-                    scrollDirection: Axis.vertical,
-                    itemCount: notes.length,
-                    itemBuilder: (ctx, index) {
-                      var selected = selectNote?.uuid == notes[index].uuid;
-                      return Material(
-                        child: ListTile(
-                          tileColor: normalColor,
-                          selectedTileColor: selectedColor,
-                          hoverColor: selectedColor.withAlpha(50),
-                          selected: selected,
-                          onTap: () {
-                            _clickNote(context, login, notes[index]);
-                          },
-                          iconColor: titleStyle?.color,
-                          leading: selected
-                              ? const Icon(Icons.edit_note)
-                              : const Icon(Icons.note),
-                          title: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                notes[index].title,
-                                style: !selected
-                                    ? titleStyle
-                                    : titleStyle?.copyWith(
-                                        color: Theme.of(context)
-                                            .primaryTextTheme
-                                            .headline6
-                                            ?.color),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Text("Total ${notes.length}"),
+                    const Spacer(),
+                    DropdownButton<ViewSortType>(
+                      value: state.filter.sort,
+                      onChanged: (v) {
+                        context.read<NoteBloc>().add(
+                              NotesFilterChanged(
+                                state.filter.copyWith(sort: () => v!),
                               ),
-                              Text(
-                                Document.fromJson(
-                                  jsonDecode(notes[index].content),
-                                ).toPlainText(),
-                                maxLines: 3,
-                                style: bodyStyle,
-                              ),
-                              Text(
-                                "2019-08-02 11:22:03",
-                                style: bodyStyle,
-                              ),
-                              const Divider(
-                                height: 10,
-                                color: Colors.transparent,
-                              )
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+                            );
+                      },
+                      underline: Container(),
+                      items: <ViewSortType>[
+                        ViewSortType.updatedDesc,
+                        ViewSortType.updated,
+                        ViewSortType.createdDesc,
+                        ViewSortType.created,
+                        ViewSortType.titleDesc,
+                        ViewSortType.title
+                      ]
+                          .map<DropdownMenuItem<ViewSortType>>(
+                            (e) => DropdownMenuItem(
+                              value: e,
+                              child: Text(e.getTitle(context)),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  ],
                 ),
-        ],
+              ),
+              const Divider(
+                height: 1,
+              ),
+              //notes list
+              notes.isEmpty
+                  ? const Expanded(
+                      child: Center(
+                        child: Text("No Notes"),
+                      ),
+                    )
+                  : Expanded(
+                      child: ListView.separated(
+                        separatorBuilder: (BuildContext context, int index) {
+                          return Divider(
+                            indent: 0.0,
+                            thickness: 0.0,
+                            endIndent: 0.0,
+                            height: 0.0,
+                            color: Colors.grey.withAlpha(200),
+                          );
+                        },
+                        controller: ScrollController(),
+                        scrollDirection: Axis.vertical,
+                        itemCount: notes.length,
+                        itemBuilder: (ctx, index) {
+                          var selected = selectNote?.uuid == notes[index].uuid;
+                          return Material(
+                            child: ListTile(
+                              tileColor: Colors.white,
+                              selectedTileColor: selectedColor,
+                              hoverColor: selectedColor.withAlpha(50),
+                              selected: selected,
+                              onTap: () {
+                                _clickNote(context, login, notes[index]);
+                              },
+                              iconColor: titleStyle?.color,
+                              // leading: selected
+                              //     ? const Icon(Icons.edit_note)
+                              //     : const Icon(Icons.note),
+                              title: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    notes[index].title,
+                                    style: !selected ? titleStyle : titleStyle,
+                                  ),
+                                  Text(
+                                    Document.fromJson(
+                                      jsonDecode(notes[index].content),
+                                    ).toPlainText(),
+                                    maxLines: 3,
+                                    style: bodyStyle,
+                                  ),
+                                  Text(
+                                    "2019-08-02 11:22:03",
+                                    style: bodyStyle,
+                                  ),
+                                  const Divider(
+                                    height: 10,
+                                    color: Colors.transparent,
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+            ],
+          ),
+        ),
       ),
     );
   }
