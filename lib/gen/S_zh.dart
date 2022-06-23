@@ -104,49 +104,49 @@ class SZh extends S {
   String get webdav_settings_tips => '请提供您想要同步的 WebDAV 文件夹的登录凭据。';
 
   @override
-  String get tips => 'Tips';
+  String get tips => '提示';
 
   @override
-  String get save_message => 'The notes have been modified. Do you want to save?';
+  String get save_message => '笔记已修改。你想保存吗？';
 
   @override
-  String get notebook => 'Notebook';
+  String get notebook => '笔记本';
 
   @override
-  String get other => 'Other';
+  String get other => '未分类';
 
   @override
-  String get all => 'All';
+  String get all => '全部';
 
   @override
-  String get hint_enter_title => 'Enter title';
+  String get hint_enter_title => '输入标题';
 
   @override
-  String get hint_enter_search => 'Enter keyword to search';
+  String get hint_enter_search => '输入关键字进行搜索';
 
   @override
-  String get search => 'Search';
+  String get search => '搜索';
 
   @override
-  String get toast_save_success => 'Save success';
+  String get toast_save_success => '保存成功';
 
   @override
   String total_notes(int count) {
-    return 'Total: $count';
+    return '';
   }
 
   @override
   String select_note_count(int count) {
-    return 'Select $count notes';
+    return '选择 $count 条笔记';
   }
 
   @override
   String select_book_count(int count) {
-    return 'Select $count books';
+    return '选择 $count 笔记本';
   }
 
   @override
-  String get empty_notes => 'No notes';
+  String get empty_notes => '没有笔记';
 
   @override
   String datetime_format(DateTime time) {
@@ -173,22 +173,22 @@ class SZh extends S {
   }
 
   @override
-  String get select_color => 'Select color';
+  String get select_color => '选择颜色';
 
   @override
-  String get label_url => 'Url';
+  String get label_url => '网址';
 
   @override
   String url(String url) {
-    return 'Url: $url';
+    return '网址： $url';
   }
 
   @override
-  String get example_url => 'example: https://www.example.com/';
+  String get example_url => '示例：https://www.example.com/';
 
   @override
-  String get example_username => 'example: admin';
+  String get example_username => '示例：admin';
 
   @override
-  String get hint_password => 'your password';
+  String get hint_password => '你的密码';
 }

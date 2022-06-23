@@ -107,7 +107,7 @@ class SEn extends S {
   String get tips => 'Tips';
 
   @override
-  String get save_message => 'The notes have been modified. Do you want to save?';
+  String get save_message => 'The note have been modified. Do you want to save?';
 
   @override
   String get notebook => 'Notebook';

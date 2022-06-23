@@ -271,7 +271,7 @@ abstract class S {
   /// No description provided for @save_message.
   ///
   /// In en, this message translates to:
-  /// **'The notes have been modified. Do you want to save?'**
+  /// **'The note have been modified. Do you want to save?'**
   String get save_message;
 
   /// No description provided for @notebook.
