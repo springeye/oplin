@@ -6,27 +6,35 @@ import 'package:intl/intl.dart';
 
 import '../../../../../db/models.dart';
 
-Widget buildNoteBookItem(BuildContext context, Notebook book, bool opened) {
+Widget buildNoteBookItem(BuildContext context, Notebook book, bool opened,
+    {double? iconSize, double? fontSize, EdgeInsetsGeometry? padding}) {
   return Container(
-    padding: const EdgeInsets.fromLTRB(15, 10, 15, 15),
+    padding: padding ?? const EdgeInsets.fromLTRB(15, 10, 15, 15),
     child: Row(
       children: [
         Icon(
           opened ? Icons.folder_open : Icons.folder,
-          size: 50,
+          size: iconSize ?? 50,
           color: Theme.of(context).primaryColor,
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Text(
             book.name,
-            style:
-                Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 22),
+            style: Theme.of(context)
+                .textTheme
+                .titleMedium
+                ?.copyWith(fontSize: fontSize ?? 22),
           ),
         ),
         //folder name
         const Spacer(),
-        Text("${book.count}"),
+        Text(
+          "${book.count}",
+          style: TextStyle(
+            fontSize: fontSize ?? 22,
+          ),
+        ),
         // notes count in folder
       ],
     ),

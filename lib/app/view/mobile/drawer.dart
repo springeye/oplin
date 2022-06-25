@@ -33,6 +33,9 @@ Widget buildDrawer(BuildContext context) {
         var books = context.watch<BookBloc>().state.filteredTodos.toList();
         var noteBloc = context.watch<NoteBloc>();
         var selectBook = noteBloc.state.filter.notebook;
+        var padding = const EdgeInsets.fromLTRB(10, 10, 15, 15);
+        double fontSize = 20;
+        double iconSize = 30;
         return Column(
           children: [
             SizedBox(
@@ -62,9 +65,13 @@ Widget buildDrawer(BuildContext context) {
                         Navigator.pop(context);
                       },
                       child: buildNoteBookItem(
-                          context,
-                          Notebook()..name = S.of(context).all,
-                          selectBook == null),
+                        context,
+                        Notebook()..name = S.of(context).all,
+                        selectBook == null,
+                        iconSize: iconSize,
+                        fontSize: fontSize,
+                        padding: padding,
+                      ),
                     );
                   }
                   if (index == 1) {
@@ -74,9 +81,13 @@ Widget buildDrawer(BuildContext context) {
                         Navigator.pop(context);
                       },
                       child: buildNoteBookItem(
-                          context,
-                          Notebook.other..name = S.of(context).other,
-                          selectBook != null && selectBook.isOther),
+                        context,
+                        Notebook.other..name = S.of(context).other,
+                        selectBook != null && selectBook.isOther,
+                        iconSize: iconSize,
+                        fontSize: fontSize,
+                        padding: padding,
+                      ),
                     );
                   }
                   var book = books[index - 2];
@@ -86,10 +97,24 @@ Widget buildDrawer(BuildContext context) {
                       Navigator.pop(context);
                     },
                     child: buildNoteBookItem(
-                        context, book, selectBook?.uuid == book.uuid),
+                      context,
+                      book,
+                      selectBook?.uuid == book.uuid,
+                      iconSize: iconSize,
+                      fontSize: fontSize,
+                      padding: padding,
+                    ),
                   );
                 },
               ),
+            ),
+            buildNoteBookItem(
+              context,
+              Notebook.recycled..name = "Recycled",
+              selectBook?.isRecycled == true,
+              iconSize: iconSize,
+              fontSize: fontSize,
+              padding: padding,
             ),
             ListTile(
               title: Text(S.of(context).settings),

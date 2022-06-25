@@ -103,7 +103,13 @@ class Notebook {
     return Notebook()..uuid = "other";
   }
 
+  static Notebook get recycled {
+    return Notebook()..uuid = "recycled";
+  }
+
   bool get isOther => uuid == "other";
+
+  bool get isRecycled => uuid == "recycled";
 
   factory Notebook.fromJson(Map<String, dynamic> json) =>
       _$NotebookFromJson(json);
