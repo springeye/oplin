@@ -47,8 +47,10 @@ class WebDAVClient {
     void Function(int count, int total)? onProgress,
   }) async {
     await check();
+
+    var json = note.toJson();
     return await client.write("${note.uuid}$_suffixNote",
-        Uint8List.fromList(_toJson(note.toJson()).codeUnits),
+        Uint8List.fromList(utf8.encode(_toJson(json))),
         onProgress: onProgress);
   }
 
@@ -70,7 +72,7 @@ class WebDAVClient {
 
   Future<Note> getNote(String uuid) async {
     var codes = await client.read("$uuid$_suffixNote");
-    var body = String.fromCharCodes(codes);
+    var body = utf8.decode(codes);
     var note = Note.fromJson(jsonDecode(body));
     return note;
   }
@@ -91,7 +93,7 @@ class WebDAVClient {
 
   Future<Note> getNoteByName(String name) async {
     var codes = await client.read(name);
-    var body = String.fromCharCodes(codes);
+    var body = utf8.decode(codes);
     var note = Note.fromJson(jsonDecode(body));
     return note;
   }

@@ -21,7 +21,7 @@ import 'package:oplin/repository/storage/storage_note_repository.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'bloc/app_cubit.dart';
-import 'bloc/sync_cubit.dart';
+import 'bloc/sync_bloc.dart';
 
 class AppBlocObserver extends BlocObserver {
   @override

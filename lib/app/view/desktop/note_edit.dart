@@ -53,8 +53,7 @@ class _NoteEditWidgetState extends State<NoteEditWidget> {
         _quillController?.dispose();
         _titleController = TextEditingController(text: note?.title);
         if (note != null) {
-          List<dynamic> data = jsonDecode(note.content);
-          var document2 = Document.fromJson(data);
+          var document2 = note.content;
           _quillController = QuillController(
               document: document2,
               selection: const TextSelection.collapsed(offset: 0));
@@ -65,8 +64,7 @@ class _NoteEditWidgetState extends State<NoteEditWidget> {
         _quillController!.changes.listen((event) {
           appLog.debug(event.toString());
 
-          showLogic.content =
-              jsonEncode(_quillController!.document.toDelta().toJson());
+          showLogic.content = _quillController!.document;
           if (showLogic.changed) {
             _saveButtonKey.currentState?.show();
           } else {

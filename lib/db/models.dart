@@ -1,18 +1,38 @@
+import 'dart:convert';
+
+import 'package:flutter_quill/flutter_quill.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:objectbox/objectbox.dart';
 import 'package:uuid/uuid.dart';
 
 part 'models.g.dart';
 
+class DocumentConverter implements JsonConverter<Document, List> {
+  const DocumentConverter();
+
+  @override
+  Document fromJson(List<dynamic> json) {
+    return Document.fromJson(json);
+  }
+
+  @override
+  List toJson(Document object) {
+    return object.toDelta().toJson();
+  }
+}
+
 @Entity()
+@DocumentConverter()
 @JsonSerializable()
 class Note {
   int id = 0;
   @Index()
   String uuid = "";
   String title = "";
+  @JsonKey(ignore: true)
   bool synced = false;
-  String content = "";
+
+  Document content = Document();
   String? notebookId;
   DateTime createTime = DateTime.now();
   DateTime updateTime = DateTime.now();
@@ -25,6 +45,19 @@ class Note {
   String? conflict = "";
 
   Note();
+
+  @JsonKey(ignore: true)
+  String get dbContent {
+    return jsonEncode(content.toDelta().toJson());
+  }
+
+  set dbContent(String content) {
+    if (content.isEmpty) {
+      this.content = Document();
+    } else {
+      this.content = Document.fromJson(jsonDecode(content));
+    }
+  }
 
   static Note create() {
     var note = Note();

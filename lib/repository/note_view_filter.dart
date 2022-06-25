@@ -90,7 +90,7 @@ class NoteViewFilter extends Equatable {
       if (search != null) {
         show = show &&
             (element.title.contains(search!) ||
-                element.content.contains(search!));
+                element.content.toPlainText().contains(search!));
       }
       if (type == ViewFilterType.deletedOnly) {
         show = show && element.deleted;

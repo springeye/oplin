@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:3012258286018335801",
-      "lastPropertyId": "13:4376089639566966696",
+      "lastPropertyId": "14:976320418448264123",
       "name": "Note",
       "properties": [
         {
@@ -30,11 +30,6 @@
           "id": "4:9060688304225128672",
           "name": "synced",
           "type": 1
-        },
-        {
-          "id": "5:9085887119849854662",
-          "name": "content",
-          "type": 9
         },
         {
           "id": "6:9066827933604967001",
@@ -74,6 +69,11 @@
         {
           "id": "13:4376089639566966696",
           "name": "conflict",
+          "type": 9
+        },
+        {
+          "id": "14:976320418448264123",
+          "name": "dbContent",
           "type": 9
         }
       ],
@@ -141,7 +141,9 @@
   "retiredIndexUids": [
     291590735518755115
   ],
-  "retiredPropertyUids": [],
+  "retiredPropertyUids": [
+    9085887119849854662
+  ],
   "retiredRelationUids": [],
   "version": 1
 }

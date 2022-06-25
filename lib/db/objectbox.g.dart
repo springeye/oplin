@@ -21,7 +21,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(1, 3012258286018335801),
       name: 'Note',
-      lastPropertyId: const IdUid(13, 4376089639566966696),
+      lastPropertyId: const IdUid(14, 976320418448264123),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -44,11 +44,6 @@ final _entities = <ModelEntity>[
             id: const IdUid(4, 9060688304225128672),
             name: 'synced',
             type: 1,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(5, 9085887119849854662),
-            name: 'content',
-            type: 9,
             flags: 0),
         ModelProperty(
             id: const IdUid(6, 9066827933604967001),
@@ -88,6 +83,11 @@ final _entities = <ModelEntity>[
         ModelProperty(
             id: const IdUid(13, 4376089639566966696),
             name: 'conflict',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(14, 976320418448264123),
+            name: 'dbContent',
             type: 9,
             flags: 0)
       ],
@@ -171,7 +171,7 @@ ModelDefinition getObjectBoxModel() {
       lastSequenceId: const IdUid(0, 0),
       retiredEntityUids: const [],
       retiredIndexUids: const [291590735518755115],
-      retiredPropertyUids: const [],
+      retiredPropertyUids: const [9085887119849854662],
       retiredRelationUids: const [],
       modelVersion: 5,
       modelVersionParserMinimum: 5,
@@ -189,19 +189,18 @@ ModelDefinition getObjectBoxModel() {
         objectToFB: (Note object, fb.Builder fbb) {
           final uuidOffset = fbb.writeString(object.uuid);
           final titleOffset = fbb.writeString(object.title);
-          final contentOffset = fbb.writeString(object.content);
           final notebookIdOffset = object.notebookId == null
               ? null
               : fbb.writeString(object.notebookId!);
           final conflictOffset = object.conflict == null
               ? null
               : fbb.writeString(object.conflict!);
-          fbb.startTable(14);
+          final dbContentOffset = fbb.writeString(object.dbContent);
+          fbb.startTable(15);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, uuidOffset);
           fbb.addOffset(2, titleOffset);
           fbb.addBool(3, object.synced);
-          fbb.addOffset(4, contentOffset);
           fbb.addOffset(5, notebookIdOffset);
           fbb.addInt64(6, object.createTime.millisecondsSinceEpoch);
           fbb.addInt64(7, object.updateTime.millisecondsSinceEpoch);
@@ -210,6 +209,7 @@ ModelDefinition getObjectBoxModel() {
           fbb.addBool(10, object.sticky);
           fbb.addInt64(11, object.syncTime?.millisecondsSinceEpoch);
           fbb.addOffset(12, conflictOffset);
+          fbb.addOffset(13, dbContentOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -226,8 +226,6 @@ ModelDefinition getObjectBoxModel() {
                 .vTableGet(buffer, rootOffset, 8, '')
             ..synced =
                 const fb.BoolReader().vTableGet(buffer, rootOffset, 10, false)
-            ..content = const fb.StringReader(asciiOptimization: true)
-                .vTableGet(buffer, rootOffset, 12, '')
             ..notebookId = const fb.StringReader(asciiOptimization: true)
                 .vTableGetNullable(buffer, rootOffset, 14)
             ..createTime = DateTime.fromMillisecondsSinceEpoch(
@@ -244,7 +242,9 @@ ModelDefinition getObjectBoxModel() {
                 ? null
                 : DateTime.fromMillisecondsSinceEpoch(syncTimeValue)
             ..conflict = const fb.StringReader(asciiOptimization: true)
-                .vTableGetNullable(buffer, rootOffset, 28);
+                .vTableGetNullable(buffer, rootOffset, 28)
+            ..dbContent = const fb.StringReader(asciiOptimization: true)
+                .vTableGet(buffer, rootOffset, 30, '');
 
           return object;
         }),
@@ -316,36 +316,37 @@ class Note_ {
   /// see [Note.synced]
   static final synced = QueryBooleanProperty<Note>(_entities[0].properties[3]);
 
-  /// see [Note.content]
-  static final content = QueryStringProperty<Note>(_entities[0].properties[4]);
-
   /// see [Note.notebookId]
   static final notebookId =
-      QueryStringProperty<Note>(_entities[0].properties[5]);
+      QueryStringProperty<Note>(_entities[0].properties[4]);
 
   /// see [Note.createTime]
   static final createTime =
-      QueryIntegerProperty<Note>(_entities[0].properties[6]);
+      QueryIntegerProperty<Note>(_entities[0].properties[5]);
 
   /// see [Note.updateTime]
   static final updateTime =
-      QueryIntegerProperty<Note>(_entities[0].properties[7]);
+      QueryIntegerProperty<Note>(_entities[0].properties[6]);
 
   /// see [Note.deleted]
-  static final deleted = QueryBooleanProperty<Note>(_entities[0].properties[8]);
+  static final deleted = QueryBooleanProperty<Note>(_entities[0].properties[7]);
 
   /// see [Note.version]
-  static final version = QueryIntegerProperty<Note>(_entities[0].properties[9]);
+  static final version = QueryIntegerProperty<Note>(_entities[0].properties[8]);
 
   /// see [Note.sticky]
-  static final sticky = QueryBooleanProperty<Note>(_entities[0].properties[10]);
+  static final sticky = QueryBooleanProperty<Note>(_entities[0].properties[9]);
 
   /// see [Note.syncTime]
   static final syncTime =
-      QueryIntegerProperty<Note>(_entities[0].properties[11]);
+      QueryIntegerProperty<Note>(_entities[0].properties[10]);
 
   /// see [Note.conflict]
   static final conflict =
+      QueryStringProperty<Note>(_entities[0].properties[11]);
+
+  /// see [Note.dbContent]
+  static final dbContent =
       QueryStringProperty<Note>(_entities[0].properties[12]);
 }
 

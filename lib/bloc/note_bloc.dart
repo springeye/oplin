@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 import 'package:oplin/bloc/base_bloc.dart';
 import 'package:oplin/bloc/book_bloc.dart';
 import 'package:oplin/common/logging.dart';
@@ -70,14 +72,14 @@ class NoteBloc extends BaseBloc<NoteEvent, NotesState> {
     var note = _noteRepository.findNote(event.uuid);
     if (note != null) {
       note.title = event.title ?? note.title;
-      note.content = event.content ?? note.content;
+      note.content = event.content;
       note.notebookId = event.notebookId;
       _noteRepository.saveNote(note);
     } else {
       Note note = Note.create();
       note.uuid = event.uuid;
       note.title = event.title ?? "";
-      note.content = event.content!;
+      note.content = event.content;
       note.notebookId = event.notebookId;
       _noteRepository.saveNote(note);
     }

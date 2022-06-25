@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:oplin/app/view/mobile/route.dart';
+import 'package:oplin/bloc/note_bloc.dart';
+import 'package:oplin/repository/note_repository.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 import '../../../bloc/app_cubit.dart';
@@ -152,6 +154,25 @@ class _SettingWidgetState extends State<SettingWidget> {
                           },
                         ),
                       );
+                    },
+                  ),
+                ],
+              ),
+              SettingsSection(
+                title: Text(lang.other),
+                tiles: <SettingsTile>[
+                  SettingsTile.navigation(
+                    leading: const Icon(Icons.clear_all),
+                    title: Text("清空本地数据"),
+                    value: Text("请谨慎操作，清空后你的数据讲无法恢复"),
+                    onPressed: (context) {
+                      var repository = context.read<NoteRepository>();
+                      repository.batchDeleteNote(
+                          repository.getNotes().map((e) => e.uuid).toList(),
+                          physics: true);
+                      context
+                          .read<NoteBloc>()
+                          .add(const NotesSubscriptionRequested());
                     },
                   ),
                 ],

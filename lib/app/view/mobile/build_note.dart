@@ -7,8 +7,7 @@ import 'package:intl/intl.dart';
 import '../../../../../db/models.dart';
 
 Widget buildNoteItem(BuildContext context, Note note) {
-  var content =
-      Document.fromJson(jsonDecode(note.content)).toPlainText().trim();
+  var content = note.content.toPlainText().trim();
   var title = note.title.isEmpty ? content : note.title;
   if (note.conflict != null && note.conflict!.isNotEmpty) {
     title = "$title (conflict)";

@@ -1,50 +1,53 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oplin/bloc/app_cubit.dart';
 import 'package:oplin/bloc/book_bloc.dart';
+import 'package:oplin/bloc/note_bloc.dart';
 import 'package:oplin/common/logging.dart';
+import 'package:oplin/db/models.dart';
 import 'package:oplin/server/webdav/webdav.dart';
 import 'package:uuid/uuid.dart';
 
 import '../repository/note_repository.dart';
+import 'sync_state.dart';
+import 'sync_event.dart';
 
-enum SyncState { none, syncing, synced, error, disabled }
-
-class SyncCubit extends Cubit<SyncState> {
+class SyncCubit extends Bloc<SyncEvent, SyncState> {
   late FutureOr<void> computation;
   final int duration = 60 * 5;
   final NoteRepository noteLogic;
   final BookBloc notebookLogic;
 
-  SyncCubit(this.noteLogic, this.notebookLogic) : super(SyncState.none) {
-    // Future.delayed(Duration(seconds: duration), _task);
-    appLog.debug(
-        "SyncLogicSyncLogicSyncLogicSyncLogicSyncLogicSyncLogicSyncLogicSyncLogic");
+  SyncCubit(this.noteLogic, this.notebookLogic)
+      : super(SyncState(type: SyncStateType.none)) {
+    on<SyncSubscriptionRequested>(_sync);
   }
 
-  Future<void> sync(AppConfig config) async {
-    if (state == SyncState.disabled) {
+  Future<void> _sync(
+      SyncSubscriptionRequested event, Emitter<SyncState> emit) async {
+    if (state.type == SyncStateType.disabled) {
       return;
     }
-    dynamic server = config.server;
+    dynamic server = event.server;
     if (server is WebDAVConfig) {
       var client = WebDAVClient(server.url,
           user: server.username, password: server.password);
       try {
-        emit(SyncState.syncing);
-        _pullRemote(client);
-        _uploadLocal(client);
+        emit(state.copyWith(type: () => SyncStateType.syncing));
+        await _pullRemote(client);
+        await _uploadLocal(client);
+        emit(state.copyWith(type: () => SyncStateType.synced));
       } catch (e) {
-        print(e);
-      } finally {
-        emit(SyncState.synced);
+        emit(state.copyWith(
+            type: () => SyncStateType.error, error: () => e.toString()));
       }
     }
   }
 
-  void _uploadLocal(WebDAVClient client) async {
+  Future<void> _uploadLocal(WebDAVClient client) async {
     await client.ping();
 
     var notes = noteLogic.getNotes();
@@ -85,12 +88,21 @@ class SyncCubit extends Cubit<SyncState> {
     }
   }
 
-  void _pullRemote(WebDAVClient client) async {
+  Future<void> _pullRemote(WebDAVClient client) async {
     await client.ping();
     var files = await client.listNote();
     appLog.debug("remote files count ${files.length}");
     for (var element in files) {
-      var remoteNote = await client.getNoteByName(element.name!);
+      late Note remoteNote;
+      try {
+        remoteNote = await client.getNoteByName(element.name!);
+      } catch (e, stack) {
+        FlutterError.reportError(FlutterErrorDetails(
+          exception: e,
+          stack: stack,
+        ));
+        throw "远程笔记${element.name}无法读取";
+      }
       var results = noteLogic.findNote(remoteNote.uuid);
       if (results == null) {
         appLog.debug("add remote to local note ${element.name}");

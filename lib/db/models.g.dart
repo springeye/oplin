@@ -10,8 +10,7 @@ Note _$NoteFromJson(Map<String, dynamic> json) => Note()
   ..id = json['id'] as int
   ..uuid = json['uuid'] as String
   ..title = json['title'] as String
-  ..synced = json['synced'] as bool
-  ..content = json['content'] as String
+  ..content = const DocumentConverter().fromJson(json['content'] as List)
   ..notebookId = json['notebookId'] as String?
   ..createTime = DateTime.parse(json['createTime'] as String)
   ..updateTime = DateTime.parse(json['updateTime'] as String)
@@ -27,8 +26,7 @@ Map<String, dynamic> _$NoteToJson(Note instance) => <String, dynamic>{
       'id': instance.id,
       'uuid': instance.uuid,
       'title': instance.title,
-      'synced': instance.synced,
-      'content': instance.content,
+      'content': const DocumentConverter().toJson(instance.content),
       'notebookId': instance.notebookId,
       'createTime': instance.createTime.toIso8601String(),
       'updateTime': instance.updateTime.toIso8601String(),

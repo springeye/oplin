@@ -13,7 +13,7 @@ class NotesSubscriptionRequested extends NoteEvent {
 
 class NotesAdded extends NoteEvent {
   final String title;
-  final String content;
+  final Document content;
   final String? notebookId;
 
   const NotesAdded(
@@ -23,10 +23,11 @@ class NotesAdded extends NoteEvent {
 class NotesUpdated extends NoteEvent {
   final String uuid;
   final String? title;
-  final String? content;
+  final Document content;
   final String? notebookId;
 
-  const NotesUpdated(this.uuid, {this.title, this.content, this.notebookId});
+  const NotesUpdated(this.uuid,
+      {this.title, required this.content, this.notebookId});
 }
 
 class NotesNoteDeleted extends NoteEvent {

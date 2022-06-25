@@ -5,6 +5,7 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:oplin/common/logging.dart';
 import 'package:oplin/db/models.dart';
@@ -28,7 +29,7 @@ Future<void> main() async {
     test("writeText", () async {
       var note = Note.create();
       note.uuid = uuid.v4();
-      note.content = "123123";
+      note.content = Document();
       await client.uploadNote(note);
     });
     test("listNote", () async {
@@ -37,7 +38,7 @@ Future<void> main() async {
     });
     test("getNode", () async {
       var note = await client.getNote("bfcf5efa-341f-4266-8ab7-1cae8bf54438");
-      expect(note.content.isNotEmpty, true);
+      expect(note.content, true);
     });
     test("sync", () async {
       appLog.debug("create");
@@ -45,10 +46,10 @@ Future<void> main() async {
       note.uuid = uuid.v4();
       appLog.debug("uuid=>>>>${note.uuid}");
       note.version = 1;
-      note.content = "hello word";
+      note.content = Document();
       await client.uploadNote(note);
       note.version = 2;
-      note.content = "hello\ntest";
+      note.content = Document();
       var removeNote = await client.getNote(note.uuid);
       if (removeNote.version > note.version) {
         appLog.debug("有冲突");

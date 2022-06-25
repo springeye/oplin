@@ -29,7 +29,7 @@ class _EditNoteWidgetState extends State<EditNoteWidget> {
     var content2 = widget.note?.content;
     if (content2 != null) {
       _controller = QuillController(
-          document: Document.fromJson(jsonDecode(content2)),
+          document: content2,
           selection: const TextSelection.collapsed(offset: 0));
     } else {
       _controller = QuillController.basic();
@@ -57,15 +57,15 @@ class _EditNoteWidgetState extends State<EditNoteWidget> {
             IconButton(
                 onPressed: () async {
                   var logic = context.read<NoteBloc>();
-                  var content = _controller.document.toDelta().toJson();
+                  var content = _controller.document;
                   var title = _titleController.text;
                   if (widget.note != null) {
                     logic.add(NotesUpdated(widget.note!.uuid,
-                        title: title, content: jsonEncode(content)));
+                        title: title, content: content));
                   } else {
                     logic.add(NotesAdded(
                         title: title,
-                        content: jsonEncode(content),
+                        content: content,
                         notebookId: widget.book?.uuid));
                   }
                   Navigator.pop(context);

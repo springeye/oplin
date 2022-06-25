@@ -204,9 +204,7 @@ class _NoteListWidgetState extends State<NoteListWidget> {
                                     style: !selected ? titleStyle : titleStyle,
                                   ),
                                   Text(
-                                    Document.fromJson(
-                                      jsonDecode(notes[index].content),
-                                    ).toPlainText(),
+                                    notes[index].content.toPlainText(),
                                     maxLines: 3,
                                     style: bodyStyle,
                                   ),
