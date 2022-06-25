@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:oplin/app/view/mobile/dialog.dart';
 import 'package:oplin/app/view/mobile/drawer.dart';
 import 'package:oplin/app/view/mobile/edit.dart';
-import 'package:oplin/bloc/book_bloc.dart';
 import 'package:oplin/bloc/note_bloc.dart';
-import 'package:oplin/db/models.dart';
 import 'package:oplin/ext/AssetGenImage.dart';
 
 import '../../../gen/assets.gen.dart';
@@ -78,10 +75,6 @@ class _MobileHomePageState extends State<MobileHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var noteState = context.watch<NoteBloc>();
-    var bookState = context.watch<BookBloc>();
-    var notes = noteState.state.filteredTodos.toList();
-    var books = bookState.state.filteredTodos.toList();
     return Scaffold(
       appBar: _buildAppBar(),
       floatingActionButton: editType != EditType.none

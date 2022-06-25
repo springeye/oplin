@@ -1,8 +1,5 @@
-import 'dart:async';
-
 import 'package:oplin/db/models.dart';
 import 'package:oplin/repository/note_repository.dart';
-import 'package:rxdart/subjects.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../db/objectbox.g.dart';
@@ -21,7 +18,6 @@ class StorageNoteRepository extends ObjectBoxX implements NoteRepository {
   @override
   void saveNote(Note note) {
     var box = getBox<Note>();
-    bool added = false;
     if (note.uuid.isEmpty) {
       note.uuid = const Uuid().v4();
       note.id = 0;

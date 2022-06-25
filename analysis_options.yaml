@@ -39,3 +39,4 @@ string_literal_finder:
     - '**/*.freezed.dart'
     - 'lib/**.g.dart'
     - 'lib/l10n/**.dart'
+    - - 'lib/gen/**.dart'

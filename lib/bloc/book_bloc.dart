@@ -86,7 +86,7 @@ class BookBloc extends BaseBloc<BookEvent, BooksState> {
     );
   }
 
-  FutureOr<Null> handlerError(Object obj) {
+  FutureOr<void> handlerError(Object obj) {
     appLog.debug(obj.toString());
     emit(state.copyWith(status: () => BooksStatus.failure));
   }

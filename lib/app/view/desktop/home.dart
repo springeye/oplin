@@ -6,7 +6,6 @@ import 'package:oplin/app/view/desktop/note_list.dart';
 import 'package:oplin/app/view/desktop/vertical_splite_view.dart';
 import 'package:oplin/app/view/mobile/route.dart';
 import 'package:oplin/app/view/mobile/settings.dart';
-import 'package:oplin/bloc/app_cubit.dart';
 import 'package:oplin/bloc/book_bloc.dart';
 import 'package:oplin/bloc/note_bloc.dart';
 import 'package:oplin/gen/S.dart';
@@ -21,8 +20,6 @@ class DesktopHomePage extends StatefulWidget {
 class _DesktopHomePageState extends State<DesktopHomePage> {
   LayoutWidgetBuilder divider =
       (BuildContext context, BoxConstraints constraints) {
-    var config = context.watch<AppCubit>().state;
-
     return Container(
       height: double.infinity,
       padding: const EdgeInsets.only(top: 15),

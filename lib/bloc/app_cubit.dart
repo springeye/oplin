@@ -35,7 +35,7 @@ class WebDAVConfig {
 class AppConfig {
   MaterialColor primarySwatch;
   Locale? locale;
-  dynamic? server;
+  dynamic server;
 
   AppConfig({required this.primarySwatch, this.locale, this.server});
 
@@ -47,7 +47,7 @@ class AppConfig {
   AppConfig copyWith({
     MaterialColor? primarySwatch,
     Locale? locale,
-    dynamic? server,
+    dynamic server,
   }) {
     return AppConfig(
       primarySwatch: primarySwatch ?? this.primarySwatch,

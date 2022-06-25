@@ -13,7 +13,6 @@ import 'package:uuid/uuid.dart';
 @GenerateMocks([BookRepository])
 Future<void> main() async {
   group("book_bloc", () {
-    late BookBloc bloc;
     late BookRepository repository;
     late Store store;
     setUp(() async {

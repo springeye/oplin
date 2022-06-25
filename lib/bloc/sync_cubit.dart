@@ -91,7 +91,7 @@ class SyncCubit extends Cubit<SyncState> {
     appLog.debug("remote files count ${files.length}");
     for (var element in files) {
       var remoteNote = await client.getNoteByName(element.name!);
-      var results = await noteLogic.findNote(remoteNote.uuid);
+      var results = noteLogic.findNote(remoteNote.uuid);
       if (results == null) {
         appLog.debug("add remote to local note ${element.name}");
         //服务器有，但是本地没有
@@ -120,7 +120,7 @@ class SyncCubit extends Cubit<SyncState> {
     for (var file in recycledFiles) {
       var name = file.name!;
       var uuid = name.substring(0, name.lastIndexOf("."));
-      var note = await noteLogic.findNote(uuid);
+      var note = noteLogic.findNote(uuid);
       if (note != null) {
         note.deleted = true;
         noteLogic.saveNote(note);

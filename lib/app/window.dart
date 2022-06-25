@@ -6,9 +6,6 @@ import '../bloc/app_cubit.dart';
 
 const _defaultBorderColor = Color(0xFF805306);
 
-const _defaultBackgroundStartColor = Color(0xFFFFD500);
-const _defaultBackgroundEndColor = Color(0xFFF6A00C);
-
 class WindowConfig {
   static var fitWindowTitle = false;
 }
