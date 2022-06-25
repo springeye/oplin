@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:oplin/bloc/desktop_show_node_bloc.dart';
 import 'package:oplin/bloc/note_bloc.dart';
 import 'package:oplin/bloc/show_node_cubit.dart';
 import 'package:oplin/db/models.dart';
@@ -25,7 +26,7 @@ Widget buildMainWindow(BuildContext context) {
   } else {
     return DesktopWindow(
       child: BlocProvider(
-        create: (context) => ShowNodeCubit(),
+        create: (context) => DesktopShowNodeBloc(),
         child: const DesktopHomePage(),
       ),
     );
