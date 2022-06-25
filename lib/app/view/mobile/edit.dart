@@ -11,9 +11,8 @@ import 'package:oplin/gen/S.dart';
 
 class EditNoteWidget extends StatefulWidget {
   final Note? note;
-  final Notebook? book;
 
-  const EditNoteWidget({Key? key, this.note, this.book}) : super(key: key);
+  const EditNoteWidget({Key? key, this.note}) : super(key: key);
 
   @override
   State<EditNoteWidget> createState() => _EditNoteWidgetState();
@@ -64,10 +63,18 @@ class _EditNoteWidgetState extends State<EditNoteWidget> {
                     logic.add(NotesUpdated(widget.note!.uuid,
                         title: title, content: content));
                   } else {
-                    logic.add(NotesAdded(
+                    String? notebookId;
+                    var book = context.read<NoteBloc>().state.filter.notebook;
+                    if (book != null && !book.isOther && !book.isRecycled) {
+                      notebookId = book.uuid;
+                    }
+                    logic.add(
+                      NotesAdded(
                         title: title,
                         content: content,
-                        notebookId: widget.book?.uuid));
+                        notebookId: notebookId,
+                      ),
+                    );
                   }
                   Navigator.pop(context);
                 },
