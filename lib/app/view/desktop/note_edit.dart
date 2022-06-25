@@ -23,14 +23,10 @@ class _NoteEditWidgetState extends State<NoteEditWidget> {
   QuillController? _quillController;
   final focusNode = FocusNode();
   bool showToolbar = true;
+  bool changed = false;
 
   @override
   void initState() {
-    focusNode.addListener(() {
-      // setState(() {
-      //   showToolbar = focusNode.hasFocus;
-      // });
-    });
     super.initState();
   }
 
@@ -63,7 +59,8 @@ class _NoteEditWidgetState extends State<NoteEditWidget> {
         _saveButtonKey.currentState?.hide();
         _quillController!.changes.listen((event) {
           appLog.debug(event.toString());
-
+          changed != true;
+          print("changed  =>> ${changed}");
           showLogic.content = _quillController!.document;
           if (showLogic.changed) {
             _saveButtonKey.currentState?.show();
@@ -72,6 +69,8 @@ class _NoteEditWidgetState extends State<NoteEditWidget> {
           }
         });
         _titleController!.addListener(() {
+          changed != true;
+          print("changed  =>> ${changed}");
           var editCubit = context.read<ShowNodeCubit>();
           editCubit.title = _titleController!.text;
           if (editCubit.changed) {
