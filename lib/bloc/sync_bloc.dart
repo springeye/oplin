@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oplin/bloc/app_cubit.dart';
 import 'package:oplin/bloc/book_bloc.dart';
-import 'package:oplin/bloc/note_bloc.dart';
 import 'package:oplin/common/logging.dart';
 import 'package:oplin/db/models.dart';
 import 'package:oplin/server/webdav/webdav.dart';

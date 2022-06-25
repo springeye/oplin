@@ -8,13 +8,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:oplin/common/logging.dart';
 import 'package:oplin/common/nsx.dart';
-import 'package:oplin/db/models.dart';
-import 'package:oplin/server/webdav/webdav.dart';
-import 'package:uuid/uuid.dart';
 
 Future<void> main() async {
   group("nsx", () {

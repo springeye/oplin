@@ -1,13 +1,11 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_quill/flutter_quill.dart';
+import 'package:oplin/bloc/show_node_bloc.dart';
 import 'package:oplin/bloc/note_bloc.dart';
-import 'package:oplin/bloc/show_node_cubit.dart';
 import 'package:oplin/common/logging.dart';
-import 'package:oplin/db/models.dart';
 import 'package:oplin/gen/S.dart';
 
 class NoteEditWidget extends StatefulWidget {
@@ -23,7 +21,6 @@ class _NoteEditWidgetState extends State<NoteEditWidget> {
   QuillController? _quillController;
   final focusNode = FocusNode();
   bool showToolbar = true;
-  bool changed = false;
 
   @override
   void initState() {
@@ -38,13 +35,13 @@ class _NoteEditWidgetState extends State<NoteEditWidget> {
     super.dispose();
   }
 
-  final _saveButtonKey = GlobalKey<_SaveButtonState>();
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ShowNodeCubit, Note?>(
-      builder: (context, note) {
-        var showLogic = context.read<ShowNodeCubit>();
+    return BlocBuilder<ShowNodeBloc, ShowNodeState>(
+      builder: (context, state) {
+        var note=state.note;
+        var showLogic = context.read<ShowNodeBloc>();
         _titleController?.dispose();
         _quillController?.dispose();
         _titleController = TextEditingController(text: note?.title);
@@ -56,28 +53,15 @@ class _NoteEditWidgetState extends State<NoteEditWidget> {
         } else {
           _quillController = QuillController.basic();
         }
-        _saveButtonKey.currentState?.hide();
         _quillController!.changes.listen((event) {
           appLog.debug(event.toString());
-          changed != true;
-          print("changed  =>> ${changed}");
-          showLogic.content = _quillController!.document;
-          if (showLogic.changed) {
-            _saveButtonKey.currentState?.show();
-          } else {
-            _saveButtonKey.currentState?.hide();
-          }
+          showLogic.add(UpdatedDocumentEvent(_quillController!.document));
+
         });
         _titleController!.addListener(() {
-          changed != true;
-          print("changed  =>> ${changed}");
-          var editCubit = context.read<ShowNodeCubit>();
-          editCubit.title = _titleController!.text;
-          if (editCubit.changed) {
-            _saveButtonKey.currentState?.show();
-          } else {
-            _saveButtonKey.currentState?.hide();
-          }
+          var editCubit = context.read<ShowNodeBloc>();
+          editCubit.add(UpdatedTitleEvent(_titleController!.text));
+
         });
         return Scaffold(
           backgroundColor: Colors.transparent,
@@ -133,19 +117,15 @@ class _NoteEditWidgetState extends State<NoteEditWidget> {
               ),
             ),
           ),
-          floatingActionButton: _SaveButton(
-            key: _saveButtonKey,
+          floatingActionButton: !state.changed?null:_SaveButton(
             onPressed: () {
               var oldNote = note;
               var id = oldNote?.uuid;
-              var title = showLogic.title!;
-              var content = showLogic.content!;
+              var title = state.editTitle;
+              var content = state.editDocument;
               context
                   .read<NoteBloc>()
                   .add(NotesUpdated(id!, title: title, content: content));
-              showLogic.setNewNote(showLogic.state!
-                ..title = title
-                ..content = content);
               EasyLoading.showToast(S.of(context).toast_save_success);
             },
           ),

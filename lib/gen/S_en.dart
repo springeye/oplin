@@ -153,7 +153,7 @@ class SEn extends S {
     final intl.DateFormat timeDateFormat = intl.DateFormat('yyyy-MM-dd HH:mm:ss', localeName);
     final String timeString = timeDateFormat.format(time);
 
-    return '$timeString';
+    return timeString;
   }
 
   @override
@@ -161,7 +161,7 @@ class SEn extends S {
     final intl.DateFormat timeDateFormat = intl.DateFormat('HH:mm:ss', localeName);
     final String timeString = timeDateFormat.format(time);
 
-    return '$timeString';
+    return timeString;
   }
 
   @override
@@ -169,7 +169,7 @@ class SEn extends S {
     final intl.DateFormat timeDateFormat = intl.DateFormat('yyyy-MM-dd', localeName);
     final String timeString = timeDateFormat.format(time);
 
-    return '$timeString';
+    return timeString;
   }
 
   @override

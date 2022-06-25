@@ -170,8 +170,8 @@ class _SettingWidgetState extends State<SettingWidget> {
                 tiles: <SettingsTile>[
                   SettingsTile.navigation(
                     leading: const Icon(Icons.clear_all),
-                    title: Text("清空本地数据"),
-                    value: Text("请谨慎操作，清空后你的数据讲无法恢复"),
+                    title: const Text("清空本地数据"),
+                    value: const Text("请谨慎操作，清空后你的数据讲无法恢复"),
                     onPressed: (context) {
                       var repository = context.read<NoteRepository>();
                       repository.batchDeleteNote(
@@ -184,8 +184,8 @@ class _SettingWidgetState extends State<SettingWidget> {
                   ),
                   SettingsTile.navigation(
                     leading: const Icon(Icons.clear_all),
-                    title: Text("导入nsx文件"),
-                    value: Text("nsx格式是Synology Note Station导出的文件"),
+                    title: const Text("导入nsx文件"),
+                    value: const Text("nsx格式是Synology Note Station导出的文件"),
                     onPressed: (context) async {
                       final XTypeGroup typeGroup = XTypeGroup(
                         label: 'Synology Note Station',
@@ -195,7 +195,6 @@ class _SettingWidgetState extends State<SettingWidget> {
                           acceptedTypeGroups: <XTypeGroup>[typeGroup]);
                       var result =
                           await NsxImport(File(file!.path)).getResult();
-                      print(result.notes);
                       context
                           .read<BookRepository>()
                           .batchSaveBook(result.books);
@@ -203,8 +202,8 @@ class _SettingWidgetState extends State<SettingWidget> {
                           .read<NoteRepository>()
                           .batchSaveNote(result.notes);
                       EasyLoading.showToast("import success");
-                      context.read<BookBloc>().add(BookRefreshRequested());
-                      context.read<NoteBloc>().add(NoteRefreshRequested());
+                      context.read<BookBloc>().add(const BookRefreshRequested());
+                      context.read<NoteBloc>().add(const NoteRefreshRequested());
                     },
                   ),
                 ],

@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
-import 'package:oplin/bloc/book_bloc.dart';
 import 'package:oplin/db/models.dart';
 import 'package:oplin/db/objectbox.g.dart';
 import 'package:oplin/repository/book_repository.dart';

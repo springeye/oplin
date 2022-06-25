@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oplin/app/view/mobile/route.dart';
 import 'package:oplin/app/view/mobile/settings.dart';
 import 'package:oplin/bloc/book_bloc.dart';
+import 'package:oplin/bloc/show_node_bloc.dart';
 import 'package:oplin/bloc/note_bloc.dart';
-import 'package:oplin/bloc/show_node_cubit.dart';
 import 'package:oplin/db/models.dart';
 
 import '../../../bloc/app_cubit.dart';
@@ -15,9 +15,10 @@ class FolderListWidget extends StatelessWidget {
 
   void onTapBook(BuildContext context, Notebook? book) {
     var noteLogic = context.read<NoteBloc>();
-    var showLogic = context.read<ShowNodeCubit>();
-    var oldNote = showLogic.state;
-    if (showLogic.changed) {
+    var showLogic = context.read<ShowNodeBloc>();
+    var changed = showLogic.state.changed;
+    var oldNote = showLogic.state.note;
+    if (changed) {
       showDialog<AlertDialog>(
           context: context,
           builder: (context) {
@@ -29,21 +30,18 @@ class FolderListWidget extends StatelessWidget {
                   child: Text(S.of(context).cancel),
                   onPressed: () {
                     noteLogic.setNotebook(book);
-                    showLogic.setNewNote(null);
+                    showLogic.add(const ShowNewNoteEvent(null));
                   },
                 ),
                 TextButton(
                   child: Text(S.of(context).ok),
                   onPressed: () async {
                     var id = oldNote?.uuid;
-                    var title = showLogic.title!;
-                    var content = showLogic.content!;
+                    var title = showLogic.state.editTitle;
+                    var content = showLogic.state.editDocument;
                     context
                         .read<NoteBloc>()
                         .add(NotesUpdated(id!, title: title, content: content));
-                    showLogic.setNewNote(showLogic.state!
-                      ..title = title
-                      ..content = content);
                     Navigator.of(context).pop();
                     context.read<BookBloc>().add(const BookRefreshRequested());
                     noteLogic.setNotebook(book);
@@ -54,7 +52,7 @@ class FolderListWidget extends StatelessWidget {
           });
     } else {
       noteLogic.setNotebook(book);
-      showLogic.setNewNote(null);
+      showLogic.add(const ShowNewNoteEvent(null));
     }
   }
 
