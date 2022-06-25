@@ -4,7 +4,7 @@ import 'package:oplin/app/view/mobile/edit.dart';
 import 'package:oplin/app/view/mobile/route.dart';
 import 'package:oplin/bloc/book_bloc.dart';
 import 'package:oplin/bloc/note_bloc.dart';
-import 'package:oplin/ext/AssetGenImage.dart';
+import 'package:oplin/common/AssetGenImage.dart';
 import 'package:oplin/gen/assets.gen.dart';
 
 import '../../../common/utils.dart';
@@ -14,7 +14,7 @@ import 'build_note.dart';
 import 'card_item_draggable.dart';
 import 'card_item_target.dart';
 import 'dialog.dart';
-import 'folder.dart';
+import 'folder_screen.dart';
 
 class NoteList extends StatefulWidget {
   final Notebook? notebook;
@@ -173,8 +173,8 @@ class NoteListState extends State<NoteList> {
               } else if (editType == EditType.none) {
                 await Navigator.push(
                   context,
-                  AppPageRoute<FolderWidget>(builder: (context) {
-                    return FolderWidget(
+                  AppPageRoute<FolderScreenWidget>(builder: (context) {
+                    return FolderScreenWidget(
                       book: e,
                     );
                   }),
@@ -199,7 +199,7 @@ class NoteListState extends State<NoteList> {
               builder: (context, hover) {
                 return Row(
                   children: [
-                    Expanded(child: _buildNoteBookItem(e, hover)),
+                    Expanded(child: buildNoteBookItem(context, e, hover)),
                     if (editType == EditType.folder)
                       Checkbox(
                           value: selected.contains(e.uuid), onChanged: (val) {})
@@ -238,35 +238,6 @@ class NoteListState extends State<NoteList> {
         );
       },
     ); // NON-NLS // NON-NLS
-  }
-
-  Widget _buildNoteBookItem(Notebook book, bool opened) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(15, 10, 15, 15),
-      child: Row(
-        children: [
-          Icon(
-            opened ? Icons.folder_open : Icons.folder,
-            size: 50,
-            color: Theme.of(context).primaryColor,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Text(
-              book.name,
-              style: Theme.of(context)
-                  .textTheme
-                  .titleMedium
-                  ?.copyWith(fontSize: 22),
-            ),
-          ),
-          //folder name
-          const Spacer(),
-          Text("${book.count}"),
-          // notes count in folder
-        ],
-      ),
-    );
   }
 
   Widget _buildBottomBar(Widget listView) {

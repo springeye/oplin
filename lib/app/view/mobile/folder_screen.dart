@@ -6,27 +6,27 @@ import 'package:oplin/app/view/mobile/route.dart';
 import 'package:oplin/bloc/book_bloc.dart';
 import 'package:oplin/bloc/note_bloc.dart';
 import 'package:oplin/db/models.dart';
-import 'package:oplin/ext/AssetGenImage.dart';
+import 'package:oplin/common/AssetGenImage.dart';
 import 'package:oplin/repository/note_repository.dart';
 
 import '../../../gen/assets.gen.dart';
 import 'package:oplin/gen/S.dart';
 
-class FolderWidget extends StatefulWidget {
+class FolderScreenWidget extends StatefulWidget {
   final Notebook book;
 
-  const FolderWidget({
+  const FolderScreenWidget({
     Key? key,
     required this.book,
   }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return _FolderWidgetState();
+    return _FolderScreenWidgetState();
   }
 }
 
-class _FolderWidgetState extends State<FolderWidget> {
+class _FolderScreenWidgetState extends State<FolderScreenWidget> {
   GlobalKey<NoteListState> noteListKey = GlobalKey();
   EditType editType = EditType.none;
   List<String> selected = [];

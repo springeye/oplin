@@ -4,7 +4,7 @@ import 'package:oplin/app/view/mobile/dialog.dart';
 import 'package:oplin/app/view/mobile/drawer.dart';
 import 'package:oplin/app/view/mobile/edit.dart';
 import 'package:oplin/bloc/note_bloc.dart';
-import 'package:oplin/ext/AssetGenImage.dart';
+import 'package:oplin/common/AssetGenImage.dart';
 
 import '../../../gen/assets.gen.dart';
 import 'package:oplin/gen/S.dart';
@@ -23,9 +23,32 @@ class _MobileHomePageState extends State<MobileHomePage> {
   List<String> selected = [];
   GlobalKey<NoteListState> noteListKey = GlobalKey();
 
-  AppBar _buildAppBar() {
-    var titleStyle = Theme.of(context).appBarTheme.titleTextStyle;
-    var title = S.of(context).app_name;
+  AppBar _buildAppBar(BuildContext context) {
+    var selectBook = context
+        .watch<NoteBloc>()
+        .state
+        .filter
+        .notebook;
+    var titleStyle = Theme
+        .of(context)
+        .appBarTheme
+        .titleTextStyle;
+    var title = S
+        .of(context)
+        .app_name;
+    if (selectBook == null) {
+      title = S
+          .of(context)
+          .all;
+    } else if (selectBook.isOther) {
+      title = S
+          .of(context)
+          .other;
+    } else {
+      title = selectBook.name;
+      title = S.of(context).notebook_by_name(title);
+    }
+
     if (editType == EditType.note) {
       title = S.of(context).select_note_count(selected.length);
     } else if (editType == EditType.folder) {
@@ -38,11 +61,11 @@ class _MobileHomePageState extends State<MobileHomePage> {
       ),
       leading: editType != EditType.none
           ? IconButton(
-              icon: const Icon(Icons.close),
-              onPressed: () {
-                noteListKey.currentState?.exitEditModel();
-              },
-            )
+        icon: const Icon(Icons.close),
+        onPressed: () {
+          noteListKey.currentState?.exitEditModel();
+        },
+      )
           : null,
       actions: [
         if (editType != EditType.none)
@@ -76,27 +99,28 @@ class _MobileHomePageState extends State<MobileHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _buildAppBar(),
+      appBar: _buildAppBar(context),
       floatingActionButton: editType != EditType.none
           ? null
           : FloatingActionButton(
-              heroTag: "create",
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  AppPageRoute<EditNoteWidget>(
-                    builder: (context) => const EditNoteWidget(),
-                  ),
-                ).then((value) => context
-                    .read<NoteBloc>()
-                    .add(const NotesSubscriptionRequested()));
-              },
-              child: const Icon(Icons.add),
+        heroTag: "create",
+        onPressed: () {
+          Navigator.push(
+            context,
+            AppPageRoute<EditNoteWidget>(
+              builder: (context) => const EditNoteWidget(),
             ),
+          ).then((value) =>
+              context
+                  .read<NoteBloc>()
+                  .add(const NotesSubscriptionRequested()));
+        },
+        child: const Icon(Icons.add),
+      ),
       drawer: editType != EditType.none ? null : buildDrawer(context),
       body: NoteList(
         key: noteListKey,
-        showFolder: true,
+        showFolder: false,
         modelCallback: (isEditing) {
           setState(() {
             editType = isEditing;

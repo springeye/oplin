@@ -6,6 +6,33 @@ import 'package:intl/intl.dart';
 
 import '../../../../../db/models.dart';
 
+Widget buildNoteBookItem(BuildContext context, Notebook book, bool opened) {
+  return Container(
+    padding: const EdgeInsets.fromLTRB(15, 10, 15, 15),
+    child: Row(
+      children: [
+        Icon(
+          opened ? Icons.folder_open : Icons.folder,
+          size: 50,
+          color: Theme.of(context).primaryColor,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Text(
+            book.name,
+            style:
+                Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 22),
+          ),
+        ),
+        //folder name
+        const Spacer(),
+        Text("${book.count}"),
+        // notes count in folder
+      ],
+    ),
+  );
+}
+
 Widget buildNoteItem(BuildContext context, Note note) {
   var content = note.content.toPlainText().trim();
   var title = note.title.isEmpty ? content : note.title;

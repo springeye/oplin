@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
-import 'package:oplin/app/view/editor/toolbar.dart';
+import 'package:oplin/common/toolbar.dart';
 import 'package:oplin/bloc/note_bloc.dart';
 
 import '../../../db/models.dart';
