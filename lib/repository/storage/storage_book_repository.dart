@@ -96,4 +96,22 @@ class StorageBookRepository extends ObjectBoxX implements BookRepository {
       return books;
     });
   }
+
+  @override
+  void batchSaveBook(List<Notebook> books) {
+    store.runInTransaction(TxMode.write, () {
+      var box = store.box<Notebook>();
+      for (var book in books) {
+        book.synced = false;
+        if (book.uuid.isEmpty) {
+          book.uuid = const Uuid().v4();
+          book.id = 0;
+          box.put(book, mode: PutMode.insert);
+        } else {
+          box.put(book, mode: PutMode.update);
+        }
+      }
+      return books;
+    });
+  }
 }

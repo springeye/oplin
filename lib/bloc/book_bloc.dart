@@ -20,7 +20,7 @@ class BookBloc extends BaseBloc<BookEvent, BooksState> {
     required BookRepository bookRepository,
   })  : _bookRepository = bookRepository,
         super(const BooksState()) {
-    on<BookSubscriptionRequested>(_onSubscriptionRequested);
+    on<BookRefreshRequested>(_onSubscriptionRequested);
     on<BookAdded>(_onBookAdded);
     on<BookUpdated>(_onBookUpdated);
     on<BookDeleted>(_onBookDeleted);
@@ -29,7 +29,7 @@ class BookBloc extends BaseBloc<BookEvent, BooksState> {
   }
 
   FutureOr<void> _onSubscriptionRequested(
-      BookSubscriptionRequested event, Emitter<BooksState> emit) async {
+      BookRefreshRequested event, Emitter<BooksState> emit) async {
     emit(state.copyWith(status: () => BooksStatus.loading));
     var books = _bookRepository.getBooks();
     emit(
@@ -42,7 +42,7 @@ class BookBloc extends BaseBloc<BookEvent, BooksState> {
     book.name = event.name;
     book.parentId = event.parentId;
     _bookRepository.saveBook(book);
-    add(const BookSubscriptionRequested());
+    add(const BookRefreshRequested());
   }
 
   FutureOr<void> _onBookUpdated(
@@ -52,14 +52,14 @@ class BookBloc extends BaseBloc<BookEvent, BooksState> {
       book.name = event.name ?? book.name;
       book.parentId = event.parentId;
       _bookRepository.saveBook(book);
-      add(const BookSubscriptionRequested());
+      add(const BookRefreshRequested());
     }
   }
 
   FutureOr<void> _onBookDeleted(
       BookDeleted event, Emitter<BooksState> emit) async {
     _bookRepository.batchDeleteBook(event.uuids);
-    add(const BookSubscriptionRequested());
+    add(const BookRefreshRequested());
   }
 
   FutureOr<void> _onBookMoved(BookMoved event, Emitter<BooksState> emit) async {
@@ -67,7 +67,7 @@ class BookBloc extends BaseBloc<BookEvent, BooksState> {
     if (book != null) {
       book.parentId = event.parentId;
       _bookRepository.saveBook(book);
-      add(const BookSubscriptionRequested());
+      add(const BookRefreshRequested());
     }
   }
 

@@ -7,8 +7,8 @@ abstract class BookEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class BookSubscriptionRequested extends BookEvent {
-  const BookSubscriptionRequested();
+class BookRefreshRequested extends BookEvent {
+  const BookRefreshRequested();
 }
 
 class BookAdded extends BookEvent {

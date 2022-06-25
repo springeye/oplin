@@ -34,7 +34,7 @@ class _DesktopHomePageState extends State<DesktopHomePage> {
   Widget build(BuildContext context) {
     var noteBloc = context.read<NoteBloc>();
     noteBloc.add(const NoteRefreshRequested());
-    context.read<BookBloc>().add(const BookSubscriptionRequested());
+    context.read<BookBloc>().add(const BookRefreshRequested());
     return Column(
       children: [
         Row(

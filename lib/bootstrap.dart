@@ -67,10 +67,10 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
               ],
               child: MultiRepositoryProvider(
                 providers: [
-                  RepositoryProvider(
-                    create: (context) => BookRepository,
+                  RepositoryProvider<BookRepository>(
+                    create: (context) => bookRepository,
                   ),
-                  RepositoryProvider(
+                  RepositoryProvider<NoteRepository>(
                     create: (context) => noteRepository,
                   ),
                 ],

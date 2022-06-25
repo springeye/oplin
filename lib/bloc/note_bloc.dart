@@ -23,8 +23,7 @@ class NoteBloc extends BaseBloc<NoteEvent, NotesState> {
   NoteBloc({
     required this.bookBloc,
     required NoteRepository noteRepository,
-  })
-      : _noteRepository = noteRepository,
+  })  : _noteRepository = noteRepository,
         super(const NotesState()) {
     on<NoteRefreshRequested>(_onSubscriptionRequested);
     on<NotesNoteDeleted>(_onNoteDeleted);
@@ -35,23 +34,29 @@ class NoteBloc extends BaseBloc<NoteEvent, NotesState> {
     on<NotesMoved>(_onMoved);
   }
 
-  Future<void> _onSubscriptionRequested(NoteRefreshRequested event,
-      Emitter<NotesState> emit,) async {
+  Future<void> _onSubscriptionRequested(
+    NoteRefreshRequested event,
+    Emitter<NotesState> emit,
+  ) async {
     emit(state.copyWith(status: () => NotesStatus.loading));
 
     emit(state.copyWith(notes: () => _noteRepository.getNotes()));
-    bookBloc.add(const BookSubscriptionRequested());
+    bookBloc.add(const BookRefreshRequested());
   }
 
-  Future<void> _onNoteDeleted(NotesNoteDeleted event,
-      Emitter<NotesState> emit,) async {
+  Future<void> _onNoteDeleted(
+    NotesNoteDeleted event,
+    Emitter<NotesState> emit,
+  ) async {
     appLog.debug("delete notes ${event.uuids}");
     _noteRepository.batchDeleteNote(event.uuids);
     add(const NoteRefreshRequested());
   }
 
-  void _onFilterChanged(NotesFilterChanged event,
-      Emitter<NotesState> emit,) {
+  void _onFilterChanged(
+    NotesFilterChanged event,
+    Emitter<NotesState> emit,
+  ) {
     appLog.debug("_onFilterChanged");
     emit(
       state.copyWith(
@@ -62,8 +67,8 @@ class NoteBloc extends BaseBloc<NoteEvent, NotesState> {
     );
   }
 
-  Future<FutureOr<void>> _onNoteUpdated(NotesUpdated event,
-      Emitter<NotesState> emit) async {
+  Future<FutureOr<void>> _onNoteUpdated(
+      NotesUpdated event, Emitter<NotesState> emit) async {
     var note = _noteRepository.findNote(event.uuid);
     if (note != null) {
       note.title = event.title ?? note.title;
@@ -99,8 +104,8 @@ class NoteBloc extends BaseBloc<NoteEvent, NotesState> {
     add(const NoteRefreshRequested());
   }
 
-  FutureOr<void> _onNoteAdded(NotesAdded event,
-      Emitter<NotesState> emit) async {
+  FutureOr<void> _onNoteAdded(
+      NotesAdded event, Emitter<NotesState> emit) async {
     Note note = Note.create();
     note.title = event.title;
     note.content = event.content;

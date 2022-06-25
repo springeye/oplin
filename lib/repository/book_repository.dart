@@ -9,6 +9,8 @@ abstract class BookRepository {
 
   void saveBook(Notebook book);
 
+  void batchSaveBook(List<Notebook> books);
+
   void deleteBook(String uuid, {bool physics = false});
 
   void batchDeleteBook(List<String> uuid, {bool physics = false});

@@ -45,9 +45,7 @@ class FolderListWidget extends StatelessWidget {
                       ..title = title
                       ..content = content);
                     Navigator.of(context).pop();
-                    context
-                        .read<BookBloc>()
-                        .add(const BookSubscriptionRequested());
+                    context.read<BookBloc>().add(const BookRefreshRequested());
                     noteLogic.setNotebook(book);
                   },
                 ),

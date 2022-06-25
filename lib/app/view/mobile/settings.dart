@@ -1,14 +1,21 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:oplin/app/view/mobile/route.dart';
+import 'package:oplin/bloc/book_bloc.dart';
 import 'package:oplin/bloc/note_bloc.dart';
+import 'package:oplin/common/nsx.dart';
+import 'package:oplin/repository/book_repository.dart';
 import 'package:oplin/repository/note_repository.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 import '../../../bloc/app_cubit.dart';
 import 'package:oplin/gen/S.dart';
 import 'settings_webdav.dart';
+import 'package:file_selector/file_selector.dart';
 
 class SettingWidget extends StatefulWidget {
   const SettingWidget({Key? key}) : super(key: key);
@@ -29,9 +36,7 @@ class _SettingWidgetState extends State<SettingWidget> {
         return Scaffold(
           appBar: AppBar(
             toolbarHeight:
-            Theme
-                .of(context)
-                .platform == TargetPlatform.macOS ? 85 : 56,
+                Theme.of(context).platform == TargetPlatform.macOS ? 85 : 56,
             title: Text(lang.settings),
           ),
           body: SettingsList(
@@ -49,18 +54,14 @@ class _SettingWidgetState extends State<SettingWidget> {
                           context: context,
                           builder: (context) {
                             return AlertDialog(
-                              title: Text(S
-                                  .of(context)
-                                  .select_lang),
+                              title: Text(S.of(context).select_lang),
                               content: SizedBox(
                                 height: 200,
                                 width: double.maxFinite,
                                 child: ListView(
                                   children: [
                                     ListTile(
-                                      title: Text(S
-                                          .of(context)
-                                          .lang_en),
+                                      title: Text(S.of(context).lang_en),
                                       onTap: () {
                                         logic.setLanguage(
                                           const Locale.fromSubtags(
@@ -70,9 +71,7 @@ class _SettingWidgetState extends State<SettingWidget> {
                                       },
                                     ),
                                     ListTile(
-                                      title: Text(S
-                                          .of(context)
-                                          .lang_zh),
+                                      title: Text(S.of(context).lang_zh),
                                       onTap: () {
                                         logic.setLanguage(
                                           const Locale.fromSubtags(
@@ -82,9 +81,7 @@ class _SettingWidgetState extends State<SettingWidget> {
                                       },
                                     ),
                                     ListTile(
-                                      title: Text(S
-                                          .of(context)
-                                          .lang_other),
+                                      title: Text(S.of(context).lang_other),
                                       onTap: () {
                                         logic.setLanguage(null);
                                         Navigator.pop(context);
@@ -104,18 +101,14 @@ class _SettingWidgetState extends State<SettingWidget> {
                     value: Container(
                       width: 40,
                       height: 40,
-                      color: Theme
-                          .of(context)
-                          .primaryColor,
+                      color: Theme.of(context).primaryColor,
                     ),
                     onPressed: (context) {
                       showDialog<AlertDialog>(
                           context: context,
                           builder: (context) {
                             return AlertDialog(
-                              title: Text(S
-                                  .of(context)
-                                  .select_color),
+                              title: Text(S.of(context).select_color),
                               content: BlockPicker(
                                 availableColors: const [
                                   Colors.red,
@@ -143,9 +136,7 @@ class _SettingWidgetState extends State<SettingWidget> {
                                   logic.setPrimaryColor(value);
                                   Navigator.pop(context);
                                 },
-                                pickerColor: Theme
-                                    .of(context)
-                                    .primaryColor,
+                                pickerColor: Theme.of(context).primaryColor,
                               ),
                             );
                           });
@@ -189,6 +180,31 @@ class _SettingWidgetState extends State<SettingWidget> {
                       context
                           .read<NoteBloc>()
                           .add(const NoteRefreshRequested());
+                    },
+                  ),
+                  SettingsTile.navigation(
+                    leading: const Icon(Icons.clear_all),
+                    title: Text("导入nsx文件"),
+                    value: Text("nsx格式是Synology Note Station导出的文件"),
+                    onPressed: (context) async {
+                      final XTypeGroup typeGroup = XTypeGroup(
+                        label: 'Synology Note Station',
+                        extensions: <String>['nsx'],
+                      );
+                      final XFile? file = await openFile(
+                          acceptedTypeGroups: <XTypeGroup>[typeGroup]);
+                      var result =
+                          await NsxImport(File(file!.path)).getResult();
+                      print(result.notes);
+                      context
+                          .read<BookRepository>()
+                          .batchSaveBook(result.books);
+                      context
+                          .read<NoteRepository>()
+                          .batchSaveNote(result.notes);
+                      EasyLoading.showToast("import success");
+                      context.read<BookBloc>().add(BookRefreshRequested());
+                      context.read<NoteBloc>().add(NoteRefreshRequested());
                     },
                   ),
                 ],
