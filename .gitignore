@@ -51,3 +51,5 @@ app.*.map.json
 /lib/objectbox.lib
 /objectbox_test_file/
 /lib/libobjectbox.dylib
+*.dmg
+/Release
