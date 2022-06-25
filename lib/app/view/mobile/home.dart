@@ -24,26 +24,13 @@ class _MobileHomePageState extends State<MobileHomePage> {
   GlobalKey<NoteListState> noteListKey = GlobalKey();
 
   AppBar _buildAppBar(BuildContext context) {
-    var selectBook = context
-        .watch<NoteBloc>()
-        .state
-        .filter
-        .notebook;
-    var titleStyle = Theme
-        .of(context)
-        .appBarTheme
-        .titleTextStyle;
-    var title = S
-        .of(context)
-        .app_name;
+    var selectBook = context.watch<NoteBloc>().state.filter.notebook;
+    var titleStyle = Theme.of(context).appBarTheme.titleTextStyle;
+    var title = S.of(context).app_name;
     if (selectBook == null) {
-      title = S
-          .of(context)
-          .all;
+      title = S.of(context).all;
     } else if (selectBook.isOther) {
-      title = S
-          .of(context)
-          .other;
+      title = S.of(context).other;
     } else {
       title = selectBook.name;
       title = S.of(context).notebook_by_name(title);
@@ -61,11 +48,11 @@ class _MobileHomePageState extends State<MobileHomePage> {
       ),
       leading: editType != EditType.none
           ? IconButton(
-        icon: const Icon(Icons.close),
-        onPressed: () {
-          noteListKey.currentState?.exitEditModel();
-        },
-      )
+              icon: const Icon(Icons.close),
+              onPressed: () {
+                noteListKey.currentState?.exitEditModel();
+              },
+            )
           : null,
       actions: [
         if (editType != EditType.none)
@@ -103,20 +90,19 @@ class _MobileHomePageState extends State<MobileHomePage> {
       floatingActionButton: editType != EditType.none
           ? null
           : FloatingActionButton(
-        heroTag: "create",
-        onPressed: () {
-          Navigator.push(
-            context,
-            AppPageRoute<EditNoteWidget>(
-              builder: (context) => const EditNoteWidget(),
+              heroTag: "create",
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  AppPageRoute<EditNoteWidget>(
+                    builder: (context) => const EditNoteWidget(),
+                  ),
+                ).then((value) => context
+                    .read<NoteBloc>()
+                    .add(const NotesSubscriptionRequested()));
+              },
+              child: const Icon(Icons.add),
             ),
-          ).then((value) =>
-              context
-                  .read<NoteBloc>()
-                  .add(const NotesSubscriptionRequested()));
-        },
-        child: const Icon(Icons.add),
-      ),
       drawer: editType != EditType.none ? null : buildDrawer(context),
       body: NoteList(
         key: noteListKey,

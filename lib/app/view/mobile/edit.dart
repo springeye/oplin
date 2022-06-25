@@ -22,6 +22,7 @@ class EditNoteWidget extends StatefulWidget {
 class _EditNoteWidgetState extends State<EditNoteWidget> {
   late final QuillController _controller;
   late final TextEditingController _titleController;
+  final focusNode = FocusNode();
 
   @override
   void initState() {
@@ -86,10 +87,10 @@ class _EditNoteWidgetState extends State<EditNoteWidget> {
                   controller: _controller,
                   scrollController: ScrollController(),
                   scrollable: true,
-                  focusNode: FocusNode(),
+                  focusNode: focusNode,
                   autoFocus: widget.note == null,
                   readOnly: false,
-                  expands: false,
+                  expands: true,
                   padding: EdgeInsets.zero,
                 ),
               ),
