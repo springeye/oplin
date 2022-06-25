@@ -5,6 +5,8 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:oplin/db/models.dart';
 import 'package:archive/archive_io.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:html2md/html2md.dart' as html2md;
+import 'package:quill_markdown/quill_markdown.dart';
 
 part 'nsx.g.dart';
 
@@ -70,8 +72,8 @@ class NsxImport {
       books.add(book);
     }
     for (var value in noteIds) {
-      var content = await File('$output/$value').readAsString();
-      var json = jsonDecode(content) as Map<String, dynamic>;
+      var contentText = await File('$output/$value').readAsString();
+      var json = jsonDecode(contentText) as Map<String, dynamic>;
       var note = Note();
       note.title = json['title'];
       note.createTime =
@@ -79,8 +81,10 @@ class NsxImport {
       note.updateTime =
           DateTime.fromMillisecondsSinceEpoch(json['mtime'] as int);
       note.notebookId = json['parent_id'];
+      var md = html2md.convert(json['content']);
+      String? content = markdownToQuill(md);
+      note.dbContent = content!;
       notes.add(note);
-      // note.dbContent = json['content']; //need parse html code
     }
     File(output).deleteSync(recursive: true);
     return ParseResult(books, notes);

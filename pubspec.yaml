@@ -54,6 +54,8 @@ dependencies:
   equatable: ^2.0.3
   rxdart: ^0.27.4
   archive: ^3.3.0
+  quill_markdown: ^0.1.0
+  html2md: ^1.2.6
 dev_dependencies:
   bloc_test: ^9.0.3
   build_runner: ^2.1.11
