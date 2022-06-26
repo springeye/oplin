@@ -37,6 +37,10 @@ class MockBookRepository extends _i1.Mock implements _i2.BookRepository {
       super.noSuchMethod(Invocation.method(#saveBook, [book]),
           returnValueForMissingStub: null);
   @override
+  void batchSaveBook(List<_i3.Notebook>? books) =>
+      super.noSuchMethod(Invocation.method(#batchSaveBook, [books]),
+          returnValueForMissingStub: null);
+  @override
   void deleteBook(String? uuid, {bool? physics = false}) => super.noSuchMethod(
       Invocation.method(#deleteBook, [uuid], {#physics: physics}),
       returnValueForMissingStub: null);

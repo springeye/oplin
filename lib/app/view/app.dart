@@ -5,7 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:oplin/gen/S.dart';
 import '../../bloc/app_cubit.dart';
-
+import 'package:oplin/gen/fonts.gen.dart';
 class App extends StatelessWidget {
   final Widget child;
 
@@ -27,6 +27,7 @@ class App extends StatelessWidget {
           locale: config.locale,
           theme: ThemeData(
               primarySwatch: config.primarySwatch,
+              fontFamily: FontFamily.roboto,
               splashColor: config.primarySwatch.shade300.withAlpha(50),
               highlightColor: config.primarySwatch.shade300,
               textSelectionTheme:
