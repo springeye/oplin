@@ -13,6 +13,9 @@ class FontFamily {
   /// Font family: JetBrainsMono
   static const String jetBrainsMono = 'JetBrainsMono';
 
+  /// Font family: LongCang
+  static const String longCang = 'LongCang';
+
   /// Font family: Roboto
   static const String roboto = 'Roboto';
 }

@@ -102,11 +102,13 @@ flutter:
         - asset: assets/fonts/Roboto-Bold.ttf
         - asset: assets/fonts/Roboto-BoldItalic.ttf
         - asset: assets/fonts/Roboto-Italic.ttf
+          style: italic
         - asset: assets/fonts/Roboto-Light.ttf
         - asset: assets/fonts/Roboto-LightItalic.ttf
         - asset: assets/fonts/Roboto-Medium.ttf
         - asset: assets/fonts/Roboto-MediumItalic.ttf
         - asset: assets/fonts/Roboto-Regular.ttf
+        #        - asset: assets/fonts/Roboto.ttf
         - asset: assets/fonts/Roboto-Thin.ttf
         - asset: assets/fonts/Roboto-ThinItalic.ttf
     - family: JetBrainsMono
@@ -118,15 +120,20 @@ flutter:
         - asset: assets/fonts/JetBrainsMono-ExtraLight.ttf
         - asset: assets/fonts/JetBrainsMono-ExtraLightItalic.ttf
         - asset: assets/fonts/JetBrainsMono-Italic.ttf
+          style: italic
         - asset: assets/fonts/JetBrainsMono-Light.ttf
         - asset: assets/fonts/JetBrainsMono-LightItalic.ttf
         - asset: assets/fonts/JetBrainsMono-Medium.ttf
         - asset: assets/fonts/JetBrainsMono-MediumItalic.ttf
         - asset: assets/fonts/JetBrainsMono-Regular.ttf
+        #        - asset: assets/fonts/JetBrainsMono.ttf
         - asset: assets/fonts/JetBrainsMono-SemiBold.ttf
         - asset: assets/fonts/JetBrainsMono-SemiBoldItalic.ttf
         - asset: assets/fonts/JetBrainsMono-Thin.ttf
         - asset: assets/fonts/JetBrainsMono-ThinItalic.ttf
+    - family: LongCang
+      fonts:
+        - asset: assets/fonts/LongCang-Regular.ttf
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

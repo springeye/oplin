@@ -6,6 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:oplin/gen/S.dart';
 import '../../bloc/app_cubit.dart';
 import 'package:oplin/gen/fonts.gen.dart';
+
 class App extends StatelessWidget {
   final Widget child;
 
@@ -16,6 +17,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AppCubit, AppConfig>(
       builder: (context, config) {
+        var appFont = FontFamily.roboto;
         return MaterialApp(
           localizationsDelegates: const [
             S.delegate,
@@ -26,12 +28,19 @@ class App extends StatelessWidget {
           supportedLocales: S.supportedLocales,
           locale: config.locale,
           theme: ThemeData(
-              primarySwatch: config.primarySwatch,
-              fontFamily: FontFamily.roboto,
-              splashColor: config.primarySwatch.shade300.withAlpha(50),
-              highlightColor: config.primarySwatch.shade300,
-              textSelectionTheme:
-                  const TextSelectionThemeData(cursorColor: Colors.black)),
+            primarySwatch: config.primarySwatch,
+            fontFamily: appFont,
+            splashColor: config.primarySwatch.shade300.withAlpha(50),
+            highlightColor: config.primarySwatch.shade300,
+            textSelectionTheme:
+                const TextSelectionThemeData(cursorColor: Colors.black),
+            appBarTheme: AppBarTheme(
+              titleTextStyle: Theme.of(context)
+                  .primaryTextTheme
+                  .headline6
+                  ?.copyWith(fontFamily: appFont),
+            ),
+          ),
           home: child,
           builder: EasyLoading.init(),
         );
