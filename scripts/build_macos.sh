@@ -6,8 +6,7 @@ else
     echo "please install https://github.com/create-dmg/create-dmg"
     exit 1
 fi
-
-
+flutter build macos
 rm -rf Release
 rm *.dmg
 mkdir Release
