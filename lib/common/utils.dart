@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-MaterialColor getSwatch(Color color) {
+MaterialColor getSwatch(Color color, {String? fontFamily}) {
   final hslColor = HSLColor.fromColor(color);
   final lightness = hslColor.lightness;
 

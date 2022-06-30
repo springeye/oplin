@@ -202,8 +202,12 @@ class _SettingWidgetState extends State<SettingWidget> {
                           .read<NoteRepository>()
                           .batchSaveNote(result.notes);
                       EasyLoading.showToast("import success");
-                      context.read<BookBloc>().add(const BookRefreshRequested());
-                      context.read<NoteBloc>().add(const NoteRefreshRequested());
+                      context
+                          .read<BookBloc>()
+                          .add(const BookRefreshRequested());
+                      context
+                          .read<NoteBloc>()
+                          .add(const NoteRefreshRequested());
                     },
                   ),
                 ],

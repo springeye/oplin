@@ -35,9 +35,11 @@ class WebDAVConfig {
 class AppConfig {
   MaterialColor primarySwatch;
   Locale? locale;
+  String? fontFamily;
   dynamic server;
 
-  AppConfig({required this.primarySwatch, this.locale, this.server});
+  AppConfig(
+      {required this.primarySwatch, this.locale, this.fontFamily, this.server});
 
   @override
   String toString() {
@@ -47,11 +49,13 @@ class AppConfig {
   AppConfig copyWith({
     MaterialColor? primarySwatch,
     Locale? locale,
+    String? fontFamily,
     dynamic server,
   }) {
     return AppConfig(
       primarySwatch: primarySwatch ?? this.primarySwatch,
       locale: locale,
+      fontFamily: fontFamily ?? this.fontFamily,
       server: server ?? this.server,
     );
   }
@@ -66,9 +70,11 @@ class AppCubit extends Cubit<AppConfig> {
     // }
     var color = sp.getInt("primarySwatch") ?? defaultColor;
     var language = sp.getString("language");
+    var fontFamily = sp.getString("fontFamily");
     var configType = sp.getString("config_type");
     var config = sp.getString("webdav_config");
-    var appConfig = AppConfig(primarySwatch: getSwatch(Color(color)));
+    var appConfig = AppConfig(
+        primarySwatch: getSwatch(Color(color), fontFamily: fontFamily));
     if (language == null) {
       appConfig = appConfig.copyWith(locale: null);
     } else {
@@ -94,6 +100,16 @@ class AppCubit extends Cubit<AppConfig> {
       sp.setString("language", locale.languageCode);
     }
     emit(state.copyWith(locale: locale));
+  }
+
+  Future<void> setFontFamily(String? fontFamily) async {
+    var sp = await SharedPreferences.getInstance();
+    if (fontFamily == null) {
+      sp.remove("fontFamily");
+    } else {
+      sp.setString("fontFamily", fontFamily);
+    }
+    emit(state.copyWith(fontFamily: fontFamily));
   }
 
   Future<void> setPrimaryColor(Color color) async {
