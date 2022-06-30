@@ -66,9 +66,10 @@ class NsxImport {
       var content = await File('$output/$value').readAsString();
       var note = jsonDecode(content) as Map<String, dynamic>;
       var book = Notebook();
+      book.uuid = value;
       book.name = note['title'];
-      book.createTime =
-          DateTime.fromMillisecondsSinceEpoch(note['ctime'] as int);
+      var sinceEpoch = note['ctime'] as int;
+      book.createTime = DateTime.fromMillisecondsSinceEpoch(sinceEpoch * 1000);
       books.add(book);
     }
     for (var value in noteIds) {
@@ -76,10 +77,10 @@ class NsxImport {
       var json = jsonDecode(contentText) as Map<String, dynamic>;
       var note = Note();
       note.title = json['title'];
-      note.createTime =
-          DateTime.fromMillisecondsSinceEpoch(json['ctime'] as int);
-      note.updateTime =
-          DateTime.fromMillisecondsSinceEpoch(json['mtime'] as int);
+      var ctime = json['ctime'] as int;
+      note.createTime = DateTime.fromMillisecondsSinceEpoch(ctime * 1000);
+      var mtime = json['mtime'] as int;
+      note.updateTime = DateTime.fromMillisecondsSinceEpoch(mtime * 1000);
       note.notebookId = json['parent_id'];
       var md = html2md.convert(json['content']);
       String? content = markdownToQuill(md);

@@ -1,3 +1,4 @@
+import 'package:oplin/common/logging.dart';
 import 'package:oplin/db/models.dart';
 import 'package:oplin/repository/book_repository.dart';
 import 'package:uuid/uuid.dart';
@@ -102,6 +103,7 @@ class StorageBookRepository extends ObjectBoxX implements BookRepository {
     store.runInTransaction(TxMode.write, () {
       var box = store.box<Notebook>();
       for (var book in books) {
+        appLog.debug("batchSaveBook==>${book}\n");
         book.synced = false;
         if (book.uuid.isEmpty) {
           book.uuid = const Uuid().v4();

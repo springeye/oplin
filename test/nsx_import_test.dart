@@ -20,6 +20,12 @@ Future<void> main() async {
       var result =
           await NsxImport(File("henjue.nsx")).getResult(temp: "nsx_outputs");
       expect(result.notes.isNotEmpty, true);
+      result.books.forEach((element) {
+        print(element);
+      });
+      result.notes.forEach((element) {
+        print(element);
+      });
     });
   });
 }
