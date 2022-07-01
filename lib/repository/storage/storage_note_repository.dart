@@ -17,15 +17,7 @@ class StorageNoteRepository extends ObjectBoxX implements NoteRepository {
 
   @override
   void saveNote(Note note) {
-    var box = getBox<Note>();
-    note.synced = false;
-    note.updateTime = DateTime.now();
-    note.version++;
-    if (note.uuid.isEmpty) {
-      note.uuid = const Uuid().v4();
-      note.id = 0;
-    }
-    box.put(note, mode: PutMode.put);
+    batchSaveNote([note]);
   }
 
   @override
@@ -36,14 +28,12 @@ class StorageNoteRepository extends ObjectBoxX implements NoteRepository {
         note.synced = false;
         note.updateTime = DateTime.now();
         note.version++;
-        if (note.uuid.isEmpty) {
+        if (note.uuid.trim().isEmpty) {
           note.uuid = const Uuid().v4();
           note.id = 0;
-          box.put(note, mode: PutMode.insert);
-        } else {
-          box.put(note, mode: PutMode.update);
         }
       }
+      box.putMany(notes);
       return notes;
     });
   }

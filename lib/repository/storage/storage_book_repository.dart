@@ -29,14 +29,7 @@ class StorageBookRepository extends ObjectBoxX implements BookRepository {
   /// If a [book] with the same id already exists, it will be replaced.
   @override
   void saveBook(Notebook book) {
-    var box = getBox<Notebook>();
-    if (book.uuid.isEmpty) {
-      book.uuid = const Uuid().v4();
-      book.id = 0;
-      box.put(book, mode: PutMode.insert);
-    } else {
-      box.put(book, mode: PutMode.put);
-    }
+    batchSaveBook([book]);
   }
 
   /// Deletes the book with the given id.
@@ -105,14 +98,12 @@ class StorageBookRepository extends ObjectBoxX implements BookRepository {
       for (var book in books) {
         appLog.debug("batchSaveBook==>${book}\n");
         book.synced = false;
-        if (book.uuid.isEmpty) {
+        if (book.uuid.trim().isEmpty) {
           book.uuid = const Uuid().v4();
           book.id = 0;
-          box.put(book, mode: PutMode.insert);
-        } else {
-          box.put(book, mode: PutMode.update);
         }
       }
+      box.putMany(books);
       return books;
     });
   }
