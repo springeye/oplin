@@ -62,18 +62,24 @@ class NsxImport {
     List<String> booksIds = config?.notebook ?? [];
     List<Notebook> books = [];
     List<Note> notes = [];
-    for (var value in booksIds) {
-      var content = await File('$output/$value').readAsString();
-      var note = jsonDecode(content) as Map<String, dynamic>;
+    String emptyBook = "";
+    for (var uuid in booksIds) {
+      var content = await File('$output/$uuid').readAsString();
+      var json = jsonDecode(content) as Map<String, dynamic>;
+      var _name = json['title'] as String?;
+      if (_name == null || _name.isEmpty) {
+        emptyBook = uuid;
+        continue;
+      }
       var book = Notebook();
-      book.uuid = value;
-      book.name = note['title'];
-      var sinceEpoch = note['ctime'] as int;
+      book.uuid = uuid;
+      book.name = _name;
+      var sinceEpoch = json['ctime'] as int;
       book.createTime = DateTime.fromMillisecondsSinceEpoch(sinceEpoch * 1000);
       books.add(book);
     }
-    for (var value in noteIds) {
-      var contentText = await File('$output/$value').readAsString();
+    for (var uuid in noteIds) {
+      var contentText = await File('$output/$uuid').readAsString();
       var json = jsonDecode(contentText) as Map<String, dynamic>;
       var note = Note();
       note.title = json['title'];
@@ -81,7 +87,9 @@ class NsxImport {
       note.createTime = DateTime.fromMillisecondsSinceEpoch(ctime * 1000);
       var mtime = json['mtime'] as int;
       note.updateTime = DateTime.fromMillisecondsSinceEpoch(mtime * 1000);
-      note.notebookId = json['parent_id'];
+      if (emptyBook != json['parent_id']) {
+        note.notebookId = json['parent_id'];
+      }
       var md = html2md.convert(json['content']);
       String? content = markdownToQuill(md);
       note.dbContent = content!;
