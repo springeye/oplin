@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
@@ -59,8 +58,10 @@ class _EditNoteWidgetState extends State<EditNoteWidget> {
                   var content = _controller.document;
                   var title = _titleController.text;
                   if (widget.note != null) {
-                    logic.add(NotesUpdated(widget.note!.uuid,
-                        title: title, content: content));
+                    logic.add(NotesUpdated(
+                        uuid: widget.note!.uuid,
+                        title: title,
+                        content: content));
                   } else {
                     String? notebookId;
                     var book = context.read<NoteBloc>().state.filter.notebook;
@@ -68,7 +69,7 @@ class _EditNoteWidgetState extends State<EditNoteWidget> {
                       notebookId = book.uuid;
                     }
                     logic.add(
-                      NotesAdded(
+                      NotesUpdated(
                         title: title,
                         content: content,
                         notebookId: notebookId,

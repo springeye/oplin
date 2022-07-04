@@ -1,11 +1,11 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_quill/flutter_quill.dart';
-import 'package:oplin/bloc/show_node_bloc.dart';
+import 'package:oplin/bloc/edit_note_bloc.dart';
 import 'package:oplin/bloc/note_bloc.dart';
 import 'package:oplin/common/logging.dart';
+import 'package:oplin/db/models.dart';
 import 'package:oplin/gen/S.dart';
 
 class NoteEditWidget extends StatefulWidget {
@@ -16,9 +16,9 @@ class NoteEditWidget extends StatefulWidget {
 }
 
 class _NoteEditWidgetState extends State<NoteEditWidget> {
-  TextEditingController? _titleController;
+  late TextEditingController _titleController;
 
-  QuillController? _quillController;
+  late QuillController _quillController;
   final focusNode = FocusNode();
   bool showToolbar = true;
 
@@ -29,48 +29,56 @@ class _NoteEditWidgetState extends State<NoteEditWidget> {
 
   @override
   void dispose() {
-    _titleController?.dispose();
-    _quillController?.dispose();
+    _titleController.dispose();
+    _quillController.dispose();
     focusNode.dispose();
     super.dispose();
   }
 
+  @override
+  void didUpdateWidget(covariant NoteEditWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    appLog.debug("_NoteEditWidgetState.didUpdateWidget");
+    _titleController.dispose();
+    _quillController.dispose();
+    focusNode.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ShowNodeBloc, ShowNodeState>(
-      builder: (context, state) {
-        var note=state.note;
-        var showLogic = context.read<ShowNodeBloc>();
-        _titleController?.dispose();
-        _quillController?.dispose();
-        _titleController = TextEditingController(text: note?.title);
-        if (note != null) {
-          var document2 = note.content;
-          _quillController = QuillController(
-              document: document2,
-              selection: const TextSelection.collapsed(offset: 0));
-        } else {
-          _quillController = QuillController.basic();
-        }
-        _quillController!.changes.listen((event) {
-          appLog.debug(event.toString());
-          showLogic.add(UpdatedDocumentEvent(_quillController!.document));
-
-        });
-        _titleController!.addListener(() {
-          var editCubit = context.read<ShowNodeBloc>();
-          editCubit.add(UpdatedTitleEvent(_titleController!.text));
-
-        });
-        return Scaffold(
-          backgroundColor: Colors.transparent,
-          body: ClipRRect(
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            ),
-            child: Container(
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: ClipRRect(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+        child: BlocBuilder<NoteBloc, NoteState>(
+          buildWhen: (p, c) {
+            appLog.debug("buildWhen=>${c.toString()}");
+            return p.note?.uuid != c.note?.uuid;
+          },
+          builder: (context, state) {
+            var note = state.note;
+            var showLogic = context.read<EditNoteBloc>();
+            _titleController = TextEditingController(text: note?.title);
+            if (note != null) {
+              var document2 = note.content;
+              _quillController = QuillController(
+                  document: document2,
+                  selection: const TextSelection.collapsed(offset: 0));
+            } else {
+              _quillController = QuillController.basic();
+            }
+            _quillController.changes.listen((event) {
+              appLog.debug(event.toString());
+              showLogic.add(UpdatedDocumentEvent(_quillController.document));
+            });
+            _titleController.addListener(() {
+              var editCubit = context.read<EditNoteBloc>();
+              editCubit.add(UpdatedTitleEvent(_titleController.text));
+            });
+            return Container(
               color: Colors.white,
               child: Column(
                 children: [
@@ -90,10 +98,14 @@ class _NoteEditWidgetState extends State<NoteEditWidget> {
                         controller: ScrollController(),
                         scrollDirection: Axis.horizontal,
                         child: QuillToolbar.basic(
+                          showListCheck: false,
                           toolbarIconAlignment: WrapAlignment.start,
-                          controller: _quillController!,
+                          controller: _quillController,
                           iconTheme: QuillIconTheme(
                               iconUnselectedFillColor: Colors.grey.shade100),
+                          customIcons: [
+                            QuillCustomIcon(icon: Icons.check_box, onTap: () {})
+                          ],
                         ),
                       ),
                     ),
@@ -101,7 +113,7 @@ class _NoteEditWidgetState extends State<NoteEditWidget> {
                     // child:
                     // QuillEditor.basic(controller: quillController, readOnly: false),
                     child: QuillEditor(
-                      controller: _quillController!,
+                      controller: _quillController,
                       scrollController: ScrollController(),
                       scrollable: true,
                       focusNode: focusNode,
@@ -115,28 +127,26 @@ class _NoteEditWidgetState extends State<NoteEditWidget> {
                   )
                 ],
               ),
-            ),
-          ),
-          floatingActionButton: !state.changed?null:_SaveButton(
-            onPressed: () {
-              var oldNote = note;
-              var id = oldNote?.uuid;
-              var title = state.editTitle;
-              var content = state.editDocument;
-              context
-                  .read<NoteBloc>()
-                  .add(NotesUpdated(id!, title: title, content: content));
-              EasyLoading.showToast(S.of(context).toast_save_success);
-            },
-          ),
-        );
-      },
+            );
+          },
+        ),
+      ),
+      floatingActionButton: _SaveButton(
+        onPressed: (oldNote, title, content) {
+          var id = oldNote?.uuid;
+          context
+              .read<NoteBloc>()
+              .add(NotesUpdated(uuid: id, title: title, content: content));
+          EasyLoading.showToast(S.of(context).toast_save_success);
+        },
+      ),
     );
+    ;
   }
 }
 
 class _SaveButton extends StatefulWidget {
-  final VoidCallback? onPressed;
+  final Function(Note? old, String editTitle, Document editDocument)? onPressed;
 
   const _SaveButton({Key? key, this.onPressed}) : super(key: key);
 
@@ -145,29 +155,22 @@ class _SaveButton extends StatefulWidget {
 }
 
 class _SaveButtonState extends State<_SaveButton> {
-  bool showSave = false;
-
-  void show() {
-    setState(() {
-      showSave = true;
-    });
-  }
-
-  void hide() {
-    setState(() {
-      showSave = false;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: showSave
-          ? FloatingActionButton(
-              onPressed: widget.onPressed,
-              child: const Icon(Icons.save),
-            )
-          : null,
+    return BlocBuilder<EditNoteBloc, EditNoteState>(
+      builder: (context, state) {
+        appLog.debug("刷新按钮==>${state.changed}");
+        return state.changed
+            ? FloatingActionButton(
+                onPressed: () {
+                  var note = context.read<NoteBloc>().state.note;
+                  widget.onPressed
+                      ?.call(note, state.editTitle, state.editDocument);
+                },
+                child: const Icon(Icons.save),
+              )
+            : Container();
+      },
     );
   }
 }

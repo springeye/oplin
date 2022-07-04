@@ -2,32 +2,35 @@ part of 'note_bloc.dart';
 
 abstract class NoteEvent extends Equatable {
   const NoteEvent();
-
-  @override
-  List<Object> get props => [];
 }
 
 class NoteRefreshRequested extends NoteEvent {
   const NoteRefreshRequested();
+
+  @override
+  List<Object?> get props => [];
 }
 
-class NotesAdded extends NoteEvent {
-  final String title;
-  final Document content;
-  final String? notebookId;
+class ShowNewNoteEvent extends NoteEvent {
+  final Note? note;
 
-  const NotesAdded(
-      {required this.title, required this.content, this.notebookId});
+  const ShowNewNoteEvent(this.note);
+
+  @override
+  List<Object?> get props => [note];
 }
 
 class NotesUpdated extends NoteEvent {
-  final String uuid;
+  final String? uuid;
   final String? title;
   final Document content;
   final String? notebookId;
 
-  const NotesUpdated(this.uuid,
-      {this.title, required this.content, this.notebookId});
+  const NotesUpdated(
+      {this.uuid, this.title, required this.content, this.notebookId});
+
+  @override
+  List<Object?> get props => [uuid, title, content, notebookId];
 }
 
 class NotesNoteDeleted extends NoteEvent {
@@ -36,7 +39,7 @@ class NotesNoteDeleted extends NoteEvent {
   NotesNoteDeleted(List<String> uuids) : uuids = [...uuids];
 
   @override
-  List<Object> get props => [uuids];
+  List<Object> get props => [...uuids];
 }
 
 class NotesSticky extends NoteEvent {

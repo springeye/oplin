@@ -12,6 +12,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oplin/bloc/book_bloc.dart';
 import 'package:oplin/bloc/note_bloc.dart';
+import 'package:oplin/bloc/edit_note_bloc.dart';
 import 'package:oplin/common/logging.dart';
 import 'package:oplin/db/objectbox.g.dart';
 import 'package:oplin/repository/book_repository.dart';
@@ -51,14 +52,17 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
           NoteRepository noteRepository = StorageNoteRepository(store);
           BookRepository bookRepository = StorageBookRepository(store);
           BookBloc bookLogic = BookBloc(bookRepository: bookRepository);
-
-          NoteBloc noteLogic =
-              NoteBloc(noteRepository: noteRepository, bookBloc: bookLogic);
+          EditNoteBloc showBloc = EditNoteBloc();
+          NoteBloc noteLogic = NoteBloc(
+              noteRepository: noteRepository,
+              editLogic: showBloc,
+              bookBloc: bookLogic);
           AppConfig appConfig = await AppCubit.getDefaultConfig();
           runApp(
             MultiBlocProvider(
               providers: [
                 BlocProvider(create: (context) => AppCubit(appConfig)),
+                BlocProvider(create: (context) => showBloc),
                 BlocProvider(create: (context) => noteLogic),
                 BlocProvider(create: (context) => bookLogic),
                 BlocProvider(

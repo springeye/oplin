@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oplin/app/view/mobile/route.dart';
 import 'package:oplin/app/view/mobile/settings.dart';
 import 'package:oplin/bloc/book_bloc.dart';
-import 'package:oplin/bloc/show_node_bloc.dart';
+import 'package:oplin/bloc/edit_note_bloc.dart';
 import 'package:oplin/bloc/note_bloc.dart';
 import 'package:oplin/db/models.dart';
 
@@ -15,9 +15,9 @@ class FolderListWidget extends StatelessWidget {
 
   void onTapBook(BuildContext context, Notebook? book) {
     var noteLogic = context.read<NoteBloc>();
-    var showLogic = context.read<ShowNodeBloc>();
+    var showLogic = context.read<EditNoteBloc>();
     var changed = showLogic.state.changed;
-    var oldNote = showLogic.state.note;
+    var oldNote = noteLogic.state.note;
     if (changed) {
       showDialog<AlertDialog>(
           context: context,
@@ -30,7 +30,6 @@ class FolderListWidget extends StatelessWidget {
                   child: Text(S.of(context).cancel),
                   onPressed: () {
                     noteLogic.setNotebook(book);
-                    showLogic.add(const ShowNewNoteEvent(null));
                   },
                 ),
                 TextButton(
@@ -39,9 +38,8 @@ class FolderListWidget extends StatelessWidget {
                     var id = oldNote?.uuid;
                     var title = showLogic.state.editTitle;
                     var content = showLogic.state.editDocument;
-                    context
-                        .read<NoteBloc>()
-                        .add(NotesUpdated(id!, title: title, content: content));
+                    context.read<NoteBloc>().add(
+                        NotesUpdated(uuid: id, title: title, content: content));
                     Navigator.of(context).pop();
                     context.read<BookBloc>().add(const BookRefreshRequested());
                     noteLogic.setNotebook(book);
@@ -52,7 +50,6 @@ class FolderListWidget extends StatelessWidget {
           });
     } else {
       noteLogic.setNotebook(book);
-      showLogic.add(const ShowNewNoteEvent(null));
     }
   }
 

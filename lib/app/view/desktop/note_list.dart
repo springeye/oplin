@@ -1,7 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:oplin/bloc/show_node_bloc.dart';
+import 'package:oplin/bloc/edit_note_bloc.dart';
 import 'package:oplin/bloc/note_bloc.dart';
 import 'package:oplin/repository/view_sort_type.dart';
 
@@ -19,10 +18,10 @@ class NoteListWidget extends StatefulWidget {
 class _NoteListWidgetState extends State<NoteListWidget> {
   final _searchController = TextEditingController();
 
-  void _clickNote(BuildContext context, ShowNodeBloc showLogic, Note note) {
+  void _clickNote(BuildContext context, EditNoteBloc showLogic, Note note) {
     var state = showLogic.state;
-    var oldNote = state.note;
     var noteLogic = context.read<NoteBloc>();
+    var oldNote = noteLogic.state.note;
     if (state.changed) {
       showDialog<AlertDialog>(
           context: context,
@@ -34,7 +33,7 @@ class _NoteListWidgetState extends State<NoteListWidget> {
                 TextButton(
                   child: Text(S.of(context).cancel),
                   onPressed: () {
-                    showLogic.add(ShowNewNoteEvent(note));
+                    noteLogic.add(ShowNewNoteEvent(note));
                     Navigator.of(context).pop();
                   },
                 ),
@@ -44,9 +43,8 @@ class _NoteListWidgetState extends State<NoteListWidget> {
                     var id = oldNote?.uuid;
                     var title = showLogic.state.editTitle;
                     var content = showLogic.state.editDocument;
-                    context
-                        .read<NoteBloc>()
-                        .add(NotesUpdated(id!, title: title, content: content));
+                    context.read<NoteBloc>().add(
+                        NotesUpdated(uuid: id, title: title, content: content));
                     Navigator.of(context).pop();
                   },
                 ),
@@ -54,7 +52,7 @@ class _NoteListWidgetState extends State<NoteListWidget> {
             );
           });
     } else {
-      showLogic.add(ShowNewNoteEvent(note));
+      noteLogic.add(ShowNewNoteEvent(note));
     }
   }
 
@@ -67,9 +65,9 @@ class _NoteListWidgetState extends State<NoteListWidget> {
         .textTheme
         .bodyText2
         ?.copyWith(fontSize: 14, color: Colors.grey);
-    var selectNote = context.watch<ShowNodeBloc>().state.note;
     var state = context.watch<NoteBloc>().state;
-    var logic = context.read<ShowNodeBloc>();
+    var selectNote = state.note;
+    var logic = context.read<EditNoteBloc>();
     var notes = state.filteredTodos.toList();
     var book = S.of(context).all;
     if (state.filter.notebook != null) {
@@ -226,13 +224,13 @@ class _NoteListWidgetState extends State<NoteListWidget> {
   }
 
   Widget _buildCreateButton(BuildContext context) {
-    var showLogic = context.read<ShowNodeBloc>();
+    var bloc = context.read<NoteBloc>();
     return ClipOval(
       child: Material(
         color: Theme.of(context).primaryColor, // Button color
         child: InkWell(
           onTap: () {
-            showLogic.add(const ShowNewNoteEvent(null));
+            bloc.add(const ShowNewNoteEvent(null));
           },
           child: const Icon(
             Icons.add,
@@ -245,7 +243,7 @@ class _NoteListWidgetState extends State<NoteListWidget> {
 
   Widget _buildSearch(BuildContext context) {
     var noteBloc = context.read<NoteBloc>();
-    return BlocBuilder<NoteBloc, NotesState>(
+    return BlocBuilder<NoteBloc, NoteState>(
       buildWhen: (p, c) {
         return p.filter.search != c.filter.search;
       },
