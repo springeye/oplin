@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oplin/bloc/edit_note_bloc.dart';
@@ -175,41 +176,47 @@ class _NoteListWidgetState extends State<NoteListWidget> {
                         itemCount: notes.length,
                         itemBuilder: (ctx, index) {
                           var selected = selectNote?.uuid == notes[index].uuid;
-                          return Material(
-                            child: ListTile(
-                              selectedTileColor: selectedColor,
-                              hoverColor: selectedColor.withAlpha(50),
-                              selected: selected,
-                              onTap: () {
-                                _clickNote(context, logic, notes[index]);
-                              },
-                              iconColor: titleStyle?.color,
-                              // leading: selected
-                              //     ? const Icon(Icons.edit_note)
-                              //     : const Icon(Icons.note),
-                              title: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    notes[index].title,
-                                    style: !selected ? titleStyle : titleStyle,
-                                  ),
-                                  Text(
-                                    notes[index].content.toPlainText(),
-                                    maxLines: 3,
-                                    style: bodyStyle,
-                                  ),
-                                  Text(
-                                    S.of(context).datetime_format(
-                                        notes[index].updateTime),
-                                    style: bodyStyle,
-                                  ),
-                                  const Divider(
-                                    height: 10,
-                                    color: Colors.transparent,
-                                  )
-                                ],
+                          return GestureDetector(
+                            onSecondaryTapDown: (details) {
+                              _showContextMenu(
+                                  details.globalPosition, notes[index]);
+                            },
+                            child: Material(
+                              child: ListTile(
+                                selectedTileColor: selectedColor,
+                                hoverColor: selectedColor.withAlpha(50),
+                                selected: selected,
+                                onTap: () {
+                                  _clickNote(context, logic, notes[index]);
+                                },
+                                iconColor: titleStyle?.color,
+                                trailing:
+                                    selected ? Icon(Icons.more_vert) : null,
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      notes[index].title,
+                                      style:
+                                          !selected ? titleStyle : titleStyle,
+                                    ),
+                                    Text(
+                                      notes[index].content.toPlainText(),
+                                      maxLines: 3,
+                                      style: bodyStyle,
+                                    ),
+                                    Text(
+                                      S.of(context).datetime_format(
+                                          notes[index].updateTime),
+                                      style: bodyStyle,
+                                    ),
+                                    const Divider(
+                                      height: 10,
+                                      color: Colors.transparent,
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           );
@@ -283,6 +290,52 @@ class _NoteListWidgetState extends State<NoteListWidget> {
                     : null),
           ),
         );
+      },
+    );
+  }
+
+  void _showContextMenu(Offset offset, Note note) {
+    double width = 150;
+    showModal<Widget>(
+      context: context,
+      configuration: const FadeScaleTransitionConfiguration(
+        barrierColor: Colors.transparent,
+      ),
+      builder: (context) {
+        return LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+          return ConstrainedBox(
+            constraints: BoxConstraints.expand(
+                width: constraints.maxWidth, height: constraints.maxHeight),
+            child: Stack(
+              children: [
+                Positioned(
+                  top: offset.dy,
+                  left: offset.dx,
+                  child: SizedBox(
+                    width: width,
+                    child: Card(
+                      color: Colors.white,
+                      child: Column(
+                        children: [
+                          ListTile(
+                            title: Text("Delete"),
+                            onTap: () {
+                              context
+                                  .read<NoteBloc>()
+                                  .add(NoteDeleted([note.uuid]));
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
       },
     );
   }

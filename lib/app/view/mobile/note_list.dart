@@ -82,16 +82,10 @@ class NoteListState extends State<NoteList> {
   }
 
   ListView buildListView(BuildContext context) {
-    var notesState = context
-        .watch<NoteBloc>()
-        .state;
+    var notesState = context.watch<NoteBloc>().state;
     var notes = notesState.filteredTodos.toList();
     List<Notebook> books = widget.showFolder
-        ? context
-        .watch<BookBloc>()
-        .state
-        .filteredTodos
-        .toList()
+        ? context.watch<BookBloc>().state.filteredTodos.toList()
         : [];
     List<dynamic> items = <dynamic>[...books];
     items.addAll(notes);
@@ -131,11 +125,9 @@ class NoteListState extends State<NoteList> {
             },
             child: DraggableCard(
               color: e.sticky
-                  ? getSwatch(Theme
-                  .of(context)
-                  .cardColor)
-                  .shade600
-                  .withAlpha(40)
+                  ? getSwatch(Theme.of(context).cardColor)
+                      .shade600
+                      .withAlpha(40)
                   : null,
               enabled: true,
               data: e,
@@ -195,11 +187,9 @@ class NoteListState extends State<NoteList> {
             },
             child: TargetCard<Notebook, Note>(
               color: e.sticky
-                  ? getSwatch(Theme
-                  .of(context)
-                  .cardColor)
-                  .shade600
-                  .withAlpha(40)
+                  ? getSwatch(Theme.of(context).cardColor)
+                      .shade600
+                      .withAlpha(40)
                   : null,
               target: e,
               callback: (Notebook target, Note data) async {
@@ -259,9 +249,7 @@ class NoteListState extends State<NoteList> {
         Expanded(child: listView),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 60),
-          color: Theme
-              .of(context)
-              .bottomAppBarColor,
+          color: Theme.of(context).bottomAppBarColor,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -276,14 +264,12 @@ class NoteListState extends State<NoteList> {
                   exitEditModel();
                 },
                 icon: ImageIcon(Assets.icons.top.assetImage),
-                label: Text(S
-                    .of(context)
-                    .sticky),
+                label: Text(S.of(context).sticky),
               ),
               _bottomButtonItem(
                 onPressed: () async {
                   if (editType == EditType.note) {
-                    noteLogic.add(NotesNoteDeleted(selected));
+                    noteLogic.add(NoteDeleted(selected));
                     exitEditModel();
                   } else if (editType == EditType.folder) {
                     notebookLogic.add(BookDeleted(selected));
@@ -295,9 +281,7 @@ class NoteListState extends State<NoteList> {
                   widget.selectedCallback?.call(selected);
                 },
                 icon: ImageIcon(Assets.icons.delete.assetImage),
-                label: Text(S
-                    .of(context)
-                    .delete),
+                label: Text(S.of(context).delete),
                 context: context,
               ),
               if (editType == EditType.note)
@@ -316,9 +300,7 @@ class NoteListState extends State<NoteList> {
                     });
                   },
                   icon: ImageIcon(Assets.icons.move.assetImage),
-                  label: Text(S
-                      .of(context)
-                      .move_to),
+                  label: Text(S.of(context).move_to),
                 ),
             ],
           ),
@@ -345,11 +327,7 @@ class NoteListState extends State<NoteList> {
   }
 
   void selectAll() {
-    var notes = context
-        .read<NoteBloc>()
-        .state
-        .filteredTodos
-        .toList();
+    var notes = context.read<NoteBloc>().state.filteredTodos.toList();
     setState(() {
       if (editType == EditType.note) {
         selected.addAll(notes.map((e) => e.uuid));
@@ -360,20 +338,18 @@ class NoteListState extends State<NoteList> {
     widget.selectedCallback?.call(selected);
   }
 
-  Widget _bottomButtonItem({required BuildContext context,
-    VoidCallback? onPressed,
-    required Widget icon,
-    required Widget label}) {
+  Widget _bottomButtonItem(
+      {required BuildContext context,
+      VoidCallback? onPressed,
+      required Widget icon,
+      required Widget label}) {
     return GestureDetector(
       onTap: () {
         onPressed?.call();
       },
       child: Padding(
         padding: EdgeInsets.only(
-            top: 10, bottom: MediaQuery
-            .of(context)
-            .viewInsets
-            .bottom + 10),
+            top: 10, bottom: MediaQuery.of(context).viewInsets.bottom + 10),
         child: Column(
           children: [icon, label],
         ),

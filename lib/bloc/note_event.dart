@@ -33,10 +33,10 @@ class NotesUpdated extends NoteEvent {
   List<Object?> get props => [uuid, title, content, notebookId];
 }
 
-class NotesNoteDeleted extends NoteEvent {
+class NoteDeleted extends NoteEvent {
   final List<String> uuids;
 
-  NotesNoteDeleted(List<String> uuids) : uuids = [...uuids];
+  NoteDeleted(List<String> uuids) : uuids = [...uuids];
 
   @override
   List<Object> get props => [...uuids];

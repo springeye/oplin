@@ -98,14 +98,11 @@ class _NoteEditWidgetState extends State<NoteEditWidget> {
                         controller: ScrollController(),
                         scrollDirection: Axis.horizontal,
                         child: QuillToolbar.basic(
-                          showListCheck: false,
+                          // showListCheck: false,
                           toolbarIconAlignment: WrapAlignment.start,
                           controller: _quillController,
                           iconTheme: QuillIconTheme(
                               iconUnselectedFillColor: Colors.grey.shade100),
-                          customIcons: [
-                            QuillCustomIcon(icon: Icons.check_box, onTap: () {})
-                          ],
                         ),
                       ),
                     ),

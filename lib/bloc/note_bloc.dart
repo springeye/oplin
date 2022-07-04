@@ -29,7 +29,7 @@ class NoteBloc extends BaseBloc<NoteEvent, NoteState> {
   })  : _noteRepository = noteRepository,
         super(const NoteState()) {
     on<NoteRefreshRequested>(_onSubscriptionRequested);
-    on<NotesNoteDeleted>(_onNoteDeleted);
+    on<NoteDeleted>(_onNoteDeleted);
     on<NotesFilterChanged>(_onFilterChanged);
     on<NotesUpdated>(_onNoteUpdated);
     on<NotesSticky>(_onSticky);
@@ -53,10 +53,11 @@ class NoteBloc extends BaseBloc<NoteEvent, NoteState> {
 
     emit(state.copyWith(notes: () => _noteRepository.getNotes()));
     bookBloc.add(const BookRefreshRequested());
+    // add(const ShowNewNoteEvent(null));
   }
 
   Future<void> _onNoteDeleted(
-    NotesNoteDeleted event,
+    NoteDeleted event,
     Emitter<NoteState> emit,
   ) async {
     appLog.debug("delete notes ${event.uuids}");

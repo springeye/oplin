@@ -57,6 +57,7 @@ dependencies:
   quill_markdown: ^0.1.0
   html2md: ^1.2.6
   file_selector: ^0.8.4+3
+  animations: ^2.0.3
 dev_dependencies:
   bloc_test: ^9.0.3
   build_runner: ^2.1.11
