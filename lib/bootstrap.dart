@@ -47,8 +47,8 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
     () async {
       await BlocOverrides.runZoned(
         () async {
-          var store =
-              await openStore(directory: (await getTemporaryDirectory()).path);
+          var store = await openStore(
+              directory: (await getApplicationSupportDirectory()).path);
           NoteRepository noteRepository = StorageNoteRepository(store);
           BookRepository bookRepository = StorageBookRepository(store);
           BookBloc bookLogic = BookBloc(bookRepository: bookRepository);
