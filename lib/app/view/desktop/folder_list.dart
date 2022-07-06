@@ -82,6 +82,7 @@ class FolderListWidget extends StatelessWidget {
     var titleStyle = Theme.of(context).textTheme.bodyText2;
     return Container(
       color: bgColor,
+      padding: EdgeInsets.symmetric(horizontal: 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
