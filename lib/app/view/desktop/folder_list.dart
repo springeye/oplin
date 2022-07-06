@@ -109,8 +109,12 @@ class FolderListWidget extends StatelessWidget {
               ),
               child: Padding(
                 padding: const EdgeInsets.only(left: 25, top: 10),
-                child: ListView(
-                  children: [..._buildList(context)],
+                child: ScrollConfiguration(
+                  behavior: ScrollConfiguration.of(context)
+                      .copyWith(scrollbars: false),
+                  child: ListView(
+                    children: [..._buildList(context)],
+                  ),
                 ),
               ),
             ),

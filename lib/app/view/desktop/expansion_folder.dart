@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oplin/app/view/mobile/dialog.dart';
 import 'package:oplin/bloc/book_bloc.dart';
 
-const Duration _kExpand = Duration(milliseconds: 200);
+const Duration _kExpand = Duration(milliseconds: 100);
 
 class ExpansionFolder extends StatefulWidget {
   final Widget child;
