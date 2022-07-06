@@ -1,6 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:oplin/app/view/mobile/dialog.dart';
 import 'package:oplin/bloc/edit_note_bloc.dart';
 import 'package:oplin/bloc/note_bloc.dart';
 import 'package:oplin/repository/view_sort_type.dart';
@@ -178,8 +179,18 @@ class _NoteListWidgetState extends State<NoteListWidget> {
                           var selected = selectNote?.uuid == notes[index].uuid;
                           return GestureDetector(
                             onSecondaryTapDown: (details) {
-                              _showContextMenu(
-                                  details.globalPosition, notes[index]);
+                              var note = notes[index];
+                              showContextMenu(context, details.globalPosition, [
+                                ListTile(
+                                  title: Text("Delete"),
+                                  onTap: () {
+                                    context
+                                        .read<NoteBloc>()
+                                        .add(NoteDeleted([note.uuid]));
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ]);
                             },
                             child: Material(
                               child: ListTile(
@@ -290,52 +301,6 @@ class _NoteListWidgetState extends State<NoteListWidget> {
                     : null),
           ),
         );
-      },
-    );
-  }
-
-  void _showContextMenu(Offset offset, Note note) {
-    double width = 150;
-    showModal<Widget>(
-      context: context,
-      configuration: const FadeScaleTransitionConfiguration(
-        barrierColor: Colors.transparent,
-      ),
-      builder: (context) {
-        return LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints constraints) {
-          return ConstrainedBox(
-            constraints: BoxConstraints.expand(
-                width: constraints.maxWidth, height: constraints.maxHeight),
-            child: Stack(
-              children: [
-                Positioned(
-                  top: offset.dy,
-                  left: offset.dx,
-                  child: SizedBox(
-                    width: width,
-                    child: Card(
-                      color: Colors.white,
-                      child: Column(
-                        children: [
-                          ListTile(
-                            title: Text("Delete"),
-                            onTap: () {
-                              context
-                                  .read<NoteBloc>()
-                                  .add(NoteDeleted([note.uuid]));
-                              Navigator.pop(context);
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        });
       },
     );
   }

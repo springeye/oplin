@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:oplin/app/view/mobile/dialog.dart';
 import 'package:oplin/app/view/mobile/route.dart';
 import 'package:oplin/app/view/mobile/settings.dart';
 import 'package:oplin/bloc/book_bloc.dart';
@@ -141,24 +142,39 @@ class FolderListWidget extends StatelessWidget {
       child: ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(5.0)),
         child: Material(
-          child: ListTile(
-            iconColor: titleStyle?.color,
-            hoverColor: Colors.transparent,
-            focusColor: Colors.transparent,
-            tileColor: bgColor,
-            selectedTileColor: selectedColor.shade100,
-            selected: selected,
-            minLeadingWidth: 24,
-            leading: selected
-                ? const Icon(Icons.folder_open)
-                : const Icon(Icons.folder),
-            title: Text(
-              (book != null && book.isOther)
-                  ? S.of(context).other
-                  : book?.name ?? S.of(context).all,
-              style: selected ? selectTitleStyle : titleStyle,
+          child: GestureDetector(
+            onSecondaryTapDown: (details) {
+              if (book != null && !book.isOther && !book.isRecycled) {
+                showContextMenu(context, details.globalPosition, [
+                  ListTile(
+                    title: Text("Delete"),
+                    onTap: () {
+                      context.read<BookBloc>().add(BookDeleted([book.uuid]));
+                      Navigator.pop(context);
+                    },
+                  ),
+                ]);
+              }
+            },
+            child: ListTile(
+              iconColor: titleStyle?.color,
+              hoverColor: Colors.transparent,
+              focusColor: Colors.transparent,
+              tileColor: bgColor,
+              selectedTileColor: selectedColor.shade100,
+              selected: selected,
+              minLeadingWidth: 24,
+              leading: selected
+                  ? const Icon(Icons.folder_open)
+                  : const Icon(Icons.folder),
+              title: Text(
+                (book != null && book.isOther)
+                    ? S.of(context).other
+                    : book?.name ?? S.of(context).all,
+                style: selected ? selectTitleStyle : titleStyle,
+              ),
+              onTap: onTap,
             ),
-            onTap: onTap,
           ),
         ),
       ),

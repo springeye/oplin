@@ -206,3 +206,39 @@ void showLoading(BuildContext context) {
         );
       });
 }
+
+void showContextMenu(BuildContext context, Offset offset, List<Widget> items) {
+  double width = 150;
+  showModal<Widget>(
+    context: context,
+    configuration: const FadeScaleTransitionConfiguration(
+      barrierColor: Colors.transparent,
+    ),
+    builder: (context) {
+      return LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+        return ConstrainedBox(
+          constraints: BoxConstraints.expand(
+              width: constraints.maxWidth, height: constraints.maxHeight),
+          child: Stack(
+            children: [
+              Positioned(
+                top: offset.dy,
+                left: offset.dx,
+                child: SizedBox(
+                  width: width,
+                  child: Card(
+                    color: Colors.white,
+                    child: Column(
+                      children: items,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      });
+    },
+  );
+}
