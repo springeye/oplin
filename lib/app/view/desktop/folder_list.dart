@@ -79,18 +79,10 @@ class FolderListWidget extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: ListView.separated(
+                child: ListView.builder(
                   controller: ScrollController(),
                   scrollDirection: Axis.vertical,
                   itemCount: books.length + 2,
-                  separatorBuilder: (BuildContext context, int index) {
-                    return const Divider(
-                      indent: 0.0,
-                      thickness: 0.0,
-                      height: 0.0,
-                      color: Colors.transparent,
-                    );
-                  },
                   itemBuilder: (ctx, index) {
                     var book = logic.state.filter.notebook;
                     if (index == 0) {
@@ -139,7 +131,7 @@ class FolderListWidget extends StatelessWidget {
     var titleStyle = Theme.of(context).textTheme.bodyText2;
     var selectTitleStyle = titleStyle?.copyWith(color: selectedColor);
     return Padding(
-      padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+      padding: const EdgeInsets.only(left: 8.0, right: 2.0),
       child: ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(5.0)),
         child: Material(

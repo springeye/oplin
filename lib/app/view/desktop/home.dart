@@ -59,7 +59,7 @@ class _DesktopHomePageState extends State<DesktopHomePage> {
                   width: 300,
                   child: NoteListWidget(),
                 ),
-                Expanded(child: const NoteEditWidget())
+                Expanded(child: NoteEditWidget())
               ],
             ),
           ),
