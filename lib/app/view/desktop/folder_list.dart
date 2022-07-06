@@ -10,6 +10,8 @@ import 'package:oplin/db/models.dart';
 import '../../../bloc/app_cubit.dart';
 import 'package:oplin/gen/S.dart';
 
+import 'expansion_folder.dart';
+
 class FolderListWidget extends StatelessWidget {
   final bgColor = const Color(0xfff3f3f3);
 
@@ -55,73 +57,78 @@ class FolderListWidget extends StatelessWidget {
     }
   }
 
+  List<Widget> _buildList(BuildContext context) {
+    var logic = context.watch<NoteBloc>();
+
+    var bloc = context.watch<BookBloc>();
+    var state = bloc.state;
+    var books = state.filteredTodos.toList();
+    return books.map((book) {
+      var selectBook = logic.state.filter.notebook;
+      var selected = selectBook?.uuid == book.uuid;
+      return _buildItem(context, book, selected, () {
+        onTapBook(context, book);
+      });
+    }).toList()
+      ..add(Text("aaa"));
+  }
+
   @override
   Widget build(BuildContext context) {
     var primaryColor = context.watch<AppCubit>().state.primarySwatch;
+    var bloc = context.watch<BookBloc>();
     var logic = context.watch<NoteBloc>();
-
-    return BlocBuilder<BookBloc, BooksState>(
-      builder: (context, state) {
-        var books = state.filteredTodos.toList();
-        return Container(
-          color: bgColor,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                alignment: Alignment.center,
-                width: double.infinity,
-                padding: const EdgeInsets.all(8.0),
-                color: bgColor,
-                child: Text(
-                  S.of(context).notebook,
-                  style: Theme.of(context).primaryTextTheme.titleLarge,
-                ),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  controller: ScrollController(),
-                  scrollDirection: Axis.vertical,
-                  itemCount: books.length + 2,
-                  itemBuilder: (ctx, index) {
-                    var book = logic.state.filter.notebook;
-                    if (index == 0) {
-                      var selected = book == null;
-                      return _buildItem(context, null, selected, () {
-                        onTapBook(context, null);
-                      });
-                    }
-                    if (index == 1) {
-                      var selected = book != null && book.isOther;
-                      return _buildItem(context, Notebook.other, selected, () {
-                        onTapBook(context, Notebook.other);
-                      });
-                    } else {
-                      var selected = book?.uuid == books[index - 2].uuid;
-                      return _buildItem(context, books[index - 2], selected,
-                          () {
-                        onTapBook(context, books[index - 2]);
-                      });
-                    }
-                  },
-                ),
-              ),
-              if (Theme.of(context).platform != TargetPlatform.macOS)
-                Container(
-                  padding: const EdgeInsets.all(8.0),
-                  child: InkWell(
-                      child: Text(S.of(context).settings),
-                      onTap: () {
-                        Navigator.of(context).push(
-                            AppPageRoute<SettingWidget>(builder: (context) {
-                          return const SettingWidget();
-                        }));
-                      }),
-                ),
-            ],
+    var book = logic.state.filter.notebook;
+    var titleStyle = Theme.of(context).textTheme.bodyText2;
+    return Container(
+      color: bgColor,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            alignment: Alignment.center,
+            width: double.infinity,
+            padding: const EdgeInsets.all(8.0),
+            color: bgColor,
+            child: Text(
+              S.of(context).notebook,
+              style: Theme.of(context).primaryTextTheme.titleLarge,
+            ),
           ),
-        );
-      },
+          _buildItem(context, null, book == null, () {
+            onTapBook(context, null);
+          }),
+          _buildItem(context, Notebook.other, book?.isOther == true, () {
+            onTapBook(context, Notebook.other);
+          }),
+          Expanded(
+            child: ExpansionFolder(
+              title: const Padding(
+                padding: EdgeInsets.only(left: 10.0),
+                child: Text("我的文件夹"),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 50, top: 10),
+                child: Column(
+                  children: [..._buildList(context)],
+                ),
+              ),
+            ),
+          ),
+          if (Theme.of(context).platform != TargetPlatform.macOS)
+            Container(
+              padding: const EdgeInsets.all(8.0),
+              child: InkWell(
+                  child: Text(S.of(context).settings),
+                  onTap: () {
+                    Navigator.of(context)
+                        .push(AppPageRoute<SettingWidget>(builder: (context) {
+                      return const SettingWidget();
+                    }));
+                  }),
+            ),
+        ],
+      ),
     );
   }
 

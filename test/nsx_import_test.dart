@@ -16,6 +16,7 @@ Future<void> main() async {
     setUp(() {
       WidgetsFlutterBinding.ensureInitialized();
     });
+    test("xx", () {});
     test("parse", () async {
       var result =
           await NsxImport(File("henjue.nsx")).getResult(temp: "nsx_outputs");
