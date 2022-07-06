@@ -69,8 +69,7 @@ class FolderListWidget extends StatelessWidget {
       return _buildItem(context, book, selected, () {
         onTapBook(context, book);
       });
-    }).toList()
-      ..add(Text("aaa"));
+    }).toList();
   }
 
   @override
@@ -108,7 +107,7 @@ class FolderListWidget extends StatelessWidget {
                 child: Text("我的文件夹"),
               ),
               child: Padding(
-                padding: const EdgeInsets.only(left: 50, top: 10),
+                padding: const EdgeInsets.only(left: 25, top: 10),
                 child: Column(
                   children: [..._buildList(context)],
                 ),

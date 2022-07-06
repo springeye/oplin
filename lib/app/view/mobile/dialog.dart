@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_indicator/loading_indicator.dart';
@@ -105,68 +106,80 @@ void showMoveToFolderDialog(
   );
 }
 
-void showCreateNotebookDialog(
-  BuildContext context,
-  Function(String name) onOk,
-) {
+void showCreateNotebookDialog(BuildContext context, Function(String name) onOk,
+    {bool bottom = true}) {
   var container = TextEditingController();
-  showModalBottomSheet<Widget>(
-    isScrollControlled: true,
-    context: context,
-    builder: (context) {
-      return Padding(
-        padding: MediaQuery.of(context).viewInsets,
-        child: Container(
-          height: 220,
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              Text(
-                S.of(context).create_notebook,
-                style: Theme.of(context).textTheme.headline6,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: TextField(
-                  controller: container,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Theme.of(context).primaryColor),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(15)))),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(horizontal: 30)),
-                      child: Text(S.of(context).cancel),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        onOk(container.text);
-                      },
-                      style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(horizontal: 30)),
-                      child: Text(S.of(context).ok),
-                    ),
-                  ],
-                ),
-              )
-            ],
+  var content = Padding(
+    padding: MediaQuery.of(context).viewInsets,
+    child: Container(
+      height: 220,
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        children: [
+          Text(
+            S.of(context).create_notebook,
+            style: Theme.of(context).textTheme.headline6,
           ),
-        ),
-      );
-    },
+          Padding(
+            padding: const EdgeInsets.only(top: 20),
+            child: TextField(
+              controller: container,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Theme.of(context).primaryColor),
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(15)))),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(horizontal: 30)),
+                  child: Text(S.of(context).cancel),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    onOk(container.text);
+                  },
+                  style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(horizontal: 30)),
+                  child: Text(S.of(context).ok),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    ),
   );
+  if (!bottom) {
+    showDialog<Widget>(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: SizedBox(
+              child: content,
+              width: 350,
+            ),
+          );
+        });
+  } else {
+    showModalBottomSheet<Widget>(
+      isScrollControlled: true,
+      context: context,
+      builder: (context) {
+        return content;
+      },
+    );
+  }
 }
 
 void showLoading(BuildContext context) {
