@@ -64,6 +64,7 @@ class _ExpansionFolderState extends State<ExpansionFolder>
         GestureDetector(
           onTap: _handleTap,
           child: MouseRegion(
+            cursor: SystemMouseCursors.click,
             onEnter: (event) {
               setState(() {
                 _hoverAdd = true;
