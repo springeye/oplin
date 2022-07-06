@@ -49,20 +49,18 @@ class _DesktopHomePageState extends State<DesktopHomePage> {
         Expanded(
           child: PlatformMenuBar(
             menus: _buildMacosMenuBar(context),
-            body: VerticalSplitView(
-              divider: divider,
-              initSize: 0.4,
-              maxSize: 0.6,
-              minSize: 0.2,
-              left: VerticalSplitView(
-                initSize: 0.5,
-                minSize: 0.1,
-                maxSize: 0.9,
-                divider: divider,
-                left: const FolderListWidget(),
-                right: const NoteListWidget(),
-              ),
-              right: const NoteEditWidget(),
+            body: Row(
+              children: const [
+                SizedBox(
+                  width: 250,
+                  child: FolderListWidget(),
+                ),
+                SizedBox(
+                  width: 300,
+                  child: NoteListWidget(),
+                ),
+                Expanded(child: const NoteEditWidget())
+              ],
             ),
           ),
         ),

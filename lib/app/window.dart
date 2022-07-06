@@ -34,7 +34,7 @@ class DesktopWindow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appConfig = context.watch<AppCubit>().state;
-    var backgroundStartColor = appConfig.primarySwatch.shade400;
+    var backgroundStartColor = const Color(0xfff3f3f3);
     // var backgroundEndColor = appConfig.primarySwatch.shade700;
     var backgroundEndColor = backgroundStartColor;
     return WindowBorder(
