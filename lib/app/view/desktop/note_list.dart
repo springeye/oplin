@@ -272,9 +272,12 @@ class _NoteListWidgetState extends State<NoteListWidget> {
           onTap: () {
             bloc.add(const ShowNewNoteEvent(null));
           },
-          child: const Icon(
-            Icons.add,
-            size: 30,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: const Icon(
+              Icons.add,
+              color: Colors.white,
+            ),
           ),
         ),
       ),
