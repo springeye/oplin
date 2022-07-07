@@ -54,3 +54,4 @@ app.*.map.json
 *.dmg
 /Release
 *.nsx
+/dist/
