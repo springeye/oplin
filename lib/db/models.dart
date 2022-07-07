@@ -46,6 +46,41 @@ class Note {
 
   Note();
 
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Note &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          uuid == other.uuid &&
+          title == other.title &&
+          synced == other.synced &&
+          content == other.content &&
+          notebookId == other.notebookId &&
+          createTime == other.createTime &&
+          updateTime == other.updateTime &&
+          syncTime == other.syncTime &&
+          deleted == other.deleted &&
+          version == other.version &&
+          sticky == other.sticky &&
+          conflict == other.conflict;
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      uuid.hashCode ^
+      title.hashCode ^
+      synced.hashCode ^
+      content.hashCode ^
+      notebookId.hashCode ^
+      createTime.hashCode ^
+      updateTime.hashCode ^
+      syncTime.hashCode ^
+      deleted.hashCode ^
+      version.hashCode ^
+      sticky.hashCode ^
+      conflict.hashCode;
+
   @JsonKey(ignore: true)
   String get dbContent {
     return jsonEncode(content.toDelta().toJson());
@@ -114,6 +149,33 @@ class Book {
   factory Book.fromJson(Map<String, dynamic> json) => _$BookFromJson(json);
 
   Map<String, dynamic> toJson() => _$BookToJson(this);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Book &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          uuid == other.uuid &&
+          name == other.name &&
+          synced == other.synced &&
+          parentId == other.parentId &&
+          deleted == other.deleted &&
+          createTime == other.createTime &&
+          count == other.count &&
+          sticky == other.sticky;
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      uuid.hashCode ^
+      name.hashCode ^
+      synced.hashCode ^
+      parentId.hashCode ^
+      deleted.hashCode ^
+      createTime.hashCode ^
+      count.hashCode ^
+      sticky.hashCode;
 
   @override
   String toString() {

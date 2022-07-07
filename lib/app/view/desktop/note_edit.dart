@@ -57,7 +57,6 @@ class _NoteEditWidgetState extends State<NoteEditWidget> {
         ),
         child: BlocBuilder<NoteBloc, NoteState>(
           buildWhen: (p, c) {
-            appLog.debug("buildWhen=>${c.toString()}");
             return p.note?.uuid != c.note?.uuid;
           },
           builder: (context, state) {

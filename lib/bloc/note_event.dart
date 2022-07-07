@@ -87,3 +87,10 @@ class RemoveFromSelectNote extends NoteEvent {
   @override
   List<Object> get props => [note];
 }
+
+class ClearSelectNote extends NoteEvent {
+  const ClearSelectNote();
+
+  @override
+  List<Object> get props => [];
+}

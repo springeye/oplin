@@ -9,7 +9,7 @@ class IsarNoteRepository extends IsarRepository implements NoteRepository {
 
   @override
   void batchDeleteNote(List<String> uuids, {bool physics = false}) {
-    store.writeTxnSync(() async {
+    store.writeTxnSync(() {
       QueryBuilder<Note, Note, QFilterCondition> builder = store.notes.filter();
       var notes = builder
           .anyOf<String, Note>(
@@ -32,7 +32,7 @@ class IsarNoteRepository extends IsarRepository implements NoteRepository {
 
   @override
   void batchSaveNote(List<Note> notes) {
-    store.writeTxnSync(() async {
+    store.writeTxnSync(() {
       store.notes.putAllSync(notes);
     });
   }

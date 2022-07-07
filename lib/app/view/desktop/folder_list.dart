@@ -119,18 +119,17 @@ class FolderListWidget extends StatelessWidget {
               ),
             ),
           ),
-          if (Theme.of(context).platform != TargetPlatform.macOS)
-            Container(
-              padding: const EdgeInsets.all(8.0),
-              child: InkWell(
-                  child: Text(S.of(context).settings),
-                  onTap: () {
-                    Navigator.of(context)
-                        .push(AppPageRoute<SettingWidget>(builder: (context) {
-                      return const SettingWidget();
-                    }));
-                  }),
-            ),
+          Container(
+            padding: const EdgeInsets.all(8.0),
+            child: InkWell(
+                child: Text(S.of(context).settings),
+                onTap: () {
+                  Navigator.of(context)
+                      .push(AppPageRoute<SettingWidget>(builder: (context) {
+                    return const SettingWidget();
+                  }));
+                }),
+          ),
         ],
       ),
     );

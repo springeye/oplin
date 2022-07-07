@@ -18,6 +18,15 @@ class NoteState extends Equatable {
   final Note? note;
 
   @override
+  List<Object?> get props => [
+        status,
+        ...notes,
+        ...selected,
+        filter,
+        note,
+      ];
+
+  @override
   String toString() {
     return 'NotesState{status: $status, note:$note, notes: ${notes.length}, filter: $filter, lastUpdatedNote: $lastUpdatedNote}';
   } //last add or update note
@@ -45,12 +54,4 @@ class NoteState extends Equatable {
           lastUpdatedNote != null ? lastUpdatedNote() : this.lastUpdatedNote,
     );
   }
-
-  @override
-  List<Object?> get props => [
-        status,
-        note,
-        notes,
-        filter,
-      ];
 }

@@ -36,6 +36,7 @@ class NoteBloc extends BaseBloc<NoteEvent, NoteState> {
     on<NotesMoved>(_onMoved);
     on<AddToSelectNote>(_addToSelectNote);
     on<RemoveFromSelectNote>(_removeFromSelectNote);
+    on<ClearSelectNote>(_clearSelectNote);
     on<ShowNewNoteEvent>((event, emit) {
       appLog.debug("ShowNewNoteEvent");
       emit(
@@ -53,7 +54,16 @@ class NoteBloc extends BaseBloc<NoteEvent, NoteState> {
   ) async {
     emit(state.copyWith(status: () => NotesStatus.loading));
 
-    emit(state.copyWith(notes: () => _noteRepository.getNotes()));
+    emit(state.copyWith(notes: () {
+      appLog.debug("开始查询当前nodes");
+      var list = _noteRepository.getNotes();
+      for (var element in list) {
+        appLog.debug(element.toString());
+      }
+      appLog.debug("结束查询当前nodes");
+
+      return list;
+    }));
     bookBloc.add(const BookRefreshRequested());
     // add(const ShowNewNoteEvent(null));
   }
@@ -62,8 +72,9 @@ class NoteBloc extends BaseBloc<NoteEvent, NoteState> {
     NoteDeleted event,
     Emitter<NoteState> emit,
   ) async {
-    appLog.debug("delete notes ${event.uuids}");
-    _noteRepository.batchDeleteNote(event.uuids);
+    appLog.debug(
+        "notes count ${_noteRepository.getNotes().where((element) => !element.deleted).length}");
+    _noteRepository.batchDeleteNote(event.uuids, physics: false);
     add(const NoteRefreshRequested());
   }
 
@@ -144,7 +155,7 @@ class NoteBloc extends BaseBloc<NoteEvent, NoteState> {
       AddToSelectNote event, Emitter<NoteState> emit) {
     emit(state.copyWith(
       selected: () {
-        return [...state.selected..add(event.note)];
+        return [...state.selected, event.note];
       },
     ));
   }
@@ -153,7 +164,16 @@ class NoteBloc extends BaseBloc<NoteEvent, NoteState> {
       RemoveFromSelectNote event, Emitter<NoteState> emit) {
     emit(state.copyWith(
       selected: () {
-        return [...state.selected..remove(event.note)];
+        return [...state.selected]..remove(event.note);
+      },
+    ));
+  }
+
+  FutureOr<void> _clearSelectNote(
+      ClearSelectNote event, Emitter<NoteState> emit) {
+    emit(state.copyWith(
+      selected: () {
+        return [];
       },
     ));
   }

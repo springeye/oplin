@@ -5,6 +5,7 @@ import 'package:oplin/app/view/dialog.dart';
 import 'package:oplin/bloc/book_bloc.dart';
 import 'package:oplin/bloc/edit_note_bloc.dart';
 import 'package:oplin/bloc/note_bloc.dart';
+import 'package:oplin/common/logging.dart';
 import 'package:oplin/repository/view_sort_type.dart';
 
 import '../../../bloc/app_cubit.dart';
@@ -74,6 +75,11 @@ class _NoteListWidgetState extends State<NoteListWidget> {
     var logic = context.read<EditNoteBloc>();
     var selectedNotes = state.selected;
     var notes = state.filteredTodos.toList();
+    appLog.debug("开始渲染界面nodes");
+    for (var value1 in notes) {
+      appLog.debug(value1.toString());
+    }
+    appLog.debug("结束渲染界面nodes");
     var book = S.of(context).all;
     if (state.filter.notebook != null) {
       if (state.filter.notebook!.isOther) {
@@ -224,6 +230,11 @@ class _NoteListWidgetState extends State<NoteListWidget> {
                                     hover = notes[index];
                                   });
                                 },
+                                onExit: (details) {
+                                  setState(() {
+                                    hover = null;
+                                  });
+                                },
                                 child: _buildNoteItem(context, notes[index],
                                     currentShow, selectedNotes),
                               ),
@@ -268,7 +279,6 @@ class _NoteListWidgetState extends State<NoteListWidget> {
           onChanged: (bool? value) {
             var noteBloc = context.read<NoteBloc>();
             if (selectedNotes.contains(note)) {
-              selectedNotes.remove(note);
               noteBloc.add(RemoveFromSelectNote(note));
             } else {
               noteBloc.add(AddToSelectNote(note));

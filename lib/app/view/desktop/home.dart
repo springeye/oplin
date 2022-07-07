@@ -6,6 +6,7 @@ import 'package:oplin/app/view/desktop/note_list.dart';
 import 'package:oplin/app/view/desktop/vertical_splite_view.dart';
 import 'package:oplin/app/view/mobile/route.dart';
 import 'package:oplin/app/view/mobile/settings.dart';
+import 'package:oplin/bloc/app_cubit.dart';
 import 'package:oplin/bloc/book_bloc.dart';
 import 'package:oplin/bloc/note_bloc.dart';
 import 'package:oplin/gen/S.dart';
@@ -32,6 +33,7 @@ class _DesktopHomePageState extends State<DesktopHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    var appConfig = context.watch<AppCubit>().state;
     var noteBloc = context.read<NoteBloc>();
     noteBloc.add(const NoteRefreshRequested());
     context.read<BookBloc>().add(const BookRefreshRequested());
@@ -47,54 +49,77 @@ class _DesktopHomePageState extends State<DesktopHomePage> {
           ],
         ),
         Expanded(
-          child: PlatformMenuBar(
-            menus: _buildMacosMenuBar(context),
-            body: Row(
-              children: const [
-                SizedBox(
-                  width: 250,
-                  child: FolderListWidget(),
-                ),
-                SizedBox(
-                  width: 300,
-                  child: NoteListWidget(),
-                ),
-                Expanded(
-                    child: Padding(
-                  padding: EdgeInsets.only(right: 8.0, left: 10),
-                  child: NoteEditWidget(),
-                ))
-              ],
-            ),
+          child: Stack(
+            children: [
+              Row(
+                children: const [
+                  SizedBox(
+                    width: 250,
+                    child: FolderListWidget(),
+                  ),
+                  SizedBox(
+                    width: 300,
+                    child: NoteListWidget(),
+                  ),
+                  Expanded(
+                      child: Padding(
+                    padding: EdgeInsets.only(right: 8.0, left: 10),
+                    child: NoteEditWidget(),
+                  ))
+                ],
+              ),
+              BlocBuilder<NoteBloc, NoteState>(
+                builder: (context, state) {
+                  return state.selected.isEmpty
+                      ? Container()
+                      : Container(
+                          color: appConfig.primarySwatch,
+                          child: _editToolBar(context),
+                        );
+                },
+              )
+            ],
           ),
         ),
       ],
     );
   }
 
-  List<PlatformMenu> _buildMacosMenuBar(BuildContext context) {
-    return [
-      PlatformMenu(
-        label: S.of(context).app_name,
-        menus: [
-          PlatformMenuItemGroup(
-            members: [
-              PlatformMenuItem(
-                  label: S.of(context).settings,
-                  onSelected: () {
-                    Navigator.push(context, AppPageRoute<SettingWidget>(
-                        builder: (BuildContext context) {
-                      return const SettingWidget();
-                    }));
-                  }),
-              if (PlatformProvidedMenuItem.hasMenu(
-                  PlatformProvidedMenuItemType.quit))
-                const PlatformProvidedMenuItem(
-                    type: PlatformProvidedMenuItemType.quit),
-            ],
+  Widget _editToolBar(BuildContext context) {
+    var bloc = context.read<NoteBloc>();
+    var selected = bloc.state.selected;
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 30),
+      width: double.infinity,
+      height: 45,
+      child: Row(
+        children: [
+          IconButton(
+            onPressed: () {
+              bloc.add(const ClearSelectNote());
+            },
+            icon: const Icon(
+              Icons.close,
+              color: Colors.white,
+            ),
+          ),
+          Text(
+            S.of(context).select_note_count(selected.length),
+            style: const TextStyle(color: Colors.white),
+          ),
+          const Spacer(),
+          IconButton(
+            onPressed: () {
+              bloc.add(NoteDeleted(selected.map((e) => e.uuid).toList()));
+              bloc.add(const ClearSelectNote());
+            },
+            icon: const Icon(
+              Icons.delete,
+              color: Colors.white,
+            ),
           ),
         ],
       ),
-    ];
+    );
   }
 }
