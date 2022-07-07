@@ -12,7 +12,7 @@ class IsarNoteRepository extends IsarRepository implements NoteRepository {
     store.writeTxnSync(() async {
       QueryBuilder<Note, Note, QFilterCondition> builder = store.notes.filter();
       var notes = builder
-          .anyOf(
+          .anyOf<String, Note>(
             uuids,
             (QueryBuilder<Note, Note, QFilterCondition> q, String uuid) =>
                 q.uuidEqualTo(uuid),
@@ -43,7 +43,7 @@ class IsarNoteRepository extends IsarRepository implements NoteRepository {
   List<Note> findNotes(List<String> uuids) {
     QueryBuilder<Note, Note, QFilterCondition> builder = store.notes.filter();
     var notes = builder
-        .anyOf(
+        .anyOf<String, Note>(
           uuids,
           (QueryBuilder<Note, Note, QFilterCondition> q, String uuid) =>
               q.uuidEqualTo(uuid),

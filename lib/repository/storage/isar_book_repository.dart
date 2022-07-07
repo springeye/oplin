@@ -11,8 +11,8 @@ class IsarBookRepository extends IsarRepository implements BookRepository {
   void batchDeleteBook(List<String> uuids, {bool physics = false}) {
     store.writeTxnSync(() async {
       QueryBuilder<Book, Book, QFilterCondition> builder = store.books.filter();
-      var books = builder
-          .anyOf(
+      List<Book> books = builder
+          .anyOf<String, Book>(
             uuids,
             (QueryBuilder<Book, Book, QFilterCondition> q, String uuid) =>
                 q.uuidEqualTo(uuid),
@@ -46,7 +46,7 @@ class IsarBookRepository extends IsarRepository implements BookRepository {
   List<Book> findBooks(List<String> uuids) {
     QueryBuilder<Book, Book, QFilterCondition> builder = store.books.filter();
     var books = builder
-        .anyOf(
+        .anyOf<String, Book>(
           uuids,
           (QueryBuilder<Book, Book, QFilterCondition> q, String uuid) =>
               q.uuidEqualTo(uuid),
