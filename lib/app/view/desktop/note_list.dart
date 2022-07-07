@@ -1,7 +1,8 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:oplin/app/view/mobile/dialog.dart';
+import 'package:oplin/app/view/dialog.dart';
+import 'package:oplin/bloc/book_bloc.dart';
 import 'package:oplin/bloc/edit_note_bloc.dart';
 import 'package:oplin/bloc/note_bloc.dart';
 import 'package:oplin/repository/view_sort_type.dart';
@@ -188,6 +189,27 @@ class _NoteListWidgetState extends State<NoteListWidget> {
                                         .read<NoteBloc>()
                                         .add(NoteDeleted([note.uuid]));
                                     Navigator.pop(context);
+                                  },
+                                ),
+                                ListTile(
+                                  title: Text("Move"),
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                    var notebookLogic =
+                                        context.read<BookBloc>();
+                                    var noteLogic = context.read<NoteBloc>();
+                                    showMoveToFolderDialog(context,
+                                        onCreatePressed: () {
+                                      showCreateNotebookDialog(context, (name) {
+                                        notebookLogic
+                                            .add(BookAdded(name: name));
+                                        Navigator.pop(context);
+                                      });
+                                    }, onNotebookPressed: (Book? notebook) {
+                                      noteLogic.add(NotesMoved(
+                                          [notes[index].uuid], notebook?.uuid));
+                                      Navigator.pop(context);
+                                    });
                                   },
                                 ),
                               ]);

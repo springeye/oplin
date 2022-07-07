@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:oplin/app/view/mobile/dialog.dart';
+import 'package:oplin/app/view/dialog.dart';
 import 'package:oplin/bloc/book_bloc.dart';
 
 const Duration _kExpand = Duration(milliseconds: 100);
@@ -105,7 +105,7 @@ class _ExpansionFolderState extends State<ExpansionFolder>
                             BookBloc read = context.read<BookBloc>();
                             read.add(BookAdded(name: name));
                             Navigator.pop(context);
-                          }, bottom: false);
+                          });
                         },
                         icon: const Icon(Icons.add)),
                   ),
