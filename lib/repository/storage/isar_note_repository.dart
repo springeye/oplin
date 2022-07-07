@@ -18,7 +18,15 @@ class IsarNoteRepository extends IsarRepository implements NoteRepository {
                 q.uuidEqualTo(uuid),
           )
           .findAllSync();
-      store.notes.deleteAllSync(notes.map((e) => e.id).toList());
+      if (physics) {
+        store.notes.deleteAllSync(notes.map((e) => e.id).toList());
+      } else {
+        for (var value in notes) {
+          value.deleted = true;
+          value.synced = false;
+        }
+        store.notes.putAllSync(notes);
+      }
     });
   }
 
