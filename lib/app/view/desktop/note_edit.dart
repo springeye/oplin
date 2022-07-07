@@ -52,6 +52,8 @@ class _NoteEditWidgetState extends State<NoteEditWidget> {
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(20),
           topRight: Radius.circular(20),
+          bottomLeft: Radius.circular(20),
+          bottomRight: Radius.circular(20),
         ),
         child: BlocBuilder<NoteBloc, NoteState>(
           buildWhen: (p, c) {
@@ -80,7 +82,9 @@ class _NoteEditWidgetState extends State<NoteEditWidget> {
             });
             return Container(
               color: Colors.white,
+              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 15.0),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   TextField(
                     style: Theme.of(context).textTheme.titleLarge,
@@ -94,16 +98,12 @@ class _NoteEditWidgetState extends State<NoteEditWidget> {
                   if (showToolbar)
                     Container(
                       color: Colors.grey.shade100,
-                      child: SingleChildScrollView(
-                        controller: ScrollController(),
-                        scrollDirection: Axis.horizontal,
-                        child: QuillToolbar.basic(
-                          // showListCheck: false,
-                          toolbarIconAlignment: WrapAlignment.start,
-                          controller: _quillController,
-                          iconTheme: QuillIconTheme(
-                              iconUnselectedFillColor: Colors.grey.shade100),
-                        ),
+                      child: QuillToolbar.basic(
+                        // showListCheck: false,
+                        toolbarIconAlignment: WrapAlignment.start,
+                        controller: _quillController,
+                        iconTheme: QuillIconTheme(
+                            iconUnselectedFillColor: Colors.grey.shade100),
                       ),
                     ),
                   Expanded(
