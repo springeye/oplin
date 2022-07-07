@@ -11,7 +11,7 @@ import 'package:quill_markdown/quill_markdown.dart';
 part 'nsx.g.dart';
 
 class ParseResult {
-  final List<Notebook> books;
+  final List<Book> books;
   final List<Note> notes;
 
   ParseResult(this.books, this.notes);
@@ -60,7 +60,7 @@ class NsxImport {
 
     List<String> noteIds = config?.note ?? [];
     List<String> booksIds = config?.notebook ?? [];
-    List<Notebook> books = [];
+    List<Book> books = [];
     List<Note> notes = [];
     String emptyBook = "";
     for (var uuid in booksIds) {
@@ -71,7 +71,7 @@ class NsxImport {
         emptyBook = uuid;
         continue;
       }
-      var book = Notebook();
+      var book = Book();
       book.uuid = uuid;
       book.name = _name;
       var sinceEpoch = json['ctime'] as int;

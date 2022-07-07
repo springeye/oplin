@@ -23,7 +23,7 @@ Future<void> main() async {
       File("./test_db").deleteSync(recursive: true);
     });
     test("delete", () async {
-      var book = Notebook()..uuid = const Uuid().v4();
+      var book = Book()..uuid = const Uuid().v4();
       var noteRepository = StorageNoteRepository(store);
       repository.saveBook(book);
       noteRepository.saveNote(Note.create()..notebookId = book.uuid);

@@ -40,7 +40,7 @@ Widget _cardButton(BuildContext context,
 void showMoveToFolderDialog(
   BuildContext context, {
   Function? onCreatePressed,
-  Function(Notebook? notebook)? onNotebookPressed,
+  Function(Book? notebook)? onNotebookPressed,
 }) {
   showModalBottomSheet<Widget>(
     isScrollControlled: true,

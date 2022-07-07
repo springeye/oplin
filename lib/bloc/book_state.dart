@@ -10,12 +10,12 @@ class BooksState extends Equatable {
       this.lastUpdatedBook});
 
   final BooksStatus status;
-  final List<Notebook> books;
+  final List<Book> books;
   final NotebookViewFilter filter;
 
-  final Notebook? lastUpdatedBook;
+  final Book? lastUpdatedBook;
 
-  Iterable<Notebook> get filteredTodos => filter.applyAll(books);
+  Iterable<Book> get filteredTodos => filter.applyAll(books);
 
   @override
   String toString() {
@@ -24,10 +24,10 @@ class BooksState extends Equatable {
 
   BooksState copyWith({
     BooksStatus Function()? status,
-    List<Notebook> Function()? books,
+    List<Book> Function()? books,
     NotebookViewFilter Function()? filter,
     String Function()? search,
-    Notebook? Function()? lastUpdatedBook,
+    Book? Function()? lastUpdatedBook,
   }) {
     return BooksState(
       status: status != null ? status() : this.status,

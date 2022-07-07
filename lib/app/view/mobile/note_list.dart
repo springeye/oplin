@@ -17,7 +17,7 @@ import 'dialog.dart';
 import 'folder_screen.dart';
 
 class NoteList extends StatefulWidget {
-  final Notebook? notebook;
+  final Book? notebook;
   final Function(EditType editType)? modelCallback;
   final Function(List<String> selected)? selectedCallback;
   final bool showFolder;
@@ -84,7 +84,7 @@ class NoteListState extends State<NoteList> {
   ListView buildListView(BuildContext context) {
     var notesState = context.watch<NoteBloc>().state;
     var notes = notesState.filteredTodos.toList();
-    List<Notebook> books = widget.showFolder
+    List<Book> books = widget.showFolder
         ? context.watch<BookBloc>().state.filteredTodos.toList()
         : [];
     List<dynamic> items = <dynamic>[...books];
@@ -185,14 +185,14 @@ class NoteListState extends State<NoteList> {
                 exitEditModel();
               }
             },
-            child: TargetCard<Notebook, Note>(
+            child: TargetCard<Book, Note>(
               color: e.sticky
                   ? getSwatch(Theme.of(context).cardColor)
                       .shade600
                       .withAlpha(40)
                   : null,
               target: e,
-              callback: (Notebook target, Note data) async {
+              callback: (Book target, Note data) async {
                 var logic = context.read<NoteBloc>();
                 logic.add(NotesMoved([data.uuid], target.uuid));
                 exitEditModel();
@@ -293,7 +293,7 @@ class NoteListState extends State<NoteList> {
                         notebookLogic.add(BookAdded(name: name));
                         Navigator.pop(context);
                       });
-                    }, onNotebookPressed: (Notebook? notebook) {
+                    }, onNotebookPressed: (Book? notebook) {
                       noteLogic.add(NotesMoved(selected, notebook?.uuid));
                       exitEditModel();
                       Navigator.pop(context);

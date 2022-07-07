@@ -94,49 +94,49 @@ final _entities = <ModelEntity>[
       relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[]),
   ModelEntity(
-      id: const IdUid(2, 5226346128073536163),
-      name: 'Notebook',
-      lastPropertyId: const IdUid(8, 6365720830571446228),
+      id: const IdUid(3, 5258373554156289013),
+      name: 'Book',
+      lastPropertyId: const IdUid(8, 7465108607384454811),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 1329120285121785376),
+            id: const IdUid(1, 8905299861632040470),
             name: 'id',
             type: 6,
             flags: 1),
         ModelProperty(
-            id: const IdUid(2, 5818052819333124427),
+            id: const IdUid(2, 506341044552188806),
             name: 'uuid',
             type: 9,
             flags: 2048,
-            indexId: const IdUid(2, 9198425297800975164)),
+            indexId: const IdUid(4, 8094675356025259108)),
         ModelProperty(
-            id: const IdUid(3, 587732048673187962),
+            id: const IdUid(3, 9060935761207096339),
             name: 'name',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(4, 6083180360774585694),
+            id: const IdUid(4, 756460414781577875),
             name: 'synced',
             type: 1,
             flags: 0),
         ModelProperty(
-            id: const IdUid(5, 1511192544412318552),
+            id: const IdUid(5, 1374070128318084868),
             name: 'parentId',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(6, 7244152113840002312),
+            id: const IdUid(6, 8250699189892559399),
             name: 'deleted',
             type: 1,
             flags: 0),
         ModelProperty(
-            id: const IdUid(7, 1910076271887859010),
+            id: const IdUid(7, 2374135558372455849),
             name: 'createTime',
             type: 10,
             flags: 0),
         ModelProperty(
-            id: const IdUid(8, 6365720830571446228),
+            id: const IdUid(8, 7465108607384454811),
             name: 'sticky',
             type: 1,
             flags: 0)
@@ -165,13 +165,23 @@ Future<Store> openStore(
 ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
-      lastEntityId: const IdUid(2, 5226346128073536163),
-      lastIndexId: const IdUid(3, 291590735518755115),
+      lastEntityId: const IdUid(3, 5258373554156289013),
+      lastIndexId: const IdUid(4, 8094675356025259108),
       lastRelationId: const IdUid(0, 0),
       lastSequenceId: const IdUid(0, 0),
-      retiredEntityUids: const [],
+      retiredEntityUids: const [5226346128073536163],
       retiredIndexUids: const [291590735518755115],
-      retiredPropertyUids: const [9085887119849854662],
+      retiredPropertyUids: const [
+        9085887119849854662,
+        1329120285121785376,
+        5818052819333124427,
+        587732048673187962,
+        6083180360774585694,
+        1511192544412318552,
+        7244152113840002312,
+        1910076271887859010,
+        6365720830571446228
+      ],
       retiredRelationUids: const [],
       modelVersion: 5,
       modelVersionParserMinimum: 5,
@@ -248,15 +258,15 @@ ModelDefinition getObjectBoxModel() {
 
           return object;
         }),
-    Notebook: EntityDefinition<Notebook>(
+    Book: EntityDefinition<Book>(
         model: _entities[1],
-        toOneRelations: (Notebook object) => [],
-        toManyRelations: (Notebook object) => {},
-        getId: (Notebook object) => object.id,
-        setId: (Notebook object, int id) {
+        toOneRelations: (Book object) => [],
+        toManyRelations: (Book object) => {},
+        getId: (Book object) => object.id,
+        setId: (Book object, int id) {
           object.id = id;
         },
-        objectToFB: (Notebook object, fb.Builder fbb) {
+        objectToFB: (Book object, fb.Builder fbb) {
           final uuidOffset = fbb.writeString(object.uuid);
           final nameOffset = fbb.writeString(object.name);
           final parentIdOffset = object.parentId == null
@@ -278,7 +288,7 @@ ModelDefinition getObjectBoxModel() {
           final buffer = fb.BufferContext(fbData);
           final rootOffset = buffer.derefObject(0);
 
-          final object = Notebook()
+          final object = Book()
             ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0)
             ..uuid = const fb.StringReader(asciiOptimization: true)
                 .vTableGet(buffer, rootOffset, 6, '')
@@ -350,34 +360,30 @@ class Note_ {
       QueryStringProperty<Note>(_entities[0].properties[12]);
 }
 
-/// [Notebook] entity fields to define ObjectBox queries.
-class Notebook_ {
-  /// see [Notebook.id]
-  static final id = QueryIntegerProperty<Notebook>(_entities[1].properties[0]);
+/// [Book] entity fields to define ObjectBox queries.
+class Book_ {
+  /// see [Book.id]
+  static final id = QueryIntegerProperty<Book>(_entities[1].properties[0]);
 
-  /// see [Notebook.uuid]
-  static final uuid = QueryStringProperty<Notebook>(_entities[1].properties[1]);
+  /// see [Book.uuid]
+  static final uuid = QueryStringProperty<Book>(_entities[1].properties[1]);
 
-  /// see [Notebook.name]
-  static final name = QueryStringProperty<Notebook>(_entities[1].properties[2]);
+  /// see [Book.name]
+  static final name = QueryStringProperty<Book>(_entities[1].properties[2]);
 
-  /// see [Notebook.synced]
-  static final synced =
-      QueryBooleanProperty<Notebook>(_entities[1].properties[3]);
+  /// see [Book.synced]
+  static final synced = QueryBooleanProperty<Book>(_entities[1].properties[3]);
 
-  /// see [Notebook.parentId]
-  static final parentId =
-      QueryStringProperty<Notebook>(_entities[1].properties[4]);
+  /// see [Book.parentId]
+  static final parentId = QueryStringProperty<Book>(_entities[1].properties[4]);
 
-  /// see [Notebook.deleted]
-  static final deleted =
-      QueryBooleanProperty<Notebook>(_entities[1].properties[5]);
+  /// see [Book.deleted]
+  static final deleted = QueryBooleanProperty<Book>(_entities[1].properties[5]);
 
-  /// see [Notebook.createTime]
+  /// see [Book.createTime]
   static final createTime =
-      QueryIntegerProperty<Notebook>(_entities[1].properties[6]);
+      QueryIntegerProperty<Book>(_entities[1].properties[6]);
 
-  /// see [Notebook.sticky]
-  static final sticky =
-      QueryBooleanProperty<Notebook>(_entities[1].properties[7]);
+  /// see [Book.sticky]
+  static final sticky = QueryBooleanProperty<Book>(_entities[1].properties[7]);
 }

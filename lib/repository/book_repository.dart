@@ -3,13 +3,13 @@ import 'package:oplin/db/models.dart';
 abstract class BookRepository {
   const BookRepository();
 
-  List<Notebook> getBooks();
+  List<Book> getBooks();
 
-  Notebook? findBook(String uuid);
+  Book? findBook(String uuid);
 
-  void saveBook(Notebook book);
+  void saveBook(Book book);
 
-  void batchSaveBook(List<Notebook> books);
+  void batchSaveBook(List<Book> books);
 
   void deleteBook(String uuid, {bool physics = false});
 

@@ -66,7 +66,7 @@ Widget buildDrawer(BuildContext context) {
                       },
                       child: buildNoteBookItem(
                         context,
-                        Notebook()..name = S.of(context).all,
+                        Book()..name = S.of(context).all,
                         selectBook == null,
                         iconSize: iconSize,
                         fontSize: fontSize,
@@ -77,12 +77,12 @@ Widget buildDrawer(BuildContext context) {
                   if (index == 1) {
                     return InkWell(
                       onTap: () {
-                        noteBloc.setNotebook(Notebook.other);
+                        noteBloc.setNotebook(Book.other);
                         Navigator.pop(context);
                       },
                       child: buildNoteBookItem(
                         context,
-                        Notebook.other..name = S.of(context).other,
+                        Book.other..name = S.of(context).other,
                         selectBook != null && selectBook.isOther,
                         iconSize: iconSize,
                         fontSize: fontSize,
@@ -110,7 +110,7 @@ Widget buildDrawer(BuildContext context) {
             ),
             buildNoteBookItem(
               context,
-              Notebook.recycled..name = "Recycled",
+              Book.recycled..name = "Recycled",
               selectBook?.isRecycled == true,
               iconSize: iconSize,
               fontSize: fontSize,

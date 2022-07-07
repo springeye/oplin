@@ -18,7 +18,7 @@ class FolderListWidget extends StatelessWidget {
 
   const FolderListWidget({Key? key}) : super(key: key);
 
-  void onTapBook(BuildContext context, Notebook? book) {
+  void onTapBook(BuildContext context, Book? book) {
     var noteLogic = context.read<NoteBloc>();
     var showLogic = context.read<EditNoteBloc>();
     var changed = showLogic.state.changed;
@@ -98,8 +98,8 @@ class FolderListWidget extends StatelessWidget {
           _buildItem(context, null, book == null, () {
             onTapBook(context, null);
           }),
-          _buildItem(context, Notebook.other, book?.isOther == true, () {
-            onTapBook(context, Notebook.other);
+          _buildItem(context, Book.other, book?.isOther == true, () {
+            onTapBook(context, Book.other);
           }),
           Expanded(
             child: ExpansionFolder(
@@ -136,7 +136,7 @@ class FolderListWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildItem(BuildContext context, Notebook? book, bool selected,
+  Widget _buildItem(BuildContext context, Book? book, bool selected,
       GestureTapCallback? onTap) {
     var selectedColor = context.watch<AppCubit>().state.primarySwatch;
     var titleStyle = Theme.of(context).textTheme.bodyText2;

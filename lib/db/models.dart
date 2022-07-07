@@ -1,8 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter_quill/flutter_quill.dart';
+import 'package:isar/isar.dart' hide Index;
 import 'package:json_annotation/json_annotation.dart';
-import 'package:objectbox/objectbox.dart';
+import 'package:objectbox/objectbox.dart' hide QueryBuilder;
 import 'package:uuid/uuid.dart';
 
 part 'models.g.dart';
@@ -24,8 +25,9 @@ class DocumentConverter implements JsonConverter<Document, List> {
 @Entity()
 @DocumentConverter()
 @JsonSerializable()
+@Collection()
 class Note {
-  int id = 0;
+  int id = Isar.autoIncrement;
   @Index()
   String uuid = "";
   String title = "";
@@ -84,8 +86,9 @@ class Note {
 
 @JsonSerializable()
 @Entity()
-class Notebook {
-  int id = 0;
+@Collection()
+class Book {
+  int id = Isar.autoIncrement;
   @Index()
   String uuid = "";
   String name = "";
@@ -97,27 +100,26 @@ class Notebook {
   int count = 0;
   bool sticky = false;
 
-  Notebook();
+  Book();
 
-  static Notebook get other {
-    return Notebook()..uuid = "other";
+  static Book get other {
+    return Book()..uuid = "other";
   }
 
-  static Notebook get recycled {
-    return Notebook()..uuid = "recycled";
+  static Book get recycled {
+    return Book()..uuid = "recycled";
   }
 
   bool get isOther => uuid == "other";
 
   bool get isRecycled => uuid == "recycled";
 
-  factory Notebook.fromJson(Map<String, dynamic> json) =>
-      _$NotebookFromJson(json);
+  factory Book.fromJson(Map<String, dynamic> json) => _$BookFromJson(json);
 
-  Map<String, dynamic> toJson() => _$NotebookToJson(this);
+  Map<String, dynamic> toJson() => _$BookToJson(this);
 
   @override
   String toString() {
-    return 'Notebook{id: $id, uuid: $uuid, name: $name, synced: $synced, parentId: $parentId, deleted: $deleted, createTime: $createTime, count: $count, sticky: $sticky}';
+    return 'Book{id: $id, uuid: $uuid, name: $name, synced: $synced, parentId: $parentId, deleted: $deleted, createTime: $createTime, count: $count, sticky: $sticky}';
   }
 }

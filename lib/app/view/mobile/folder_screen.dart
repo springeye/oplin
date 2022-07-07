@@ -14,7 +14,7 @@ import '../../../gen/assets.gen.dart';
 import 'package:oplin/gen/S.dart';
 
 class FolderScreenWidget extends StatefulWidget {
-  final Notebook book;
+  final Book book;
 
   const FolderScreenWidget({
     Key? key,

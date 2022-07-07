@@ -10,8 +10,8 @@ class StorageBookRepository extends ObjectBoxX implements BookRepository {
   StorageBookRepository(super.store);
 
   @override
-  List<Notebook> getBooks() {
-    var books = getBox<Notebook>().getAll();
+  List<Book> getBooks() {
+    var books = getBox<Book>().getAll();
     var box = getBox<Note>();
     for (var book in books) {
       book.count =
@@ -21,14 +21,14 @@ class StorageBookRepository extends ObjectBoxX implements BookRepository {
   }
 
   @override
-  Notebook? findBook(String uuid) =>
-      getBox<Notebook>().query(Notebook_.uuid.equals(uuid)).build().findFirst();
+  Book? findBook(String uuid) =>
+      getBox<Book>().query(Book_.uuid.equals(uuid)).build().findFirst();
 
   /// Saves a [book].
   ///
   /// If a [book] with the same id already exists, it will be replaced.
   @override
-  void saveBook(Notebook book) {
+  void saveBook(Book book) {
     batchSaveBook([book]);
   }
 
@@ -64,9 +64,9 @@ class StorageBookRepository extends ObjectBoxX implements BookRepository {
   @override
   void batchDeleteBook(List<String> uuids, {bool physics = false}) {
     store.runInTransaction(TxMode.write, () {
-      var bookBox = store.box<Notebook>();
-      List<Notebook> books =
-          bookBox.query(Notebook_.uuid.oneOf(uuids)).build().find();
+      var bookBox = store.box<Book>();
+      List<Book> books =
+      bookBox.query(Book_.uuid.oneOf(uuids)).build().find();
       if (physics) {
         bookBox.removeMany(books.map((e) => e.id).toList());
       } else {
@@ -80,11 +80,13 @@ class StorageBookRepository extends ObjectBoxX implements BookRepository {
       var noteBox = store.box<Note>();
       for (var book in books) {
         List<Note> notes =
-            noteBox.query(Note_.notebookId.equals(book.uuid)).build().find();
+        noteBox.query(Note_.notebookId.equals(book.uuid)).build().find();
         for (var element in notes) {
           element.notebookId = null;
         }
-        assert(noteBox.putMany(notes, mode: PutMode.update).length ==
+        assert(noteBox
+            .putMany(notes, mode: PutMode.update)
+            .length ==
             notes.length);
       }
       return books;
@@ -92,13 +94,15 @@ class StorageBookRepository extends ObjectBoxX implements BookRepository {
   }
 
   @override
-  void batchSaveBook(List<Notebook> books) {
+  void batchSaveBook(List<Book> books) {
     store.runInTransaction(TxMode.write, () {
-      var box = store.box<Notebook>();
+      var box = store.box<Book>();
       for (var book in books) {
         appLog.debug("batchSaveBook==>${book}\n");
         book.synced = false;
-        if (book.uuid.trim().isEmpty) {
+        if (book.uuid
+            .trim()
+            .isEmpty) {
           book.uuid = const Uuid().v4();
           book.id = 0;
         }

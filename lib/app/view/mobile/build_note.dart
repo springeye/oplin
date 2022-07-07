@@ -1,10 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../../db/models.dart';
 
-Widget buildNoteBookItem(BuildContext context, Notebook book, bool opened,
+Widget buildNoteBookItem(BuildContext context, Book book, bool opened,
     {double? iconSize, double? fontSize, EdgeInsetsGeometry? padding}) {
   return Container(
     padding: padding ?? const EdgeInsets.fromLTRB(15, 10, 15, 15),

@@ -51,19 +51,18 @@ class NoteViewFilter extends Equatable {
   final String? search;
 
   //show all when notebook is null,show unclassified notebook.uuid is empty,
-  final Notebook? notebook;
+  final Book? notebook;
 
-  const NoteViewFilter(
-      {this.type = ViewFilterType.activeOnly,
-      this.sort = ViewSortType.updatedDesc,
-      this.search,
-      this.notebook});
+  const NoteViewFilter({this.type = ViewFilterType.activeOnly,
+    this.sort = ViewSortType.updatedDesc,
+    this.search,
+    this.notebook});
 
   NoteViewFilter copyWith({
     ViewFilterType Function()? type,
     ViewSortType Function()? sort,
     String? Function()? search,
-    Notebook? Function()? notebook,
+    Book? Function()? notebook,
   }) {
     return NoteViewFilter(
       type: type != null ? type() : this.type,

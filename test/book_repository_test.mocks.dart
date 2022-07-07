@@ -25,19 +25,18 @@ class MockBookRepository extends _i1.Mock implements _i2.BookRepository {
   }
 
   @override
-  List<_i3.Notebook> getBooks() =>
+  List<_i3.Book> getBooks() =>
       (super.noSuchMethod(Invocation.method(#getBooks, []),
-          returnValue: <_i3.Notebook>[]) as List<_i3.Notebook>);
+          returnValue: <_i3.Book>[]) as List<_i3.Book>);
   @override
-  _i3.Notebook? findBook(String? uuid) =>
-      (super.noSuchMethod(Invocation.method(#findBook, [uuid]))
-          as _i3.Notebook?);
+  _i3.Book? findBook(String? uuid) =>
+      (super.noSuchMethod(Invocation.method(#findBook, [uuid])) as _i3.Book?);
   @override
-  void saveBook(_i3.Notebook? book) =>
+  void saveBook(_i3.Book? book) =>
       super.noSuchMethod(Invocation.method(#saveBook, [book]),
           returnValueForMissingStub: null);
   @override
-  void batchSaveBook(List<_i3.Notebook>? books) =>
+  void batchSaveBook(List<_i3.Book>? books) =>
       super.noSuchMethod(Invocation.method(#batchSaveBook, [books]),
           returnValueForMissingStub: null);
   @override

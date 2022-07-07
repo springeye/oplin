@@ -7,14 +7,14 @@ packages:
       name: _fe_analyzer_shared
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "38.0.0"
+    version: "41.0.0"
   analyzer:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: analyzer
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "3.4.1"
+    version: "4.2.0"
   analyzer_plugin:
     dependency: transitive
     description:
@@ -338,12 +338,12 @@ packages:
     source: hosted
     version: "1.3.0"
   ffi:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: ffi
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.2.1"
+    version: "2.0.1"
   file:
     dependency: transitive
     description:
@@ -644,6 +644,27 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.0.3"
+  isar:
+    dependency: "direct main"
+    description:
+      name: isar
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.0.0-dev.5"
+  isar_flutter_libs:
+    dependency: "direct main"
+    description:
+      name: isar_flutter_libs
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.0.0-dev.5"
+  isar_generator:
+    dependency: "direct dev"
+    description:
+      name: isar_generator
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.0.0-dev.5"
   js:
     dependency: transitive
     description:

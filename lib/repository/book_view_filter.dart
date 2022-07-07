@@ -5,7 +5,7 @@ import '../db/models.dart';
 import 'view_filter_type.dart';
 
 extension NotebookViewFilterTypeX on ViewFilterType {
-  bool apply(Notebook book) {
+  bool apply(Book book) {
     switch (this) {
       case ViewFilterType.all:
         return true;
@@ -16,7 +16,7 @@ extension NotebookViewFilterTypeX on ViewFilterType {
     }
   }
 
-  Iterable<Notebook> applyAll(Iterable<Notebook> notes) {
+  Iterable<Book> applyAll(Iterable<Book> notes) {
     return notes.where(apply);
   }
 }
@@ -44,7 +44,7 @@ class NotebookViewFilter extends Equatable {
   @override
   List<Object?> get props => [type, search, notebookId];
 
-  List<Notebook> applyAll(List<Notebook> notes) {
+  List<Book> applyAll(List<Book> notes) {
     appLog.debug("applyAll filter");
     var result = [...notes];
     result = result.where((element) {

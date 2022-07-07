@@ -18,7 +18,7 @@ Widget buildMainWindow(BuildContext context) {
     //If on a mobile device, just show the notebookId null note
     bloc.add(
       NotesFilterChanged(
-        bloc.state.filter.copyWith(notebook: () => Notebook.other),
+        bloc.state.filter.copyWith(notebook: () => Book.other),
       ),
     );
     return const MobileHomePage();

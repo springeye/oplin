@@ -130,7 +130,7 @@ class NoteBloc extends BaseBloc<NoteEvent, NoteState> {
     add(const NoteRefreshRequested());
   }
 
-  void setNotebook(Notebook? notebook) {
+  void setNotebook(Book? notebook) {
     add(NotesFilterChanged(state.filter.copyWith(notebook: () => notebook)));
   }
 

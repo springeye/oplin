@@ -38,7 +38,7 @@ class BookBloc extends BaseBloc<BookEvent, BooksState> {
   }
 
   FutureOr<void> _onBookAdded(BookAdded event, Emitter<BooksState> emit) async {
-    var book = Notebook();
+    var book = Book();
     book.name = event.name;
     book.parentId = event.parentId;
     _bookRepository.saveBook(book);
