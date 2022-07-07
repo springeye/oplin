@@ -148,6 +148,12 @@ abstract class S {
   /// **'Select Notebook'**
   String get select_notebook;
 
+  /// No description provided for @move_to_notebook.
+  ///
+  /// In en, this message translates to:
+  /// **'Move to Notebook'**
+  String get move_to_notebook;
+
   /// No description provided for @ok.
   ///
   /// In en, this message translates to:

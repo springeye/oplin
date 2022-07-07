@@ -11,8 +11,8 @@ import 'package:oplin/gen/S.dart';
 
 Widget _cardButton(BuildContext context,
     {required Function onPressed,
-      required IconData icon,
-      required String text}) {
+    required IconData icon,
+    required String text}) {
   return GestureDetector(
     onTap: () {
       onPressed();
@@ -30,9 +30,7 @@ Widget _cardButton(BuildContext context,
           Icon(
             icon,
             size: 100,
-            color: Theme
-                .of(context)
-                .primaryColor,
+            color: Theme.of(context).primaryColor,
           ),
           Text(text)
         ],
@@ -41,7 +39,8 @@ Widget _cardButton(BuildContext context,
   );
 }
 
-void showMoveToFolderDialog(BuildContext context, {
+void showMoveToFolderDialog(
+  BuildContext context, {
   Function? onCreatePressed,
   Function(Book? notebook)? onNotebookPressed,
 }) {
@@ -62,16 +61,12 @@ void showMoveToFolderDialog(BuildContext context, {
           if (index == 0) {
             return _cardButton(context, onPressed: () {
               onCreatePressed?.call();
-            }, icon: Icons.create_new_folder, text: S
-                .of(context)
-                .create);
+            }, icon: Icons.create_new_folder, text: S.of(context).create);
           }
           if (index == 1) {
             return _cardButton(context, onPressed: () {
               onNotebookPressed?.call(null);
-            }, icon: Icons.folder, text: S
-                .of(context)
-                .unfiled);
+            }, icon: Icons.folder, text: S.of(context).unfiled);
           }
           index = index - 2;
           var notebook = books[index];
@@ -87,28 +82,35 @@ void showMoveToFolderDialog(BuildContext context, {
           var notebook = books[index];
 
           return ListTile(
-            title: Text(notebook.name), leading: Icon(Icons.folder), onTap: () {
-            onNotebookPressed?.call(notebook);
-          },);
+            title: Text(
+              notebook.name,
+              style: const TextStyle(fontSize: 20),
+            ),
+            leading: const Icon(
+              Icons.folder,
+              size: 40,
+            ),
+            onTap: () {
+              onNotebookPressed?.call(notebook);
+            },
+          );
         },
       );
       return Padding(
-        padding: MediaQuery
-            .of(context)
-            .viewInsets,
+        padding: MediaQuery.of(context).viewInsets,
         child: Container(
           height: isDesktop ? 520 : 320,
           padding: const EdgeInsets.all(20),
           child: Column(
             children: [
               Text(
-                S
-                    .of(context)
-                    .select_notebook,
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .headline6,
+                isDesktop
+                    ? S.of(context).move_to_notebook
+                    : S.of(context).select_notebook,
+                style: Theme.of(context).textTheme.headline6,
+              ),
+              const Divider(
+                thickness: 1,
               ),
               Expanded(
                 child: Padding(
@@ -145,26 +147,19 @@ void showMoveToFolderDialog(BuildContext context, {
   }
 }
 
-void showCreateNotebookDialog(BuildContext context,
-    Function(String name) onOk) {
+void showCreateNotebookDialog(
+    BuildContext context, Function(String name) onOk) {
   var container = TextEditingController();
   var content = Padding(
-    padding: MediaQuery
-        .of(context)
-        .viewInsets,
+    padding: MediaQuery.of(context).viewInsets,
     child: Container(
       height: 220,
       padding: const EdgeInsets.all(20),
       child: Column(
         children: [
           Text(
-            S
-                .of(context)
-                .create_notebook,
-            style: Theme
-                .of(context)
-                .textTheme
-                .headline6,
+            S.of(context).create_notebook,
+            style: Theme.of(context).textTheme.headline6,
           ),
           Padding(
             padding: const EdgeInsets.only(top: 20),
@@ -173,11 +168,9 @@ void showCreateNotebookDialog(BuildContext context,
               decoration: InputDecoration(
                   border: OutlineInputBorder(
                       borderSide:
-                      BorderSide(color: Theme
-                          .of(context)
-                          .primaryColor),
+                          BorderSide(color: Theme.of(context).primaryColor),
                       borderRadius:
-                      const BorderRadius.all(Radius.circular(15)))),
+                          const BorderRadius.all(Radius.circular(15)))),
             ),
           ),
           Container(
@@ -191,9 +184,7 @@ void showCreateNotebookDialog(BuildContext context,
                   },
                   style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(horizontal: 30)),
-                  child: Text(S
-                      .of(context)
-                      .cancel),
+                  child: Text(S.of(context).cancel),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -201,9 +192,7 @@ void showCreateNotebookDialog(BuildContext context,
                   },
                   style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(horizontal: 30)),
-                  child: Text(S
-                      .of(context)
-                      .ok),
+                  child: Text(S.of(context).ok),
                 ),
               ],
             ),
@@ -251,7 +240,7 @@ void showLoading(BuildContext context) {
                 height: 100,
                 width: 100,
                 child:
-                LoadingIndicator(indicatorType: Indicator.ballClipRotate),
+                    LoadingIndicator(indicatorType: Indicator.ballClipRotate),
               ),
             ),
           ),
@@ -269,28 +258,28 @@ void showContextMenu(BuildContext context, Offset offset, List<Widget> items) {
     builder: (context) {
       return LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
-            return ConstrainedBox(
-              constraints: BoxConstraints.expand(
-                  width: constraints.maxWidth, height: constraints.maxHeight),
-              child: Stack(
-                children: [
-                  Positioned(
-                    top: offset.dy,
-                    left: offset.dx,
-                    child: SizedBox(
-                      width: width,
-                      child: Card(
-                        color: Colors.white,
-                        child: Column(
-                          children: items,
-                        ),
-                      ),
+        return ConstrainedBox(
+          constraints: BoxConstraints.expand(
+              width: constraints.maxWidth, height: constraints.maxHeight),
+          child: Stack(
+            children: [
+              Positioned(
+                top: offset.dy,
+                left: offset.dx,
+                child: SizedBox(
+                  width: width,
+                  child: Card(
+                    color: Colors.white,
+                    child: Column(
+                      children: items,
                     ),
                   ),
-                ],
+                ),
               ),
-            );
-          });
+            ],
+          ),
+        );
+      });
     },
   );
 }

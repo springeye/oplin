@@ -37,6 +37,9 @@ class SEn extends S {
   String get select_notebook => 'Select Notebook';
 
   @override
+  String get move_to_notebook => 'Move to Notebook';
+
+  @override
   String get ok => 'Ok';
 
   @override

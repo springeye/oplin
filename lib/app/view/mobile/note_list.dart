@@ -151,7 +151,7 @@ class NoteListState extends State<NoteList> {
             ),
           );
         } else {
-          ////笔记本
+          ////文件夹
           item = GestureDetector(
             onLongPress: () {
               setState(() {

@@ -8,18 +8,18 @@ class SZh extends S {
   SZh([String locale = 'zh']) : super(locale);
 
   @override
-  String get app_name => '笔记本';
+  String get app_name => '文件夹';
 
   @override
   String get settings => '设置';
 
   @override
   String notebook_by_name(String name) {
-    return '笔记本: $name';
+    return '文件夹: $name';
   }
 
   @override
-  String get create_notebook => '创建笔记本';
+  String get create_notebook => '创建文件夹';
 
   @override
   String get create => '创建';
@@ -34,7 +34,10 @@ class SZh extends S {
   String get unfiled => '未分类';
 
   @override
-  String get select_notebook => '选择笔记本';
+  String get select_notebook => '选择文件夹';
+
+  @override
+  String get move_to_notebook => '移动到文件夹';
 
   @override
   String get ok => '确定';
@@ -110,7 +113,7 @@ class SZh extends S {
   String get save_message => '笔记已修改。你想保存吗？';
 
   @override
-  String get notebook => '笔记本';
+  String get notebook => '文件夹';
 
   @override
   String get other => '未分类';
@@ -142,7 +145,7 @@ class SZh extends S {
 
   @override
   String select_book_count(int count) {
-    return '选择 $count 笔记本';
+    return '选择 $count 文件夹';
   }
 
   @override
