@@ -69,3 +69,21 @@ class NotesFilterChanged extends NoteEvent {
   @override
   List<Object> get props => [filter];
 }
+
+class AddToSelectNote extends NoteEvent {
+  final Note note;
+
+  const AddToSelectNote(this.note);
+
+  @override
+  List<Object> get props => [note];
+}
+
+class RemoveFromSelectNote extends NoteEvent {
+  final Note note;
+
+  const RemoveFromSelectNote(this.note);
+
+  @override
+  List<Object> get props => [note];
+}

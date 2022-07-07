@@ -34,6 +34,8 @@ class NoteBloc extends BaseBloc<NoteEvent, NoteState> {
     on<NotesUpdated>(_onNoteUpdated);
     on<NotesSticky>(_onSticky);
     on<NotesMoved>(_onMoved);
+    on<AddToSelectNote>(_addToSelectNote);
+    on<RemoveFromSelectNote>(_removeFromSelectNote);
     on<ShowNewNoteEvent>((event, emit) {
       appLog.debug("ShowNewNoteEvent");
       emit(
@@ -136,5 +138,23 @@ class NoteBloc extends BaseBloc<NoteEvent, NoteState> {
 
   void setSearch(String? search) {
     add(NotesFilterChanged(state.filter.copyWith(search: () => search)));
+  }
+
+  FutureOr<void> _addToSelectNote(
+      AddToSelectNote event, Emitter<NoteState> emit) {
+    emit(state.copyWith(
+      selected: () {
+        return [...state.selected..add(event.note)];
+      },
+    ));
+  }
+
+  FutureOr<void> _removeFromSelectNote(
+      RemoveFromSelectNote event, Emitter<NoteState> emit) {
+    emit(state.copyWith(
+      selected: () {
+        return [...state.selected..remove(event.note)];
+      },
+    ));
   }
 }

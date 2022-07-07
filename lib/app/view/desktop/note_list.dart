@@ -20,6 +20,7 @@ class NoteListWidget extends StatefulWidget {
 
 class _NoteListWidgetState extends State<NoteListWidget> {
   final _searchController = TextEditingController();
+  Note? hover;
 
   void _clickNote(BuildContext context, EditNoteBloc showLogic, Note note) {
     var state = showLogic.state;
@@ -71,6 +72,7 @@ class _NoteListWidgetState extends State<NoteListWidget> {
     var state = context.watch<NoteBloc>().state;
     var selectNote = state.note;
     var logic = context.read<EditNoteBloc>();
+    var selectedNotes = state.selected;
     var notes = state.filteredTodos.toList();
     var book = S.of(context).all;
     if (state.filter.notebook != null) {
@@ -177,7 +179,8 @@ class _NoteListWidgetState extends State<NoteListWidget> {
                         scrollDirection: Axis.vertical,
                         itemCount: notes.length,
                         itemBuilder: (ctx, index) {
-                          var selected = selectNote?.uuid == notes[index].uuid;
+                          var currentShow =
+                              selectNote?.uuid == notes[index].uuid;
                           return GestureDetector(
                             onSecondaryTapDown: (details) {
                               var note = notes[index];
@@ -215,41 +218,14 @@ class _NoteListWidgetState extends State<NoteListWidget> {
                               ]);
                             },
                             child: Material(
-                              child: ListTile(
-                                selectedTileColor: selectedColor,
-                                hoverColor: selectedColor.withAlpha(50),
-                                selected: selected,
-                                onTap: () {
-                                  _clickNote(context, logic, notes[index]);
+                              child: MouseRegion(
+                                onEnter: (details) {
+                                  setState(() {
+                                    hover = notes[index];
+                                  });
                                 },
-                                iconColor: titleStyle?.color,
-                                trailing:
-                                    selected ? Icon(Icons.more_vert) : null,
-                                title: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      notes[index].title,
-                                      style:
-                                          !selected ? titleStyle : titleStyle,
-                                    ),
-                                    Text(
-                                      notes[index].content.toPlainText(),
-                                      maxLines: 3,
-                                      style: bodyStyle,
-                                    ),
-                                    Text(
-                                      S.of(context).datetime_format(
-                                          notes[index].updateTime),
-                                      style: bodyStyle,
-                                    ),
-                                    const Divider(
-                                      height: 10,
-                                      color: Colors.transparent,
-                                    )
-                                  ],
-                                ),
+                                child: _buildNoteItem(context, notes[index],
+                                    currentShow, selectedNotes),
                               ),
                             ),
                           );
@@ -258,6 +234,72 @@ class _NoteListWidgetState extends State<NoteListWidget> {
                     ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNoteItem(BuildContext context, Note note, bool currentShow,
+      List<Note> selectedNotes) {
+    var primaryColor = context.watch<AppCubit>().state.primarySwatch;
+    var selectedColor = primaryColor.shade50;
+    var titleStyle = Theme.of(context).textTheme.titleMedium;
+    var bodyStyle = Theme.of(context)
+        .textTheme
+        .bodyText2
+        ?.copyWith(fontSize: 14, color: Colors.grey);
+    var logic = context.read<EditNoteBloc>();
+    return ListTile(
+      selectedTileColor: selectedColor,
+      selected: currentShow,
+      onTap: () {
+        _clickNote(context, logic, note);
+      },
+      iconColor: titleStyle?.color,
+      minLeadingWidth: 10,
+      contentPadding: const EdgeInsets.all(5),
+      leading: Visibility(
+        visible: hover == note || selectedNotes.isNotEmpty,
+        maintainSize: true,
+        maintainAnimation: true,
+        maintainState: true,
+        child: Checkbox(
+          value: selectedNotes.contains(note),
+          onChanged: (bool? value) {
+            var noteBloc = context.read<NoteBloc>();
+            if (selectedNotes.contains(note)) {
+              selectedNotes.remove(note);
+              noteBloc.add(RemoveFromSelectNote(note));
+            } else {
+              noteBloc.add(AddToSelectNote(note));
+            }
+          },
+        ),
+      ),
+      title: Transform.translate(
+        offset: const Offset(-10, 0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              note.title,
+              style: !currentShow ? titleStyle : titleStyle,
+            ),
+            Text(
+              note.content.toPlainText(),
+              maxLines: 3,
+              style: bodyStyle,
+            ),
+            Text(
+              S.of(context).datetime_format(note.updateTime),
+              style: bodyStyle,
+            ),
+            const Divider(
+              height: 10,
+              color: Colors.transparent,
+            )
+          ],
         ),
       ),
     );
