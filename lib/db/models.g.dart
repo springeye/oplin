@@ -16,7 +16,7 @@ extension GetNoteCollection on Isar {
 const NoteSchema = CollectionSchema(
   name: r'Note',
   schema:
-      r'{"name":"Note","idName":"id","properties":[{"name":"conflict","type":"String"},{"name":"createTime","type":"Long"},{"name":"dbContent","type":"String"},{"name":"deleted","type":"Bool"},{"name":"notebookId","type":"String"},{"name":"sticky","type":"Bool"},{"name":"syncTime","type":"Long"},{"name":"synced","type":"Bool"},{"name":"title","type":"String"},{"name":"updateTime","type":"Long"},{"name":"uuid","type":"String"},{"name":"version","type":"Long"}],"indexes":[],"links":[]}',
+      r'{"name":"Note","idName":"id","properties":[{"name":"conflict","type":"String"},{"name":"createTime","type":"Long"},{"name":"dbContent","type":"String"},{"name":"deleted","type":"Bool"},{"name":"notebookId","type":"String"},{"name":"sticky","type":"Bool"},{"name":"syncTime","type":"Long"},{"name":"synced","type":"Bool"},{"name":"title","type":"String"},{"name":"updateTime","type":"Long"},{"name":"uuid","type":"String"},{"name":"version","type":"Long"}],"indexes":[{"name":"uuid","unique":false,"replace":false,"properties":[{"name":"uuid","type":"Hash","caseSensitive":true}]}],"links":[]}',
   idName: r'id',
   propertyIds: {
     r'conflict': 0,
@@ -33,8 +33,12 @@ const NoteSchema = CollectionSchema(
     r'version': 11
   },
   listProperties: {},
-  indexIds: {},
-  indexValueTypes: {},
+  indexIds: {r'uuid': 0},
+  indexValueTypes: {
+    r'uuid': [
+      IndexValueType.stringHash,
+    ]
+  },
   linkIds: {},
   backlinkLinkNames: {},
   getId: _noteGetId,
@@ -275,6 +279,14 @@ extension NoteQueryWhereSort on QueryBuilder<Note, Note, QWhere> {
       return query.addWhereClause(const IdWhereClause.any());
     });
   }
+
+  QueryBuilder<Note, Note, QAfterWhere> anyUuid() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        const IndexWhereClause.any(indexName: r'uuid'),
+      );
+    });
+  }
 }
 
 extension NoteQueryWhere on QueryBuilder<Note, Note, QWhereClause> {
@@ -340,6 +352,49 @@ extension NoteQueryWhere on QueryBuilder<Note, Note, QWhereClause> {
         upper: upperId,
         includeUpper: includeUpper,
       ));
+    });
+  }
+
+  QueryBuilder<Note, Note, QAfterWhereClause> uuidEqualTo(String uuid) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'uuid',
+        value: [uuid],
+      ));
+    });
+  }
+
+  QueryBuilder<Note, Note, QAfterWhereClause> uuidNotEqualTo(String uuid) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'uuid',
+              lower: [],
+              upper: [uuid],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'uuid',
+              lower: [uuid],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'uuid',
+              lower: [uuid],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'uuid',
+              lower: [],
+              upper: [uuid],
+              includeUpper: false,
+            ));
+      }
     });
   }
 }
@@ -1690,23 +1745,26 @@ extension GetBookCollection on Isar {
 const BookSchema = CollectionSchema(
   name: r'Book',
   schema:
-      r'{"name":"Book","idName":"id","properties":[{"name":"count","type":"Long"},{"name":"createTime","type":"Long"},{"name":"deleted","type":"Bool"},{"name":"isOther","type":"Bool"},{"name":"isRecycled","type":"Bool"},{"name":"name","type":"String"},{"name":"parentId","type":"String"},{"name":"sticky","type":"Bool"},{"name":"synced","type":"Bool"},{"name":"uuid","type":"String"}],"indexes":[],"links":[]}',
+      r'{"name":"Book","idName":"id","properties":[{"name":"createTime","type":"Long"},{"name":"deleted","type":"Bool"},{"name":"isOther","type":"Bool"},{"name":"isRecycled","type":"Bool"},{"name":"name","type":"String"},{"name":"parentId","type":"String"},{"name":"sticky","type":"Bool"},{"name":"synced","type":"Bool"},{"name":"uuid","type":"String"}],"indexes":[{"name":"uuid","unique":false,"replace":false,"properties":[{"name":"uuid","type":"Hash","caseSensitive":true}]}],"links":[]}',
   idName: r'id',
   propertyIds: {
-    r'count': 0,
-    r'createTime': 1,
-    r'deleted': 2,
-    r'isOther': 3,
-    r'isRecycled': 4,
-    r'name': 5,
-    r'parentId': 6,
-    r'sticky': 7,
-    r'synced': 8,
-    r'uuid': 9
+    r'createTime': 0,
+    r'deleted': 1,
+    r'isOther': 2,
+    r'isRecycled': 3,
+    r'name': 4,
+    r'parentId': 5,
+    r'sticky': 6,
+    r'synced': 7,
+    r'uuid': 8
   },
   listProperties: {},
-  indexIds: {},
-  indexValueTypes: {},
+  indexIds: {r'uuid': 0},
+  indexValueTypes: {
+    r'uuid': [
+      IndexValueType.stringHash,
+    ]
+  },
   linkIds: {},
   backlinkLinkNames: {},
   getId: _bookGetId,
@@ -1757,30 +1815,28 @@ void _bookSerializeNative(IsarCollection<Book> collection, IsarCObject cObj,
   final buffer = IsarNative.bufAsBytes(cObj.buffer, size);
   final writer = IsarBinaryWriter(buffer, staticSize);
   writer.writeHeader();
-  writer.writeLong(offsets[0], object.count);
-  writer.writeDateTime(offsets[1], object.createTime);
-  writer.writeBool(offsets[2], object.deleted);
-  writer.writeBool(offsets[3], object.isOther);
-  writer.writeBool(offsets[4], object.isRecycled);
-  writer.writeBytes(offsets[5], name$Bytes);
-  writer.writeBytes(offsets[6], parentId$Bytes);
-  writer.writeBool(offsets[7], object.sticky);
-  writer.writeBool(offsets[8], object.synced);
-  writer.writeBytes(offsets[9], uuid$Bytes);
+  writer.writeDateTime(offsets[0], object.createTime);
+  writer.writeBool(offsets[1], object.deleted);
+  writer.writeBool(offsets[2], object.isOther);
+  writer.writeBool(offsets[3], object.isRecycled);
+  writer.writeBytes(offsets[4], name$Bytes);
+  writer.writeBytes(offsets[5], parentId$Bytes);
+  writer.writeBool(offsets[6], object.sticky);
+  writer.writeBool(offsets[7], object.synced);
+  writer.writeBytes(offsets[8], uuid$Bytes);
 }
 
 Book _bookDeserializeNative(IsarCollection<Book> collection, int id,
     IsarBinaryReader reader, List<int> offsets) {
   final object = Book();
-  object.count = reader.readLong(offsets[0]);
-  object.createTime = reader.readDateTime(offsets[1]);
-  object.deleted = reader.readBool(offsets[2]);
+  object.createTime = reader.readDateTime(offsets[0]);
+  object.deleted = reader.readBool(offsets[1]);
   object.id = id;
-  object.name = reader.readString(offsets[5]);
-  object.parentId = reader.readStringOrNull(offsets[6]);
-  object.sticky = reader.readBool(offsets[7]);
-  object.synced = reader.readBool(offsets[8]);
-  object.uuid = reader.readString(offsets[9]);
+  object.name = reader.readString(offsets[4]);
+  object.parentId = reader.readStringOrNull(offsets[5]);
+  object.sticky = reader.readBool(offsets[6]);
+  object.synced = reader.readBool(offsets[7]);
+  object.uuid = reader.readString(offsets[8]);
   return object;
 }
 
@@ -1790,24 +1846,22 @@ P _bookDeserializePropNative<P>(
     case -1:
       return id as P;
     case 0:
-      return (reader.readLong(offset)) as P;
-    case 1:
       return (reader.readDateTime(offset)) as P;
+    case 1:
+      return (reader.readBool(offset)) as P;
     case 2:
       return (reader.readBool(offset)) as P;
     case 3:
       return (reader.readBool(offset)) as P;
     case 4:
-      return (reader.readBool(offset)) as P;
-    case 5:
       return (reader.readString(offset)) as P;
-    case 6:
+    case 5:
       return (reader.readStringOrNull(offset)) as P;
+    case 6:
+      return (reader.readBool(offset)) as P;
     case 7:
       return (reader.readBool(offset)) as P;
     case 8:
-      return (reader.readBool(offset)) as P;
-    case 9:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Illegal propertyIndex');
@@ -1816,7 +1870,6 @@ P _bookDeserializePropNative<P>(
 
 Object _bookSerializeWeb(IsarCollection<Book> collection, Book object) {
   final jsObj = IsarNative.newJsObject();
-  IsarNative.jsObjectSet(jsObj, r'count', object.count);
   IsarNative.jsObjectSet(
       jsObj, r'createTime', object.createTime.toUtc().millisecondsSinceEpoch);
   IsarNative.jsObjectSet(jsObj, r'deleted', object.deleted);
@@ -1833,8 +1886,6 @@ Object _bookSerializeWeb(IsarCollection<Book> collection, Book object) {
 
 Book _bookDeserializeWeb(IsarCollection<Book> collection, Object jsObj) {
   final object = Book();
-  object.count = IsarNative.jsObjectGet(jsObj, r'count') ??
-      (double.negativeInfinity as int);
   object.createTime = IsarNative.jsObjectGet(jsObj, r'createTime') != null
       ? DateTime.fromMillisecondsSinceEpoch(
               IsarNative.jsObjectGet(jsObj, r'createTime') as int,
@@ -1854,9 +1905,6 @@ Book _bookDeserializeWeb(IsarCollection<Book> collection, Object jsObj) {
 
 P _bookDeserializePropWeb<P>(Object jsObj, String propertyName) {
   switch (propertyName) {
-    case r'count':
-      return (IsarNative.jsObjectGet(jsObj, r'count') ??
-          (double.negativeInfinity as int)) as P;
     case r'createTime':
       return (IsarNative.jsObjectGet(jsObj, r'createTime') != null
           ? DateTime.fromMillisecondsSinceEpoch(
@@ -1894,6 +1942,14 @@ extension BookQueryWhereSort on QueryBuilder<Book, Book, QWhere> {
   QueryBuilder<Book, Book, QAfterWhere> anyId() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(const IdWhereClause.any());
+    });
+  }
+
+  QueryBuilder<Book, Book, QAfterWhere> anyUuid() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        const IndexWhereClause.any(indexName: r'uuid'),
+      );
     });
   }
 }
@@ -1963,61 +2019,52 @@ extension BookQueryWhere on QueryBuilder<Book, Book, QWhereClause> {
       ));
     });
   }
+
+  QueryBuilder<Book, Book, QAfterWhereClause> uuidEqualTo(String uuid) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'uuid',
+        value: [uuid],
+      ));
+    });
+  }
+
+  QueryBuilder<Book, Book, QAfterWhereClause> uuidNotEqualTo(String uuid) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'uuid',
+              lower: [],
+              upper: [uuid],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'uuid',
+              lower: [uuid],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'uuid',
+              lower: [uuid],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'uuid',
+              lower: [],
+              upper: [uuid],
+              includeUpper: false,
+            ));
+      }
+    });
+  }
 }
 
 extension BookQueryFilter on QueryBuilder<Book, Book, QFilterCondition> {
-  QueryBuilder<Book, Book, QAfterFilterCondition> countEqualTo(int value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'count',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Book, Book, QAfterFilterCondition> countGreaterThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'count',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Book, Book, QAfterFilterCondition> countLessThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'count',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Book, Book, QAfterFilterCondition> countBetween(
-    int lower,
-    int upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'count',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
   QueryBuilder<Book, Book, QAfterFilterCondition> createTimeEqualTo(
       DateTime value) {
     return QueryBuilder.apply(this, (query) {
@@ -2512,18 +2559,6 @@ extension BookQueryFilter on QueryBuilder<Book, Book, QFilterCondition> {
 extension BookQueryLinks on QueryBuilder<Book, Book, QFilterCondition> {}
 
 extension BookQueryWhereSortBy on QueryBuilder<Book, Book, QSortBy> {
-  QueryBuilder<Book, Book, QAfterSortBy> sortByCount() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'count', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Book, Book, QAfterSortBy> sortByCountDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'count', Sort.desc);
-    });
-  }
-
   QueryBuilder<Book, Book, QAfterSortBy> sortByCreateTime() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createTime', Sort.asc);
@@ -2634,18 +2669,6 @@ extension BookQueryWhereSortBy on QueryBuilder<Book, Book, QSortBy> {
 }
 
 extension BookQueryWhereSortThenBy on QueryBuilder<Book, Book, QSortThenBy> {
-  QueryBuilder<Book, Book, QAfterSortBy> thenByCount() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'count', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Book, Book, QAfterSortBy> thenByCountDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'count', Sort.desc);
-    });
-  }
-
   QueryBuilder<Book, Book, QAfterSortBy> thenByCreateTime() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createTime', Sort.asc);
@@ -2768,12 +2791,6 @@ extension BookQueryWhereSortThenBy on QueryBuilder<Book, Book, QSortThenBy> {
 }
 
 extension BookQueryWhereDistinct on QueryBuilder<Book, Book, QDistinct> {
-  QueryBuilder<Book, Book, QDistinct> distinctByCount() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'count');
-    });
-  }
-
   QueryBuilder<Book, Book, QDistinct> distinctByCreateTime() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'createTime');
@@ -2833,12 +2850,6 @@ extension BookQueryWhereDistinct on QueryBuilder<Book, Book, QDistinct> {
 }
 
 extension BookQueryProperty on QueryBuilder<Book, Book, QQueryProperty> {
-  QueryBuilder<Book, int, QQueryOperations> countProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'count');
-    });
-  }
-
   QueryBuilder<Book, DateTime, QQueryOperations> createTimeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'createTime');

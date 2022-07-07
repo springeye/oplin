@@ -1,9 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter_quill/flutter_quill.dart';
-import 'package:isar/isar.dart' hide Index;
+import 'package:isar/isar.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:objectbox/objectbox.dart' hide QueryBuilder;
 import 'package:uuid/uuid.dart';
 
 part 'models.g.dart';
@@ -22,7 +21,6 @@ class DocumentConverter implements JsonConverter<Document, List> {
   }
 }
 
-@Entity()
 @DocumentConverter()
 @JsonSerializable()
 @Collection()
@@ -85,7 +83,6 @@ class Note {
 }
 
 @JsonSerializable()
-@Entity()
 @Collection()
 class Book {
   int id = Isar.autoIncrement;
@@ -96,7 +93,7 @@ class Book {
   String? parentId;
   bool deleted = false;
   DateTime createTime = DateTime.now();
-  @Transient()
+  @Ignore()
   int count = 0;
   bool sticky = false;
 

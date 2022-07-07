@@ -15,13 +15,10 @@ import 'package:oplin/bloc/book_bloc.dart';
 import 'package:oplin/bloc/note_bloc.dart';
 import 'package:oplin/bloc/edit_note_bloc.dart';
 import 'package:oplin/common/logging.dart';
-import 'package:oplin/db/objectbox.g.dart';
 import 'package:oplin/repository/book_repository.dart';
 import 'package:oplin/repository/note_repository.dart';
 import 'package:oplin/repository/storage/isar_book_repository.dart';
 import 'package:oplin/repository/storage/isar_note_repository.dart';
-import 'package:oplin/repository/storage/storage_book_repository.dart';
-import 'package:oplin/repository/storage/storage_note_repository.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:oplin/db/models.dart';
 import 'bloc/app_cubit.dart';
@@ -50,8 +47,6 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
     () async {
       await BlocOverrides.runZoned(
         () async {
-          var store = await openStore(
-              directory: (await getApplicationSupportDirectory()).path);
           Isar isar = await Isar.open(
             [BookSchema, NoteSchema],
             directory: (await getApplicationSupportDirectory()).path,
