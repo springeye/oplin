@@ -14,11 +14,6 @@ class SZh extends S {
   String get settings => '设置';
 
   @override
-  String notebook_by_name(String name) {
-    return '文件夹: $name';
-  }
-
-  @override
   String get create_notebook => '创建文件夹';
 
   @override
@@ -134,8 +129,13 @@ class SZh extends S {
   String get toast_save_success => '保存成功';
 
   @override
+  String notebook_by_name(String name) {
+    return '文件夹: $name';
+  }
+
+  @override
   String total_notes(int count) {
-    return '';
+    return '共 $count 条笔记';
   }
 
   @override

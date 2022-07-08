@@ -128,8 +128,7 @@ class Book {
   String? parentId;
   bool deleted = false;
   DateTime createTime = DateTime.now();
-  @Ignore()
-  int count = 0;
+
   bool sticky = false;
 
   Book();
@@ -162,7 +161,6 @@ class Book {
           parentId == other.parentId &&
           deleted == other.deleted &&
           createTime == other.createTime &&
-          count == other.count &&
           sticky == other.sticky;
 
   @override
@@ -174,11 +172,10 @@ class Book {
       parentId.hashCode ^
       deleted.hashCode ^
       createTime.hashCode ^
-      count.hashCode ^
       sticky.hashCode;
 
   @override
   String toString() {
-    return 'Book{id: $id, uuid: $uuid, name: $name, synced: $synced, parentId: $parentId, deleted: $deleted, createTime: $createTime, count: $count, sticky: $sticky}';
+    return 'Book{id: $id, uuid: $uuid, name: $name, synced: $synced, parentId: $parentId, deleted: $deleted, createTime: $createTime, sticky: $sticky}';
   }
 }

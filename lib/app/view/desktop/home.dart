@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:oplin/app/view/common/dialog.dart';
 import 'package:oplin/app/view/desktop/folder_list.dart';
 import 'package:oplin/app/view/desktop/note_edit.dart';
 import 'package:oplin/app/view/desktop/note_list.dart';
@@ -89,7 +90,7 @@ class _DesktopHomePageState extends State<DesktopHomePage> {
     var bloc = context.read<NoteBloc>();
     var selected = bloc.state.selected;
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 30),
+      padding: const EdgeInsets.symmetric(horizontal: 30),
       width: double.infinity,
       height: 45,
       child: Row(
@@ -108,6 +109,21 @@ class _DesktopHomePageState extends State<DesktopHomePage> {
             style: const TextStyle(color: Colors.white),
           ),
           const Spacer(),
+          IconButton(
+            onPressed: () {
+              showMoveToFolderDialog(context, onCreatePressed: () {},
+                  onNotebookPressed: (notebook) {
+                bloc.add(NotesMoved(
+                    selected.map((e) => e.uuid).toList(), notebook?.uuid));
+                bloc.add(const ClearSelectNote());
+                Navigator.pop(context);
+              });
+            },
+            icon: const Icon(
+              Icons.move_to_inbox,
+              color: Colors.white,
+            ),
+          ),
           IconButton(
             onPressed: () {
               bloc.add(NoteDeleted(selected.map((e) => e.uuid).toList()));

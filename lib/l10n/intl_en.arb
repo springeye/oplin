@@ -1,16 +1,7 @@
 {
   "app_name": "Notebook",
   "settings": "Settings",
-  "notebook_by_name": "Notebook: {name}",
-  "@notebook_by_name": {
-    "description": "notebook page title",
-    "placeholders": {
-      "name": {
-        "example": "MyFolder",
-        "type": "String"
-      }
-    }
-  },
+
   "create_notebook": "Create a notebook",
   "create": "Create",
   "create_note": "Create Note",
@@ -54,6 +45,18 @@
   "hint_enter_search": "Enter keyword to search",
   "search": "Search",
   "toast_save_success": "Save success",
+
+    "notebook_by_name": "Notebook: {name}",
+    "@notebook_by_name": {
+      "description": "notebook page title",
+      "placeholders": {
+        "name": {
+          "example": "MyFolder",
+          "type": "String"
+        }
+      }
+    },
+
   "total_notes": "Total: {count}",
   "@total_notes": {
     "description": "total notes count",

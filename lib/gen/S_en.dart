@@ -14,11 +14,6 @@ class SEn extends S {
   String get settings => 'Settings';
 
   @override
-  String notebook_by_name(String name) {
-    return 'Notebook: $name';
-  }
-
-  @override
   String get create_notebook => 'Create a notebook';
 
   @override
@@ -132,6 +127,11 @@ class SEn extends S {
 
   @override
   String get toast_save_success => 'Save success';
+
+  @override
+  String notebook_by_name(String name) {
+    return 'Notebook: $name';
+  }
 
   @override
   String total_notes(int count) {

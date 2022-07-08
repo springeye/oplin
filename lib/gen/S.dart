@@ -106,12 +106,6 @@ abstract class S {
   /// **'Settings'**
   String get settings;
 
-  /// notebook page title
-  ///
-  /// In en, this message translates to:
-  /// **'Notebook: {name}'**
-  String notebook_by_name(String name);
-
   /// No description provided for @create_notebook.
   ///
   /// In en, this message translates to:
@@ -321,6 +315,12 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Save success'**
   String get toast_save_success;
+
+  /// notebook page title
+  ///
+  /// In en, this message translates to:
+  /// **'Notebook: {name}'**
+  String notebook_by_name(String name);
 
   /// total notes count
   ///

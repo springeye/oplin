@@ -26,12 +26,6 @@ Widget buildNoteBookItem(BuildContext context, Book book, bool opened,
         ),
         //folder name
         const Spacer(),
-        Text(
-          "${book.count}",
-          style: TextStyle(
-            fontSize: fontSize ?? 22,
-          ),
-        ),
         // notes count in folder
       ],
     ),

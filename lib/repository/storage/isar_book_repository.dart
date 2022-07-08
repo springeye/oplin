@@ -61,20 +61,14 @@ class IsarBookRepository extends IsarRepository implements BookRepository {
         .repeat(uuids, (q, String element) => q.uuidEqualTo(element).or())
         .buildInternal()
         .findAllSync();
-    for (var value in books) {
-      value.count =
-          store.notes.filter().notebookIdEqualTo(value.uuid).countSync();
-    }
+
     return books;
   }
 
   @override
   List<Book> getBooks() {
     var books = store.books.where().findAllSync();
-    for (var value in books) {
-      value.count =
-          store.notes.filter().notebookIdEqualTo(value.uuid).countSync();
-    }
+
     return books;
   }
 

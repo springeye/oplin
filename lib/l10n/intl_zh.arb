@@ -86,6 +86,15 @@
 	"time_format": "{time}",
 	"tips": "提示",
 	"toast_save_success": "保存成功",
-	"total_notes": "",
+	  "total_notes": "共 {count} 条笔记",
+      "@total_notes": {
+        "description": "total notes count",
+        "placeholders": {
+          "count": {
+            "example": "99",
+            "type": "int"
+          }
+        }
+      },
 	"url": "网址： {url}"
 }

@@ -2729,7 +2729,6 @@ Book _$BookFromJson(Map<String, dynamic> json) => Book()
   ..parentId = json['parentId'] as String?
   ..deleted = json['deleted'] as bool
   ..createTime = DateTime.parse(json['createTime'] as String)
-  ..count = json['count'] as int
   ..sticky = json['sticky'] as bool;
 
 Map<String, dynamic> _$BookToJson(Book instance) => <String, dynamic>{
@@ -2740,6 +2739,5 @@ Map<String, dynamic> _$BookToJson(Book instance) => <String, dynamic>{
       'parentId': instance.parentId,
       'deleted': instance.deleted,
       'createTime': instance.createTime.toIso8601String(),
-      'count': instance.count,
       'sticky': instance.sticky,
     };
