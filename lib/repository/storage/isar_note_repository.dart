@@ -9,14 +9,11 @@ class IsarNoteRepository extends IsarRepository implements NoteRepository {
 
   @override
   void batchDeleteNote(List<String> uuids, {bool physics = false}) {
-    store.writeTxnSync(() {
+    store.writeTxnSync((store) {
       QueryBuilder<Note, Note, QFilterCondition> builder = store.notes.filter();
       var notes = builder
-          .anyOf<String, Note>(
-            uuids,
-            (QueryBuilder<Note, Note, QFilterCondition> q, String uuid) =>
-                q.uuidEqualTo(uuid),
-          )
+          .repeat(uuids, (q, String element) => q.uuidEqualTo(element).or())
+          .buildInternal()
           .findAllSync();
       if (physics) {
         store.notes.deleteAllSync(notes.map((e) => e.id).toList());
@@ -32,7 +29,7 @@ class IsarNoteRepository extends IsarRepository implements NoteRepository {
 
   @override
   void batchSaveNote(List<Note> notes) {
-    store.writeTxnSync(() {
+    store.writeTxnSync((store) {
       store.notes.putAllSync(notes);
     });
   }
@@ -51,11 +48,8 @@ class IsarNoteRepository extends IsarRepository implements NoteRepository {
   List<Note> findNotes(List<String> uuids) {
     QueryBuilder<Note, Note, QFilterCondition> builder = store.notes.filter();
     var notes = builder
-        .anyOf<String, Note>(
-          uuids,
-          (QueryBuilder<Note, Note, QFilterCondition> q, String uuid) =>
-              q.uuidEqualTo(uuid),
-        )
+        .repeat(uuids, (q, String element) => q.uuidEqualTo(element).or())
+        .buildInternal()
         .findAllSync();
     return notes;
   }
@@ -67,7 +61,7 @@ class IsarNoteRepository extends IsarRepository implements NoteRepository {
 
   @override
   void saveNote(Note note) {
-    store.writeTxnSync(() {
+    store.writeTxnSync((store) {
       store.notes.putSync(note);
     });
   }

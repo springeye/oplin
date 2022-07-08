@@ -9,14 +9,11 @@ class IsarBookRepository extends IsarRepository implements BookRepository {
 
   @override
   void batchDeleteBook(List<String> uuids, {bool physics = false}) {
-    store.writeTxnSync(() async {
-      QueryBuilder<Book, Book, QFilterCondition> builder = store.books.filter();
-      List<Book> books = builder
-          .anyOf<String, Book>(
-            uuids,
-            (QueryBuilder<Book, Book, QFilterCondition> q, String uuid) =>
-                q.uuidEqualTo(uuid),
-          )
+    store.writeTxnSync((store) {
+      List<Book> books = store.books
+          .filter()
+          .repeat(uuids, (q, String element) => q.uuidEqualTo(element).or())
+          .buildInternal()
           .findAllSync();
       if (physics) {
         store.books.deleteAllSync(books.map((e) => e.id).toList());
@@ -38,7 +35,7 @@ class IsarBookRepository extends IsarRepository implements BookRepository {
 
   @override
   void batchSaveBook(List<Book> books) {
-    store.writeTxnSync(() async {
+    store.writeTxnSync((store) {
       for (var book in books) {
         book.uuid = const Uuid().v4();
       }
@@ -59,11 +56,8 @@ class IsarBookRepository extends IsarRepository implements BookRepository {
   List<Book> findBooks(List<String> uuids) {
     QueryBuilder<Book, Book, QFilterCondition> builder = store.books.filter();
     var books = builder
-        .anyOf<String, Book>(
-          uuids,
-          (QueryBuilder<Book, Book, QFilterCondition> q, String uuid) =>
-              q.uuidEqualTo(uuid),
-        )
+        .repeat(uuids, (q, String element) => q.uuidEqualTo(element).or())
+        .buildInternal()
         .findAllSync();
     for (var value in books) {
       value.count =
@@ -84,7 +78,7 @@ class IsarBookRepository extends IsarRepository implements BookRepository {
 
   @override
   void saveBook(Book book) {
-    store.writeTxnSync(() {
+    store.writeTxnSync((store) {
       book.uuid = const Uuid().v4();
       store.books.putSync(book);
     });
