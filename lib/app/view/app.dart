@@ -18,7 +18,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AppCubit, AppConfig>(
       builder: (context, config) {
-        String? fontFamily = FontFamily.maShanZhengngCang;
+        String? fontFamily = config.fontFamily;
         return MaterialApp(
           localizationsDelegates: const [
             S.delegate,
@@ -42,7 +42,11 @@ class App extends StatelessWidget {
                   ?.copyWith(fontFamily: fontFamily),
             ),
           ),
-          home: child,
+          home: DefaultTextStyle(
+              style: DefaultTextStyle.of(context)
+                  .style
+                  .copyWith(fontFamily: fontFamily, color: Colors.black),
+              child: child),
           builder: EasyLoading.init(),
         );
       },

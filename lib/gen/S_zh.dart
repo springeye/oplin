@@ -93,7 +93,7 @@ class SZh extends S {
   String get lang_zh => '简体中文';
 
   @override
-  String get lang_other => '跟随系统';
+  String get system_auto => '跟随系统';
 
   @override
   String get webdav_settings => 'WebDAV设置';

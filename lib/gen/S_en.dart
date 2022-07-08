@@ -93,7 +93,7 @@ class SEn extends S {
   String get lang_zh => '简体中文';
 
   @override
-  String get lang_other => 'Auto';
+  String get system_auto => 'Auto';
 
   @override
   String get webdav_settings => 'Settings for WebDAV';

@@ -33,7 +33,7 @@
   },
   "lang_en": "English",
   "lang_zh": "简体中文",
-  "lang_other": "Auto",
+  "system_auto": "Auto",
   "webdav_settings": "Settings for WebDAV",
   "webdav_settings_tips": "Please provide login credentials for the WebDAV folder you want to synchronize.",
   "tips": "Tips",

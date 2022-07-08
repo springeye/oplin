@@ -244,11 +244,11 @@ abstract class S {
   /// **'简体中文'**
   String get lang_zh;
 
-  /// No description provided for @lang_other.
+  /// No description provided for @system_auto.
   ///
   /// In en, this message translates to:
   /// **'Auto'**
-  String get lang_other;
+  String get system_auto;
 
   /// No description provided for @webdav_settings.
   ///

@@ -48,16 +48,17 @@ class AppConfig {
   }
 
   AppConfig copyWith({
-    MaterialColor? primarySwatch,
-    Locale? locale,
-    String? fontFamily,
-    dynamic server,
+    MaterialColor Function()? primarySwatch,
+    Locale? Function()? locale,
+    String? Function()? fontFamily,
+    dynamic Function()? server,
   }) {
     return AppConfig(
-      primarySwatch: primarySwatch ?? this.primarySwatch,
-      locale: locale,
-      fontFamily: fontFamily ?? this.fontFamily,
-      server: server ?? this.server,
+      primarySwatch:
+          primarySwatch != null ? primarySwatch() : this.primarySwatch,
+      locale: locale != null ? locale() : this.locale,
+      fontFamily: fontFamily != null ? fontFamily() : this.fontFamily,
+      server: server != null ? server() : this.server,
     );
   }
 }
@@ -81,12 +82,12 @@ class AppCubit extends Cubit<AppConfig> {
       appConfig = appConfig.copyWith(locale: null);
     } else {
       appConfig = appConfig.copyWith(
-          locale: Locale.fromSubtags(languageCode: language));
+          locale: () => Locale.fromSubtags(languageCode: language));
     }
     if (configType != null && config != null) {
       if (configType == 'webdav') {
         appConfig = appConfig.copyWith(
-            server: WebDAVConfig.fromMap(jsonDecode(config)));
+            server: () => WebDAVConfig.fromMap(jsonDecode(config)));
       }
     }
     return appConfig;
@@ -101,7 +102,7 @@ class AppCubit extends Cubit<AppConfig> {
     } else {
       sp.setString("language", locale.languageCode);
     }
-    emit(state.copyWith(locale: locale));
+    emit(state.copyWith(locale: () => locale));
   }
 
   Future<void> setFontFamily(String? fontFamily) async {
@@ -111,11 +112,11 @@ class AppCubit extends Cubit<AppConfig> {
     } else {
       sp.setString("fontFamily", fontFamily);
     }
-    emit(state.copyWith(fontFamily: fontFamily));
+    emit(state.copyWith(fontFamily: () => fontFamily));
   }
 
   Future<void> setPrimaryColor(Color color) async {
-    emit(state.copyWith(primarySwatch: getSwatch(color)));
+    emit(state.copyWith(primarySwatch: () => getSwatch(color)));
     var sp = await SharedPreferences.getInstance();
     sp.setInt("primarySwatch", color.value);
   }
@@ -127,6 +128,6 @@ class AppCubit extends Cubit<AppConfig> {
     var sp = await SharedPreferences.getInstance();
     sp.setString("webdav_config", jsonEncode(config.toMap()));
     sp.setString("config_type", "webdav");
-    emit(state.copyWith(server: config));
+    emit(state.copyWith(server: () => config));
   }
 }

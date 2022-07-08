@@ -63,7 +63,7 @@
 	"@username": {},
 	"lang_en": "English",
 	"lang_zh": "简体中文",
-	"lang_other": "跟随系统",
+	"system_auto": "跟随系统",
 	"webdav_settings": "WebDAV设置",
 	"webdav_settings_tips": "请提供您想要同步的 WebDAV 文件夹的登录凭据。",
 	"all": "全部",
