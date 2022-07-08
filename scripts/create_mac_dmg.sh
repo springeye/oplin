@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-if  command -v create-dmg > /dev/null; then
+if command -v create-dmg > /dev/null; then
+  echo "building dmg"
 else
     echo "create-dmg command has not found"
     echo "please install https://github.com/create-dmg/create-dmg"
@@ -13,6 +14,7 @@ mkdir Release
 cp -r build/macos/Build/Products/Release/oplin.app Release/Oplin.app
 create-dmg \
   --volname "Oplin Installer" \
+  --volicon "snap/gui/oplin.png" \
   --window-pos 200 120 \
   --window-size 800 400 \
   --icon-size 100 \
