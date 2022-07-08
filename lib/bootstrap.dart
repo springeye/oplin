@@ -16,6 +16,7 @@ import 'package:oplin/bloc/note_bloc.dart';
 import 'package:oplin/bloc/edit_note_bloc.dart';
 import 'package:oplin/common/logging.dart';
 import 'package:oplin/dependencie_manager.dart';
+import 'package:oplin/fonts.dart';
 import 'package:oplin/repository/book_repository.dart';
 import 'package:oplin/repository/note_repository.dart';
 import 'package:oplin/repository/storage/isar_book_repository.dart';
@@ -45,18 +46,17 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   };
 
   await runZonedGuarded(
-        () async {
-      NoteRepository noteRepository =
-      await getIt.getAsync<NoteRepository>();
-      BookRepository bookRepository =
-      await getIt.getAsync<BookRepository>();
+    () async {
+      loadRemoteFonts();
+      NoteRepository noteRepository = await getIt.getAsync<NoteRepository>();
+      BookRepository bookRepository = await getIt.getAsync<BookRepository>();
       BookBloc bookLogic = await getIt.getAsync<BookBloc>();
       EditNoteBloc showBloc = getIt.get<EditNoteBloc>();
       NoteBloc noteLogic = await getIt.getAsync<NoteBloc>();
       AppCubit appCubit = await getIt.getAsync<AppCubit>();
       SyncCubit syncCubit = await getIt.getAsync<SyncCubit>();
       await BlocOverrides.runZoned(
-            () async {
+        () async {
           runApp(
             MultiBlocProvider(
               providers: [
@@ -85,6 +85,6 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
         blocObserver: AppBlocObserver(),
       );
     },
-        (error, stackTrace) => log(error.toString(), stackTrace: stackTrace),
+    (error, stackTrace) => log(error.toString(), stackTrace: stackTrace),
   );
 }

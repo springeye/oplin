@@ -18,7 +18,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AppCubit, AppConfig>(
       builder: (context, config) {
-        String? fontFamily = config.fontFamily;
+        String? fontFamily = "Noto_Sans_TC";
         return MaterialApp(
           localizationsDelegates: const [
             S.delegate,
