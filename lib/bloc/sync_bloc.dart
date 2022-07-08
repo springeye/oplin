@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:oplin/bloc/app_cubit.dart';
 import 'package:oplin/bloc/book_bloc.dart';
 import 'package:oplin/common/logging.dart';
@@ -14,6 +15,7 @@ import '../repository/note_repository.dart';
 import 'sync_state.dart';
 import 'sync_event.dart';
 
+@singleton
 class SyncCubit extends Bloc<SyncEvent, SyncState> {
   late FutureOr<void> computation;
   final int duration = 60 * 5;
@@ -25,8 +27,8 @@ class SyncCubit extends Bloc<SyncEvent, SyncState> {
     on<SyncSubscriptionRequested>(_sync);
   }
 
-  Future<void> _sync(
-      SyncSubscriptionRequested event, Emitter<SyncState> emit) async {
+  Future<void> _sync(SyncSubscriptionRequested event,
+      Emitter<SyncState> emit) async {
     if (state.type == SyncStateType.disabled) {
       return;
     }

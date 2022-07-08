@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:injectable/injectable.dart';
 import 'package:oplin/bloc/base_bloc.dart';
 import 'package:oplin/common/logging.dart';
 
@@ -13,12 +14,14 @@ part 'book_event.dart';
 
 part 'book_state.dart';
 
+@singleton
 class BookBloc extends BaseBloc<BookEvent, BooksState> {
   final BookRepository _bookRepository;
 
   BookBloc({
     required BookRepository bookRepository,
-  })  : _bookRepository = bookRepository,
+  })
+      : _bookRepository = bookRepository,
         super(const BooksState()) {
     on<BookRefreshRequested>(_onSubscriptionRequested);
     on<BookAdded>(_onBookAdded);
@@ -28,8 +31,8 @@ class BookBloc extends BaseBloc<BookEvent, BooksState> {
     on<BookFilterChanged>(_onBookFilterChanged);
   }
 
-  FutureOr<void> _onSubscriptionRequested(
-      BookRefreshRequested event, Emitter<BooksState> emit) async {
+  FutureOr<void> _onSubscriptionRequested(BookRefreshRequested event,
+      Emitter<BooksState> emit) async {
     emit(state.copyWith(status: () => BooksStatus.loading));
     var books = _bookRepository.getBooks();
     emit(
@@ -45,8 +48,8 @@ class BookBloc extends BaseBloc<BookEvent, BooksState> {
     add(const BookRefreshRequested());
   }
 
-  FutureOr<void> _onBookUpdated(
-      BookUpdated event, Emitter<BooksState> emit) async {
+  FutureOr<void> _onBookUpdated(BookUpdated event,
+      Emitter<BooksState> emit) async {
     var book = _bookRepository.findBook(event.uuid);
     if (book != null) {
       book.name = event.name ?? book.name;
@@ -56,8 +59,8 @@ class BookBloc extends BaseBloc<BookEvent, BooksState> {
     }
   }
 
-  FutureOr<void> _onBookDeleted(
-      BookDeleted event, Emitter<BooksState> emit) async {
+  FutureOr<void> _onBookDeleted(BookDeleted event,
+      Emitter<BooksState> emit) async {
     _bookRepository.batchDeleteBook(event.uuids);
     add(const BookRefreshRequested());
   }
@@ -75,8 +78,8 @@ class BookBloc extends BaseBloc<BookEvent, BooksState> {
     add(BookFilterChanged(state.filter.copyWith(search: () => search)));
   }
 
-  FutureOr<void> _onBookFilterChanged(
-      BookFilterChanged event, Emitter<BooksState> emit) {
+  FutureOr<void> _onBookFilterChanged(BookFilterChanged event,
+      Emitter<BooksState> emit) {
     emit(
       state.copyWith(
         filter: () {

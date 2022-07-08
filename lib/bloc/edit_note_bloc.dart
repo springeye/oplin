@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_quill/flutter_quill.dart';
+import 'package:injectable/injectable.dart';
 import 'package:oplin/common/logging.dart';
 import 'package:oplin/db/models.dart';
 
@@ -8,6 +9,7 @@ part 'edit_note_event.dart';
 
 part 'edit_note_state.dart';
 
+@singleton
 class EditNoteBloc extends Bloc<EditNoteEvent, EditNoteState> {
   EditNoteBloc()
       : super(

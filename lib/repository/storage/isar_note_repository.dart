@@ -1,9 +1,11 @@
+import 'package:injectable/injectable.dart';
 import 'package:isar/isar.dart';
 import 'package:oplin/db/models.dart';
 import 'package:oplin/repository/book_repository.dart';
 import 'package:oplin/repository/isar_repository.dart';
 import 'package:oplin/repository/note_repository.dart';
 
+@Singleton(as: NoteRepository)
 class IsarNoteRepository extends IsarRepository implements NoteRepository {
   IsarNoteRepository(super.store);
 

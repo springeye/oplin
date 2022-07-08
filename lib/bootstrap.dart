@@ -15,6 +15,7 @@ import 'package:oplin/bloc/book_bloc.dart';
 import 'package:oplin/bloc/note_bloc.dart';
 import 'package:oplin/bloc/edit_note_bloc.dart';
 import 'package:oplin/common/logging.dart';
+import 'package:oplin/dependencie_manager.dart';
 import 'package:oplin/repository/book_repository.dart';
 import 'package:oplin/repository/note_repository.dart';
 import 'package:oplin/repository/storage/isar_book_repository.dart';
@@ -44,33 +45,27 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   };
 
   await runZonedGuarded(
-    () async {
-      await BlocOverrides.runZoned(
         () async {
-          Isar isar = await Isar.open(
-            schemas:[BookSchema, NoteSchema],
-            directory: (await getApplicationSupportDirectory()).path,
-          );
-          // NoteRepository noteRepository = StorageNoteRepository(store);
-          // BookRepository bookRepository = StorageBookRepository(store);
-          NoteRepository noteRepository = IsarNoteRepository(isar);
-          BookRepository bookRepository = IsarBookRepository(isar);
-          BookBloc bookLogic = BookBloc(bookRepository: bookRepository);
-          EditNoteBloc showBloc = EditNoteBloc();
-          NoteBloc noteLogic = NoteBloc(
-              noteRepository: noteRepository,
-              editLogic: showBloc,
-              bookBloc: bookLogic);
-          AppConfig appConfig = await AppCubit.getDefaultConfig();
+      NoteRepository noteRepository =
+      await getIt.getAsync<NoteRepository>();
+      BookRepository bookRepository =
+      await getIt.getAsync<BookRepository>();
+      BookBloc bookLogic = await getIt.getAsync<BookBloc>();
+      EditNoteBloc showBloc = getIt.get<EditNoteBloc>();
+      NoteBloc noteLogic = await getIt.getAsync<NoteBloc>();
+      AppCubit appCubit = await getIt.getAsync<AppCubit>();
+      SyncCubit syncCubit = await getIt.getAsync<SyncCubit>();
+      await BlocOverrides.runZoned(
+            () async {
           runApp(
             MultiBlocProvider(
               providers: [
-                BlocProvider(create: (context) => AppCubit(appConfig)),
+                BlocProvider(create: (context) => appCubit),
                 BlocProvider(create: (context) => showBloc),
                 BlocProvider(create: (context) => noteLogic),
                 BlocProvider(create: (context) => bookLogic),
                 BlocProvider(
-                  create: (context) => SyncCubit(noteRepository, bookLogic),
+                  create: (context) => syncCubit,
                 ),
               ],
               child: MultiRepositoryProvider(
@@ -90,6 +85,6 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
         blocObserver: AppBlocObserver(),
       );
     },
-    (error, stackTrace) => log(error.toString(), stackTrace: stackTrace),
+        (error, stackTrace) => log(error.toString(), stackTrace: stackTrace),
   );
 }
