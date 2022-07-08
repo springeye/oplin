@@ -4,7 +4,9 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:oplin/gen/S.dart';
+import 'package:oplin/gen/assets.gen.dart';
 import '../../bloc/app_cubit.dart';
+import '../../gen/fonts.gen.dart';
 
 class App extends StatelessWidget {
   final Widget child;
@@ -16,7 +18,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AppCubit, AppConfig>(
       builder: (context, config) {
-        String? fontFamily = config.fontFamily;
+        String? fontFamily = FontFamily.roboto;
         return MaterialApp(
           localizationsDelegates: const [
             S.delegate,
