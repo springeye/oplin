@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:oplin/app/view/dialog.dart';
+import 'package:oplin/app/view/common/dialog.dart';
 import 'package:oplin/app/view/mobile/drawer.dart';
 import 'package:oplin/app/view/mobile/edit.dart';
 import 'package:oplin/bloc/note_bloc.dart';

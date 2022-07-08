@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:oplin/app/view/dialog.dart';
+import 'package:oplin/app/view/common/dialog.dart';
 import 'package:oplin/bloc/book_bloc.dart';
 
 const Duration _kExpand = Duration(milliseconds: 100);

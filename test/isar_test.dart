@@ -21,12 +21,11 @@ Future<void> main() async {
   late NoteRepository noteRepository;
   group("isar", () {
     setUp(() async {
-      await Isar.initializeIsarCore(download: true);
       TestWidgetsFlutterBinding.ensureInitialized();
       PathProviderPlatform.instance = FakePathProviderPlatform();
       final dir = await getTemporaryDirectory(); // path_provider package
       final isar = await Isar.open(
-        [BookSchema, NoteSchema],
+        schemas: [BookSchema, NoteSchema],
         directory: dir.path,
       );
       noteRepository = IsarNoteRepository(isar);

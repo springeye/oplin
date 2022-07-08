@@ -5,7 +5,7 @@ import 'package:oplin/app/view/mobile/build_note.dart';
 
 // import 'package:objectbox/objectbox.dart';
 import 'package:oplin/app/view/mobile/route.dart';
-import 'package:oplin/app/view/mobile/settings.dart';
+import 'package:oplin/app/view/common/settings.dart';
 import 'package:oplin/bloc/app_cubit.dart';
 import 'package:oplin/bloc/book_bloc.dart';
 import 'package:oplin/bloc/note_bloc.dart';

@@ -13,7 +13,7 @@ import 'package:oplin/gen/S.dart';
 import 'build_note.dart';
 import 'card_item_draggable.dart';
 import 'card_item_target.dart';
-import '../dialog.dart';
+import '../common/dialog.dart';
 import 'folder_screen.dart';
 
 class NoteList extends StatefulWidget {

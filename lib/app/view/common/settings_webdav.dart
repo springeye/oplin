@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:oplin/app/view/dialog.dart';
+import 'package:oplin/app/view/common/dialog.dart';
 import 'package:oplin/bloc/app_cubit.dart';
 
 import 'package:oplin/gen/S.dart';

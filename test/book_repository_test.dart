@@ -18,12 +18,11 @@ Future<void> main() async {
     late BookRepository repository;
     late Isar store;
     setUp(() async {
-      await Isar.initializeIsarCore(download: true);
       TestWidgetsFlutterBinding.ensureInitialized();
       PathProviderPlatform.instance = FakePathProviderPlatform();
       final dir = await getTemporaryDirectory(); // path_provider package
       store = await Isar.open(
-        [BookSchema, NoteSchema],
+        schemas: [BookSchema, NoteSchema],
         directory: dir.path,
       );
       repository = IsarBookRepository(store);

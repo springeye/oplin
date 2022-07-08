@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:oplin/bloc/book_bloc.dart';
 
-import '../../../../db/models.dart';
+import '../../../../../db/models.dart';
 import 'package:oplin/gen/S.dart';
 
 Widget _cardButton(BuildContext context,
