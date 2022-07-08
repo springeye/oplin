@@ -7,7 +7,9 @@
 
 import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isar/isar.dart';
@@ -42,11 +44,14 @@ class AppBlocObserver extends BlocObserver {
 
 Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   FlutterError.onError = (details) {
-    log(details.exceptionAsString(), stackTrace: details.stack);
+    // log(details.exceptionAsString(), stackTrace: details.stack);
+    FlutterError.presentError(details);
+    if (kReleaseMode) exit(1);
   };
 
   await runZonedGuarded(
     () async {
+      WidgetsFlutterBinding.ensureInitialized();
       loadRemoteFonts();
       NoteRepository noteRepository = await getIt.getAsync<NoteRepository>();
       BookRepository bookRepository = await getIt.getAsync<BookRepository>();
@@ -85,6 +90,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
         blocObserver: AppBlocObserver(),
       );
     },
-    (error, stackTrace) => log(error.toString(), stackTrace: stackTrace),
+    (error, stackTrace) => FlutterError.reportError(
+        FlutterErrorDetails(exception: error, stack: stackTrace)),
   );
 }

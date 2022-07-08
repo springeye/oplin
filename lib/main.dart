@@ -9,7 +9,6 @@ import 'app/build_main.dart';
 import 'dependencie_manager.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
   configureDependencies();
   bootstrap(() => App(
         child: Builder(builder: (context) {

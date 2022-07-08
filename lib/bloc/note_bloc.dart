@@ -28,8 +28,7 @@ class NoteBloc extends BaseBloc<NoteEvent, NoteState> {
     required this.bookBloc,
     required this.editLogic,
     required NoteRepository noteRepository,
-  })
-      : _noteRepository = noteRepository,
+  })  : _noteRepository = noteRepository,
         super(const NoteState()) {
     on<NoteRefreshRequested>(_onSubscriptionRequested);
     on<NoteDeleted>(_onNoteDeleted);
@@ -51,17 +50,17 @@ class NoteBloc extends BaseBloc<NoteEvent, NoteState> {
     });
   }
 
-  Future<void> _onSubscriptionRequested(NoteRefreshRequested event,
-      Emitter<NoteState> emit,) async {
+  Future<void> _onSubscriptionRequested(
+    NoteRefreshRequested event,
+    Emitter<NoteState> emit,
+  ) async {
     emit(state.copyWith(status: () => NotesStatus.loading));
 
     emit(state.copyWith(notes: () {
-      appLog.debug("开始查询当前nodes");
       var list = _noteRepository.getNotes();
       for (var element in list) {
         appLog.debug(element.toString());
       }
-      appLog.debug("结束查询当前nodes");
 
       return list;
     }));
@@ -69,19 +68,20 @@ class NoteBloc extends BaseBloc<NoteEvent, NoteState> {
     // add(const ShowNewNoteEvent(null));
   }
 
-  Future<void> _onNoteDeleted(NoteDeleted event,
-      Emitter<NoteState> emit,) async {
+  Future<void> _onNoteDeleted(
+    NoteDeleted event,
+    Emitter<NoteState> emit,
+  ) async {
     appLog.debug(
-        "notes count ${_noteRepository
-            .getNotes()
-            .where((element) => !element.deleted)
-            .length}");
+        "notes count ${_noteRepository.getNotes().where((element) => !element.deleted).length}");
     _noteRepository.batchDeleteNote(event.uuids, physics: false);
     add(const NoteRefreshRequested());
   }
 
-  void _onFilterChanged(NotesFilterChanged event,
-      Emitter<NoteState> emit,) {
+  void _onFilterChanged(
+    NotesFilterChanged event,
+    Emitter<NoteState> emit,
+  ) {
     appLog.debug("_onFilterChanged");
     emit(
       state.copyWith(
@@ -93,12 +93,11 @@ class NoteBloc extends BaseBloc<NoteEvent, NoteState> {
     add(const ShowNewNoteEvent(null));
   }
 
-  Future<FutureOr<void>> _onNoteUpdated(NotesUpdated event,
-      Emitter<NoteState> emit) async {
+  Future<FutureOr<void>> _onNoteUpdated(
+      NotesUpdated event, Emitter<NoteState> emit) async {
     Note? note;
     appLog.debug(
-        "_onNoteUpdated uuid:${event.uuid},title:${event.title},content:${event
-            .content}");
+        "_onNoteUpdated uuid:${event.uuid},title:${event.title},content:${event.content}");
     if (event.uuid == null || event.uuid!.isEmpty) {
       note = Note.create();
       note.title = event.title ?? "";
@@ -152,8 +151,8 @@ class NoteBloc extends BaseBloc<NoteEvent, NoteState> {
     add(NotesFilterChanged(state.filter.copyWith(search: () => search)));
   }
 
-  FutureOr<void> _addToSelectNote(AddToSelectNote event,
-      Emitter<NoteState> emit) {
+  FutureOr<void> _addToSelectNote(
+      AddToSelectNote event, Emitter<NoteState> emit) {
     emit(state.copyWith(
       selected: () {
         return [...state.selected, event.note];
@@ -161,8 +160,8 @@ class NoteBloc extends BaseBloc<NoteEvent, NoteState> {
     ));
   }
 
-  FutureOr<void> _removeFromSelectNote(RemoveFromSelectNote event,
-      Emitter<NoteState> emit) {
+  FutureOr<void> _removeFromSelectNote(
+      RemoveFromSelectNote event, Emitter<NoteState> emit) {
     emit(state.copyWith(
       selected: () {
         return [...state.selected]..remove(event.note);
@@ -170,8 +169,8 @@ class NoteBloc extends BaseBloc<NoteEvent, NoteState> {
     ));
   }
 
-  FutureOr<void> _clearSelectNote(ClearSelectNote event,
-      Emitter<NoteState> emit) {
+  FutureOr<void> _clearSelectNote(
+      ClearSelectNote event, Emitter<NoteState> emit) {
     emit(state.copyWith(
       selected: () {
         return [];

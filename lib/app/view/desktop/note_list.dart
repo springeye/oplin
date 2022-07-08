@@ -75,11 +75,6 @@ class _NoteListWidgetState extends State<NoteListWidget> {
     var logic = context.read<EditNoteBloc>();
     var selectedNotes = state.selected;
     var notes = state.filteredTodos.toList();
-    appLog.debug("开始渲染界面nodes");
-    for (var value1 in notes) {
-      appLog.debug(value1.toString());
-    }
-    appLog.debug("结束渲染界面nodes");
     var book = S.of(context).all;
     if (state.filter.notebook != null) {
       if (state.filter.notebook!.isOther) {

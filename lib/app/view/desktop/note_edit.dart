@@ -155,7 +155,6 @@ class _SaveButtonState extends State<_SaveButton> {
   Widget build(BuildContext context) {
     return BlocBuilder<EditNoteBloc, EditNoteState>(
       builder: (context, state) {
-        appLog.debug("刷新按钮==>${state.changed}");
         return state.changed
             ? FloatingActionButton(
                 onPressed: () {
