@@ -37,7 +37,7 @@ packages:
     source: hosted
     version: "3.3.0"
   args:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: args
       url: "https://pub.flutter-io.cn"
@@ -471,10 +471,12 @@ packages:
   flutter_launcher_icons:
     dependency: "direct dev"
     description:
-      name: flutter_launcher_icons
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.9.3"
+      path: "."
+      ref: desktop
+      resolved-ref: babd4659e41f67a2c386b5615c8811b1ccb2c246
+      url: "https://github.com/kechankrisna/flutter_launcher_icons.git"
+    source: git
+    version: "0.9.0+1"
   flutter_lints:
     dependency: "direct dev"
     description:

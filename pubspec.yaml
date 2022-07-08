@@ -75,6 +75,12 @@ dev_dependencies:
   json_serializable: ^6.2.0
   mockito: ^5.2.0
   string_literal_finder: ^1.1.0+2
+dependency_overrides:
+  args: ^2.3.0
+  flutter_launcher_icons:
+    git:
+      url: https://github.com/kechankrisna/flutter_launcher_icons.git
+      ref: desktop
 #dependency_overrides:
 #  ffi: ^2.0.0
 #  analyzer: ^4.1.0
@@ -191,4 +197,6 @@ flutter_gen:
 flutter_icons:
   android: true
   ios: true
+  macos: true
+  windows: true
   image_path: "1024x1024.png"
