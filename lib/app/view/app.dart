@@ -18,7 +18,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AppCubit, AppConfig>(
       builder: (context, config) {
-        String? fontFamily = FontFamily.roboto;
+        String? fontFamily = FontFamily.maShanZhengngCang;
         return MaterialApp(
           localizationsDelegates: const [
             S.delegate,

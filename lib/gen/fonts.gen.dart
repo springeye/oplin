@@ -16,6 +16,9 @@ class FontFamily {
   /// Font family: LongCang
   static const String longCang = 'LongCang';
 
+  /// Font family: MaShanZhengngCang
+  static const String maShanZhengngCang = 'MaShanZhengngCang';
+
   /// Font family: Roboto
   static const String roboto = 'Roboto';
 }
