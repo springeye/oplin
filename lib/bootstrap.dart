@@ -48,7 +48,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
       await BlocOverrides.runZoned(
         () async {
           Isar isar = await Isar.open(
-            [BookSchema, NoteSchema],
+            schemas:[BookSchema, NoteSchema],
             directory: (await getApplicationSupportDirectory()).path,
           );
           // NoteRepository noteRepository = StorageNoteRepository(store);
