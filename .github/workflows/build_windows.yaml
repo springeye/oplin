@@ -11,14 +11,15 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: kuhnroyal/flutter-fvm-config-action@v1
       - uses: subosito/flutter-action@v2
         with:
-          channel: stable
-          flutter-version: '3.0.3'
+          channel: ${{ env.FLUTTER_CHANNEL }}
+          flutter-version: ${{ env.FLUTTER_VERSION }}
       - run: flutter config --enable-windows-desktop
-      - run: flutter doctor -v
+      - run: flutter doctor
       - run: flutter pub get
       - run: flutter pub run build_runner build --delete-conflicting-outputs
       - name: build windows
-        run: flutter build windows -v
+        run: flutter build windows
 
