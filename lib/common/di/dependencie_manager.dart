@@ -1,11 +1,10 @@
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:oplin/bloc/app_cubit.dart';
-import 'package:oplin/dependencie_manager.config.dart';
+import 'package:oplin/common/di/dependencie_manager.config.dart';
+import 'package:oplin/db/models.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
-
-import 'db/models.dart';
 
 final getIt = GetIt.instance;
 

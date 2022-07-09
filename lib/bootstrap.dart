@@ -6,25 +6,20 @@
 // https://opensource.org/licenses/MIT.
 
 import 'dart:async';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:isar/isar.dart';
 import 'package:oplin/bloc/book_bloc.dart';
-import 'package:oplin/bloc/note_bloc.dart';
 import 'package:oplin/bloc/edit_note_bloc.dart';
+import 'package:oplin/bloc/note_bloc.dart';
+import 'package:oplin/common/di/dependencie_manager.dart';
 import 'package:oplin/common/logging.dart';
-import 'package:oplin/dependencie_manager.dart';
-import 'package:oplin/fonts.dart';
+import 'package:oplin/common/fonts.dart';
 import 'package:oplin/repository/book_repository.dart';
 import 'package:oplin/repository/note_repository.dart';
-import 'package:oplin/repository/storage/isar_book_repository.dart';
-import 'package:oplin/repository/storage/isar_note_repository.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:oplin/db/models.dart';
+
 import 'bloc/app_cubit.dart';
 import 'bloc/sync_bloc.dart';
 
@@ -48,7 +43,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
     FlutterError.presentError(details);
     if (kReleaseMode) exit(1);
   };
-
+  configureDependencies();
   await runZonedGuarded(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
