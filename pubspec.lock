@@ -29,6 +29,146 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.0.3"
+  app_package_maker:
+    dependency: transitive
+    description:
+      name: app_package_maker
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.2.3"
+  app_package_maker_aab:
+    dependency: transitive
+    description:
+      name: app_package_maker_aab
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.2.3"
+  app_package_maker_apk:
+    dependency: transitive
+    description:
+      name: app_package_maker_apk
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.2.3"
+  app_package_maker_appimage:
+    dependency: transitive
+    description:
+      name: app_package_maker_appimage
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.2.3"
+  app_package_maker_deb:
+    dependency: transitive
+    description:
+      name: app_package_maker_deb
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.2.3"
+  app_package_maker_dmg:
+    dependency: transitive
+    description:
+      name: app_package_maker_dmg
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.2.3"
+  app_package_maker_exe:
+    dependency: transitive
+    description:
+      name: app_package_maker_exe
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.2.3"
+  app_package_maker_ipa:
+    dependency: transitive
+    description:
+      name: app_package_maker_ipa
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.2.3"
+  app_package_maker_zip:
+    dependency: transitive
+    description:
+      name: app_package_maker_zip
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.2.3"
+  app_package_parser:
+    dependency: transitive
+    description:
+      name: app_package_parser
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.2.3"
+  app_package_parser_apk:
+    dependency: transitive
+    description:
+      name: app_package_parser_apk
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.2.3"
+  app_package_parser_ipa:
+    dependency: transitive
+    description:
+      name: app_package_parser_ipa
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.2.3"
+  app_package_publisher:
+    dependency: transitive
+    description:
+      name: app_package_publisher
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.2.3"
+  app_package_publisher_appcenter:
+    dependency: transitive
+    description:
+      name: app_package_publisher_appcenter
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.2.3"
+  app_package_publisher_appstore:
+    dependency: transitive
+    description:
+      name: app_package_publisher_appstore
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.2.3"
+  app_package_publisher_fir:
+    dependency: transitive
+    description:
+      name: app_package_publisher_fir
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.2.3"
+  app_package_publisher_firebase:
+    dependency: transitive
+    description:
+      name: app_package_publisher_firebase
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.2.3"
+  app_package_publisher_github:
+    dependency: transitive
+    description:
+      name: app_package_publisher_github
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.2.3"
+  app_package_publisher_pgyer:
+    dependency: transitive
+    description:
+      name: app_package_publisher_pgyer
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.2.3"
+  app_package_publisher_qiniu:
+    dependency: transitive
+    description:
+      name: app_package_publisher_qiniu
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.2.3"
   archive:
     dependency: "direct main"
     description:
@@ -208,6 +348,13 @@ packages:
     dependency: transitive
     description:
       name: color
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.0.0"
+  colorize:
+    dependency: transitive
+    description:
+      name: colorize
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.0.0"
@@ -398,6 +545,27 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_app_builder:
+    dependency: transitive
+    description:
+      name: flutter_app_builder
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.2.3"
+  flutter_app_packager:
+    dependency: transitive
+    description:
+      name: flutter_app_packager
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.2.4"
+  flutter_app_publisher:
+    dependency: transitive
+    description:
+      name: flutter_app_publisher
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.2.3"
   flutter_bloc:
     dependency: "direct main"
     description:
@@ -412,6 +580,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.0.3"
+  flutter_distributor:
+    dependency: "direct dev"
+    description:
+      name: flutter_distributor
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.2.4"
   flutter_easyloading:
     dependency: "direct main"
     description:
@@ -723,6 +898,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.0.0"
+  liquid_engine:
+    dependency: transitive
+    description:
+      name: liquid_engine
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.2.2"
   loading_indicator:
     dependency: "direct main"
     description:
@@ -786,6 +968,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.3.0"
+  mustache_template:
+    dependency: transitive
+    description:
+      name: mustache_template
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.0.0"
   nested:
     dependency: transitive
     description:
@@ -807,6 +996,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.1.0"
+  parse_app_package:
+    dependency: transitive
+    description:
+      name: parse_app_package
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.2.3"
   path:
     dependency: transitive
     description:
@@ -933,6 +1129,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.2.0"
+  qiniu_sdk_base:
+    dependency: transitive
+    description:
+      name: qiniu_sdk_base
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.3.3"
   quill_markdown:
     dependency: "direct main"
     description:

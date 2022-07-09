@@ -30,5 +30,5 @@ bash <(curl -s https://raw.githubusercontent.com/objectbox/objectbox-dart/main/i
 [https://github.com/leanflutter/flutter_distributor]()
 
 ```
-flutter_distributor release --name prod
+flutter pub run flutter_distributor:main release --name prod
 ```
