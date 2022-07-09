@@ -277,18 +277,16 @@ class _NoteListWidgetState extends State<NoteListWidget> {
     var bloc = context.read<NoteBloc>();
     return ClipOval(
       child: Material(
-        color: Theme.of(context).primaryColor, // Button color
-        child: InkWell(
-          onTap: () {
+        color: Theme.of(context).primaryColor,
+        child: IconButton(
+          tooltip: "创建",
+          icon: const Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
+          onPressed: () {
             bloc.add(const ShowNewNoteEvent(null));
           },
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: const Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
-          ),
         ),
       ),
     );

@@ -103,26 +103,37 @@ class _DesktopHomePageState extends State<DesktopHomePage> {
               Icons.close,
               color: Colors.white,
             ),
+            tooltip: "退出编辑模式",
           ),
           Text(
             S.of(context).select_note_count(selected.length),
             style: const TextStyle(color: Colors.white),
           ),
           const Spacer(),
+          if (bloc.state.filter.notebook?.isRecycled != true)
+            IconButton(
+              onPressed: () {
+                showMoveToFolderDialog(context, onCreatePressed: () {},
+                    onNotebookPressed: (notebook) {
+                  bloc.add(NotesMoved(
+                      selected.map((e) => e.uuid).toList(), notebook?.uuid));
+                  bloc.add(const ClearSelectNote());
+                  Navigator.pop(context);
+                });
+              },
+              icon: const Icon(
+                Icons.move_to_inbox,
+                color: Colors.white,
+              ),
+              tooltip: "移动到文件夹",
+            ),
           IconButton(
-            onPressed: () {
-              showMoveToFolderDialog(context, onCreatePressed: () {},
-                  onNotebookPressed: (notebook) {
-                bloc.add(NotesMoved(
-                    selected.map((e) => e.uuid).toList(), notebook?.uuid));
-                bloc.add(const ClearSelectNote());
-                Navigator.pop(context);
-              });
-            },
+            onPressed: () {},
             icon: const Icon(
-              Icons.move_to_inbox,
+              Icons.undo,
               color: Colors.white,
             ),
+            tooltip: "还原",
           ),
           IconButton(
             onPressed: () {
@@ -133,6 +144,7 @@ class _DesktopHomePageState extends State<DesktopHomePage> {
               Icons.delete,
               color: Colors.white,
             ),
+            tooltip: "删除",
           ),
         ],
       ),
