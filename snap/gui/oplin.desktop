@@ -1,8 +1,0 @@
-[Desktop Entry]
-Terminal=false
-Type=Application
-Name=Oplin Notebook
-Comment=A sample Notebook Application
-Exec=oplin %f
-Icon=${SNAP}/meta/gui/oplin.png
-Categories=Utility;

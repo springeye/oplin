@@ -11,8 +11,8 @@ maintainer:
   email: springeye@qq.com
 
 co_authors:
-  - name: Kingkor Roy Tirtho
-    email: krtirtho@gmail.com
+  - name: springeye
+    email: springeye@qq.com
 
 # enum options -> required, important, standard, optional, extra
 # refer: https://www.debian.org/doc/debian-policy/ch-archive.html#s-priorities
@@ -103,8 +103,8 @@ generic_name: Music Application
 # the categories the application belong to
 # refer: https://specifications.freedesktop.org/menu-spec/latest/
 categories:
-  - Music
-  - Media
+  - Utility
+  - Office
 
 # let OS know if the application can be run on start_up. If it's false
 # the application will deny to the OS if it was added as a start_up
