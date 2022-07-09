@@ -1,0 +1,9 @@
+#script_template: "custom-inno-setup-script.iss"
+app_id: com.github.springeye.oplin
+publisher_name: sringeye
+publisher_url: https://github.com/springeye/oplin
+display_name: Oplin
+create_desktop_icon: true
+launch_at_startup: true
+locales:
+  - zh
