@@ -22,4 +22,4 @@ jobs:
       - run: flutter pub get
       - run: flutter pub run build_runner build --delete-conflicting-outputs
       - name: build linux
-        run: flutter pub run flutter_distributor:main release --name prod-linux
+        run: flutter build linux
