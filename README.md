@@ -23,5 +23,7 @@ fvm flutter pub run build_runner build --delete-conflicting-outputs
 use [flutter_distributor](https://github.com/leanflutter/flutter_distributor)
 
 ```
-fvm flutter pub run flutter_distributor:main release --name prod
+fvm flutter pub run flutter_distributor:main release --name prod-macos
+fvm flutter pub run flutter_distributor:main release --name prod-windows
+fvm flutter pub run flutter_distributor:main release --name prod-linux
 ```
