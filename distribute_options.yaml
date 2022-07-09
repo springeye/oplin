@@ -14,7 +14,7 @@ releases:
       - name: release-prod-windows
         package:
           platform: windows
-          target: msix
+          target: exe
           build_args:
             dart-define:
               APP_ENV: prod
