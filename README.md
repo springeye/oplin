@@ -18,7 +18,9 @@ fvm flutter pub get
 fvm flutter pub run build_runner build --delete-conflicting-outputs
 ```
 
-### release  use[flutter_distributor](https://github.com/leanflutter/flutter_distributor)
+### release
+
+use [flutter_distributor](https://github.com/leanflutter/flutter_distributor)
 
 ```
 fvm flutter pub run flutter_distributor:main release --name prod
