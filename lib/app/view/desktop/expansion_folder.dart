@@ -114,14 +114,12 @@ class _ExpansionFolderState extends State<ExpansionFolder>
             ),
           ),
         ),
-        Expanded(
-          child: ClipRect(
-            child: Align(
-              alignment:
-                  expansionTileTheme.expandedAlignment ?? Alignment.topLeft,
-              heightFactor: _heightFactor.value,
-              child: child,
-            ),
+        ClipRect(
+          child: Align(
+            alignment:
+                expansionTileTheme.expandedAlignment ?? Alignment.topLeft,
+            heightFactor: _heightFactor.value,
+            child: child,
           ),
         ),
       ],

@@ -84,6 +84,8 @@ class FolderListWidget extends StatelessWidget {
       color: bgColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Container(
             alignment: Alignment.center,
@@ -101,24 +103,27 @@ class FolderListWidget extends StatelessWidget {
           _buildItem(context, Book.other, book?.isOther == true, () {
             onTapBook(context, Book.other);
           }),
-          Expanded(
-            child: ExpansionFolder(
-              title: const Padding(
-                padding: EdgeInsets.only(left: 10.0),
-                child: Text("我的文件夹"),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 25, top: 10),
-                child: ScrollConfiguration(
-                  behavior: ScrollConfiguration.of(context)
-                      .copyWith(scrollbars: false),
-                  child: ListView(
-                    children: [..._buildList(context)],
-                  ),
+          ExpansionFolder(
+            title: const Padding(
+              padding: EdgeInsets.only(left: 10.0),
+              child: Text("我的文件夹"),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 25, top: 10),
+              child: ScrollConfiguration(
+                behavior:
+                    ScrollConfiguration.of(context).copyWith(scrollbars: false),
+                child: ListView(
+                  shrinkWrap: true,
+                  children: [..._buildList(context)],
                 ),
               ),
             ),
           ),
+          _buildItem(context, Book.recycled, book?.isRecycled == true, () {
+            onTapBook(context, Book.recycled);
+          }),
+          const Spacer(),
           Container(
             padding: const EdgeInsets.all(8.0),
             child: InkWell(
@@ -171,9 +176,13 @@ class FolderListWidget extends StatelessWidget {
                   ? const Icon(Icons.folder_open)
                   : const Icon(Icons.folder),
               title: Text(
-                (book != null && book.isOther)
-                    ? S.of(context).other
-                    : book?.name ?? S.of(context).all,
+                book == null
+                    ? "全部"
+                    : book.isOther
+                        ? "未分类"
+                        : book.isRecycled
+                            ? "回收站"
+                            : book.name,
                 style: selected ? selectTitleStyle : titleStyle,
               ),
               onTap: onTap,

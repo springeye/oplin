@@ -182,57 +182,20 @@ class _NoteListWidgetState extends State<NoteListWidget> {
                         itemBuilder: (ctx, index) {
                           var currentShow =
                               selectNote?.uuid == notes[index].uuid;
-                          return GestureDetector(
-                            onSecondaryTapDown: (details) {
-                              var note = notes[index];
-                              showContextMenu(context, details.globalPosition, [
-                                ListTile(
-                                  title: Text("Delete"),
-                                  onTap: () {
-                                    context
-                                        .read<NoteBloc>()
-                                        .add(NoteDeleted([note.uuid]));
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                                ListTile(
-                                  title: Text("Move"),
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                    var notebookLogic =
-                                        context.read<BookBloc>();
-                                    var noteLogic = context.read<NoteBloc>();
-                                    showMoveToFolderDialog(context,
-                                        onCreatePressed: () {
-                                      showCreateNotebookDialog(context, (name) {
-                                        notebookLogic
-                                            .add(BookAdded(name: name));
-                                        Navigator.pop(context);
-                                      });
-                                    }, onNotebookPressed: (Book? notebook) {
-                                      noteLogic.add(NotesMoved(
-                                          [notes[index].uuid], notebook?.uuid));
-                                      Navigator.pop(context);
-                                    });
-                                  },
-                                ),
-                              ]);
-                            },
-                            child: Material(
-                              child: MouseRegion(
-                                onEnter: (details) {
-                                  setState(() {
-                                    hover = notes[index];
-                                  });
-                                },
-                                onExit: (details) {
-                                  setState(() {
-                                    hover = null;
-                                  });
-                                },
-                                child: _buildNoteItem(context, notes[index],
-                                    currentShow, selectedNotes),
-                              ),
+                          return Material(
+                            child: MouseRegion(
+                              onEnter: (details) {
+                                setState(() {
+                                  hover = notes[index];
+                                });
+                              },
+                              onExit: (details) {
+                                setState(() {
+                                  hover = null;
+                                });
+                              },
+                              child: _buildNoteItem(context, notes[index],
+                                  currentShow, selectedNotes),
                             ),
                           );
                         },

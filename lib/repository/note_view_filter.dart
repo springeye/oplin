@@ -46,26 +46,21 @@ extension NoteViewSortTypeX on ViewSortType {
 }
 
 class NoteViewFilter extends Equatable {
-  final ViewFilterType type;
   final ViewSortType sort;
   final String? search;
 
   //show all when notebook is null,show unclassified notebook.uuid is empty,
   final Book? notebook;
 
-  const NoteViewFilter({this.type = ViewFilterType.activeOnly,
-    this.sort = ViewSortType.updatedDesc,
-    this.search,
-    this.notebook});
+  const NoteViewFilter(
+      {this.sort = ViewSortType.updatedDesc, this.search, this.notebook});
 
   NoteViewFilter copyWith({
-    ViewFilterType Function()? type,
     ViewSortType Function()? sort,
     String? Function()? search,
     Book? Function()? notebook,
   }) {
     return NoteViewFilter(
-      type: type != null ? type() : this.type,
       sort: sort != null ? sort() : this.sort,
       search: search != null ? search() : this.search,
       notebook: notebook != null ? notebook() : this.notebook,
@@ -73,29 +68,25 @@ class NoteViewFilter extends Equatable {
   }
 
   @override
-  List<Object?> get props => [type, sort, search, notebook?.uuid];
+  List<Object?> get props => [sort, search, notebook?.uuid];
 
   List<Note> applyAll(List<Note> notes) {
     appLog.debug("applyAll filter");
     var result = [...notes];
     result = result.where((element) {
-      var show = element.notebookId == notebook?.uuid;
+      var show = element.notebookId == notebook?.uuid && !element.deleted;
       if (notebook == null) {
-        show = true;
+        show = !element.deleted;
       } else if (notebook != null && notebook!.isOther) {
-        show = element.notebookId == null;
+        show = element.notebookId == null && !element.deleted;
+      } else if (notebook != null && notebook!.isRecycled) {
+        show = element.deleted;
       }
 
       if (search != null) {
         show = show &&
             (element.title.contains(search!) ||
                 element.content.toPlainText().contains(search!));
-      }
-      if (type == ViewFilterType.deletedOnly) {
-        show = show && element.deleted;
-      }
-      if (type == ViewFilterType.activeOnly) {
-        show = show && !element.deleted;
       }
       return show;
     }).toList();
