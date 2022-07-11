@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oplin/app/view/common/dialog.dart';
@@ -84,7 +85,7 @@ class FolderListWidget extends StatelessWidget {
       color: bgColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Container(
@@ -97,12 +98,8 @@ class FolderListWidget extends StatelessWidget {
               style: Theme.of(context).primaryTextTheme.titleLarge,
             ),
           ),
-          _buildItem(context, null, book == null, () {
-            onTapBook(context, null);
-          }),
-          _buildItem(context, Book.other, book?.isOther == true, () {
-            onTapBook(context, Book.other);
-          }),
+          _buildAllFolderItem(context, book),
+          _buildOtherFolderItem(context, book),
           ExpansionFolder(
             title: const Padding(
               padding: EdgeInsets.only(left: 10.0),
@@ -124,20 +121,39 @@ class FolderListWidget extends StatelessWidget {
             onTapBook(context, Book.recycled);
           }),
           const Spacer(),
-          Container(
-            padding: const EdgeInsets.all(8.0),
-            child: InkWell(
-                child: Text(S.of(context).settings),
-                onTap: () {
-                  Navigator.of(context)
-                      .push(AppPageRoute<SettingWidget>(builder: (context) {
-                    return const SettingWidget();
-                  }));
-                }),
-          ),
+          _buildSetting(context),
         ],
       ),
     );
+  }
+
+  Widget _buildSetting(BuildContext context) {
+    return Container(
+      color: Colors.white,
+      child: ListTile(
+          leading: const Icon(Icons.settings),
+          title: Text(S.of(context).settings),
+          // contentPadding: EdgeInsets.zero,
+          minLeadingWidth: 24,
+          onTap: () {
+            Navigator.of(context)
+                .push(AppPageRoute<SettingWidget>(builder: (context) {
+              return const SettingWidget();
+            }));
+          }),
+    );
+  }
+
+  Widget _buildOtherFolderItem(BuildContext context, Book? book) {
+    return _buildItem(context, Book.other, book?.isOther == true, () {
+      onTapBook(context, Book.other);
+    });
+  }
+
+  Widget _buildAllFolderItem(BuildContext context, Book? book) {
+    return _buildItem(context, null, book == null, () {
+      onTapBook(context, null);
+    });
   }
 
   Widget _buildItem(BuildContext context, Book? book, bool selected,
