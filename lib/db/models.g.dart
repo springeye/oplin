@@ -2686,6 +2686,1062 @@ extension BookQueryProperty on QueryBuilder<Book, Book, QQueryProperty> {
   }
 }
 
+// ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, unused_local_variable
+
+extension GetTodoCollection on Isar {
+  IsarCollection<Todo> get todos => getCollection();
+}
+
+const TodoSchema = CollectionSchema(
+  name: 'Todo',
+  schema:
+      '{"name":"Todo","idName":"id","properties":[{"name":"createTime","type":"Long"},{"name":"deleted","type":"Bool"},{"name":"done","type":"Bool"},{"name":"hashCode","type":"Long"},{"name":"parentId","type":"String"},{"name":"sticky","type":"Bool"},{"name":"synced","type":"Bool"},{"name":"title","type":"String"},{"name":"uuid","type":"String"}],"indexes":[{"name":"uuid","unique":false,"properties":[{"name":"uuid","type":"Hash","caseSensitive":true}]}],"links":[]}',
+  idName: 'id',
+  propertyIds: {
+    'createTime': 0,
+    'deleted': 1,
+    'done': 2,
+    'hashCode': 3,
+    'parentId': 4,
+    'sticky': 5,
+    'synced': 6,
+    'title': 7,
+    'uuid': 8
+  },
+  listProperties: {},
+  indexIds: {'uuid': 0},
+  indexValueTypes: {
+    'uuid': [
+      IndexValueType.stringHash,
+    ]
+  },
+  linkIds: {},
+  backlinkLinkNames: {},
+  getId: _todoGetId,
+  setId: _todoSetId,
+  getLinks: _todoGetLinks,
+  attachLinks: _todoAttachLinks,
+  serializeNative: _todoSerializeNative,
+  deserializeNative: _todoDeserializeNative,
+  deserializePropNative: _todoDeserializePropNative,
+  serializeWeb: _todoSerializeWeb,
+  deserializeWeb: _todoDeserializeWeb,
+  deserializePropWeb: _todoDeserializePropWeb,
+  version: 3,
+);
+
+int? _todoGetId(Todo object) {
+  if (object.id == Isar.autoIncrement) {
+    return null;
+  } else {
+    return object.id;
+  }
+}
+
+void _todoSetId(Todo object, int id) {
+  object.id = id;
+}
+
+List<IsarLinkBase> _todoGetLinks(Todo object) {
+  return [];
+}
+
+void _todoSerializeNative(IsarCollection<Todo> collection, IsarRawObject rawObj,
+    Todo object, int staticSize, List<int> offsets, AdapterAlloc alloc) {
+  var dynamicSize = 0;
+  final value0 = object.createTime;
+  final _createTime = value0;
+  final value1 = object.deleted;
+  final _deleted = value1;
+  final value2 = object.done;
+  final _done = value2;
+  final value3 = object.hashCode;
+  final _hashCode = value3;
+  final value4 = object.parentId;
+  IsarUint8List? _parentId;
+  if (value4 != null) {
+    _parentId = IsarBinaryWriter.utf8Encoder.convert(value4);
+  }
+  dynamicSize += (_parentId?.length ?? 0) as int;
+  final value5 = object.sticky;
+  final _sticky = value5;
+  final value6 = object.synced;
+  final _synced = value6;
+  final value7 = object.title;
+  final _title = IsarBinaryWriter.utf8Encoder.convert(value7);
+  dynamicSize += (_title.length) as int;
+  final value8 = object.uuid;
+  final _uuid = IsarBinaryWriter.utf8Encoder.convert(value8);
+  dynamicSize += (_uuid.length) as int;
+  final size = staticSize + dynamicSize;
+
+  rawObj.buffer = alloc(size);
+  rawObj.buffer_length = size;
+  final buffer = IsarNative.bufAsBytes(rawObj.buffer, size);
+  final writer = IsarBinaryWriter(buffer, staticSize);
+  writer.writeDateTime(offsets[0], _createTime);
+  writer.writeBool(offsets[1], _deleted);
+  writer.writeBool(offsets[2], _done);
+  writer.writeLong(offsets[3], _hashCode);
+  writer.writeBytes(offsets[4], _parentId);
+  writer.writeBool(offsets[5], _sticky);
+  writer.writeBool(offsets[6], _synced);
+  writer.writeBytes(offsets[7], _title);
+  writer.writeBytes(offsets[8], _uuid);
+}
+
+Todo _todoDeserializeNative(IsarCollection<Todo> collection, int id,
+    IsarBinaryReader reader, List<int> offsets) {
+  final object = Todo();
+  object.createTime = reader.readDateTime(offsets[0]);
+  object.deleted = reader.readBool(offsets[1]);
+  object.done = reader.readBool(offsets[2]);
+  object.id = id;
+  object.parentId = reader.readStringOrNull(offsets[4]);
+  object.sticky = reader.readBool(offsets[5]);
+  object.synced = reader.readBool(offsets[6]);
+  object.title = reader.readString(offsets[7]);
+  object.uuid = reader.readString(offsets[8]);
+  return object;
+}
+
+P _todoDeserializePropNative<P>(
+    int id, IsarBinaryReader reader, int propertyIndex, int offset) {
+  switch (propertyIndex) {
+    case -1:
+      return id as P;
+    case 0:
+      return (reader.readDateTime(offset)) as P;
+    case 1:
+      return (reader.readBool(offset)) as P;
+    case 2:
+      return (reader.readBool(offset)) as P;
+    case 3:
+      return (reader.readLong(offset)) as P;
+    case 4:
+      return (reader.readStringOrNull(offset)) as P;
+    case 5:
+      return (reader.readBool(offset)) as P;
+    case 6:
+      return (reader.readBool(offset)) as P;
+    case 7:
+      return (reader.readString(offset)) as P;
+    case 8:
+      return (reader.readString(offset)) as P;
+    default:
+      throw 'Illegal propertyIndex';
+  }
+}
+
+dynamic _todoSerializeWeb(IsarCollection<Todo> collection, Todo object) {
+  final jsObj = IsarNative.newJsObject();
+  IsarNative.jsObjectSet(
+      jsObj, 'createTime', object.createTime.toUtc().millisecondsSinceEpoch);
+  IsarNative.jsObjectSet(jsObj, 'deleted', object.deleted);
+  IsarNative.jsObjectSet(jsObj, 'done', object.done);
+  IsarNative.jsObjectSet(jsObj, 'hashCode', object.hashCode);
+  IsarNative.jsObjectSet(jsObj, 'id', object.id);
+  IsarNative.jsObjectSet(jsObj, 'parentId', object.parentId);
+  IsarNative.jsObjectSet(jsObj, 'sticky', object.sticky);
+  IsarNative.jsObjectSet(jsObj, 'synced', object.synced);
+  IsarNative.jsObjectSet(jsObj, 'title', object.title);
+  IsarNative.jsObjectSet(jsObj, 'uuid', object.uuid);
+  return jsObj;
+}
+
+Todo _todoDeserializeWeb(IsarCollection<Todo> collection, dynamic jsObj) {
+  final object = Todo();
+  object.createTime = IsarNative.jsObjectGet(jsObj, 'createTime') != null
+      ? DateTime.fromMillisecondsSinceEpoch(
+              IsarNative.jsObjectGet(jsObj, 'createTime'),
+              isUtc: true)
+          .toLocal()
+      : DateTime.fromMillisecondsSinceEpoch(0);
+  object.deleted = IsarNative.jsObjectGet(jsObj, 'deleted') ?? false;
+  object.done = IsarNative.jsObjectGet(jsObj, 'done') ?? false;
+  object.id = IsarNative.jsObjectGet(jsObj, 'id') ?? double.negativeInfinity;
+  object.parentId = IsarNative.jsObjectGet(jsObj, 'parentId');
+  object.sticky = IsarNative.jsObjectGet(jsObj, 'sticky') ?? false;
+  object.synced = IsarNative.jsObjectGet(jsObj, 'synced') ?? false;
+  object.title = IsarNative.jsObjectGet(jsObj, 'title') ?? '';
+  object.uuid = IsarNative.jsObjectGet(jsObj, 'uuid') ?? '';
+  return object;
+}
+
+P _todoDeserializePropWeb<P>(Object jsObj, String propertyName) {
+  switch (propertyName) {
+    case 'createTime':
+      return (IsarNative.jsObjectGet(jsObj, 'createTime') != null
+          ? DateTime.fromMillisecondsSinceEpoch(
+                  IsarNative.jsObjectGet(jsObj, 'createTime'),
+                  isUtc: true)
+              .toLocal()
+          : DateTime.fromMillisecondsSinceEpoch(0)) as P;
+    case 'deleted':
+      return (IsarNative.jsObjectGet(jsObj, 'deleted') ?? false) as P;
+    case 'done':
+      return (IsarNative.jsObjectGet(jsObj, 'done') ?? false) as P;
+    case 'hashCode':
+      return (IsarNative.jsObjectGet(jsObj, 'hashCode') ??
+          double.negativeInfinity) as P;
+    case 'id':
+      return (IsarNative.jsObjectGet(jsObj, 'id') ?? double.negativeInfinity)
+          as P;
+    case 'parentId':
+      return (IsarNative.jsObjectGet(jsObj, 'parentId')) as P;
+    case 'sticky':
+      return (IsarNative.jsObjectGet(jsObj, 'sticky') ?? false) as P;
+    case 'synced':
+      return (IsarNative.jsObjectGet(jsObj, 'synced') ?? false) as P;
+    case 'title':
+      return (IsarNative.jsObjectGet(jsObj, 'title') ?? '') as P;
+    case 'uuid':
+      return (IsarNative.jsObjectGet(jsObj, 'uuid') ?? '') as P;
+    default:
+      throw 'Illegal propertyName';
+  }
+}
+
+void _todoAttachLinks(IsarCollection col, int id, Todo object) {}
+
+extension TodoQueryWhereSort on QueryBuilder<Todo, Todo, QWhere> {
+  QueryBuilder<Todo, Todo, QAfterWhere> anyId() {
+    return addWhereClauseInternal(const IdWhereClause.any());
+  }
+
+  QueryBuilder<Todo, Todo, QAfterWhere> anyUuid() {
+    return addWhereClauseInternal(
+        const IndexWhereClause.any(indexName: 'uuid'));
+  }
+}
+
+extension TodoQueryWhere on QueryBuilder<Todo, Todo, QWhereClause> {
+  QueryBuilder<Todo, Todo, QAfterWhereClause> idEqualTo(int id) {
+    return addWhereClauseInternal(IdWhereClause.between(
+      lower: id,
+      includeLower: true,
+      upper: id,
+      includeUpper: true,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterWhereClause> idNotEqualTo(int id) {
+    if (whereSortInternal == Sort.asc) {
+      return addWhereClauseInternal(
+        IdWhereClause.lessThan(upper: id, includeUpper: false),
+      ).addWhereClauseInternal(
+        IdWhereClause.greaterThan(lower: id, includeLower: false),
+      );
+    } else {
+      return addWhereClauseInternal(
+        IdWhereClause.greaterThan(lower: id, includeLower: false),
+      ).addWhereClauseInternal(
+        IdWhereClause.lessThan(upper: id, includeUpper: false),
+      );
+    }
+  }
+
+  QueryBuilder<Todo, Todo, QAfterWhereClause> idGreaterThan(int id,
+      {bool include = false}) {
+    return addWhereClauseInternal(
+      IdWhereClause.greaterThan(lower: id, includeLower: include),
+    );
+  }
+
+  QueryBuilder<Todo, Todo, QAfterWhereClause> idLessThan(int id,
+      {bool include = false}) {
+    return addWhereClauseInternal(
+      IdWhereClause.lessThan(upper: id, includeUpper: include),
+    );
+  }
+
+  QueryBuilder<Todo, Todo, QAfterWhereClause> idBetween(
+    int lowerId,
+    int upperId, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return addWhereClauseInternal(IdWhereClause.between(
+      lower: lowerId,
+      includeLower: includeLower,
+      upper: upperId,
+      includeUpper: includeUpper,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterWhereClause> uuidEqualTo(String uuid) {
+    return addWhereClauseInternal(IndexWhereClause.equalTo(
+      indexName: 'uuid',
+      value: [uuid],
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterWhereClause> uuidNotEqualTo(String uuid) {
+    if (whereSortInternal == Sort.asc) {
+      return addWhereClauseInternal(IndexWhereClause.lessThan(
+        indexName: 'uuid',
+        upper: [uuid],
+        includeUpper: false,
+      )).addWhereClauseInternal(IndexWhereClause.greaterThan(
+        indexName: 'uuid',
+        lower: [uuid],
+        includeLower: false,
+      ));
+    } else {
+      return addWhereClauseInternal(IndexWhereClause.greaterThan(
+        indexName: 'uuid',
+        lower: [uuid],
+        includeLower: false,
+      )).addWhereClauseInternal(IndexWhereClause.lessThan(
+        indexName: 'uuid',
+        upper: [uuid],
+        includeUpper: false,
+      ));
+    }
+  }
+}
+
+extension TodoQueryFilter on QueryBuilder<Todo, Todo, QFilterCondition> {
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> createTimeEqualTo(
+      DateTime value) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.eq,
+      property: 'createTime',
+      value: value,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> createTimeGreaterThan(
+    DateTime value, {
+    bool include = false,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.gt,
+      include: include,
+      property: 'createTime',
+      value: value,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> createTimeLessThan(
+    DateTime value, {
+    bool include = false,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.lt,
+      include: include,
+      property: 'createTime',
+      value: value,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> createTimeBetween(
+    DateTime lower,
+    DateTime upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return addFilterConditionInternal(FilterCondition.between(
+      property: 'createTime',
+      lower: lower,
+      includeLower: includeLower,
+      upper: upper,
+      includeUpper: includeUpper,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> deletedEqualTo(bool value) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.eq,
+      property: 'deleted',
+      value: value,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> doneEqualTo(bool value) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.eq,
+      property: 'done',
+      value: value,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> hashCodeEqualTo(int value) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.eq,
+      property: 'hashCode',
+      value: value,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> hashCodeGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.gt,
+      include: include,
+      property: 'hashCode',
+      value: value,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> hashCodeLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.lt,
+      include: include,
+      property: 'hashCode',
+      value: value,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> hashCodeBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return addFilterConditionInternal(FilterCondition.between(
+      property: 'hashCode',
+      lower: lower,
+      includeLower: includeLower,
+      upper: upper,
+      includeUpper: includeUpper,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> idEqualTo(int value) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.eq,
+      property: 'id',
+      value: value,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> idGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.gt,
+      include: include,
+      property: 'id',
+      value: value,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> idLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.lt,
+      include: include,
+      property: 'id',
+      value: value,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> idBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return addFilterConditionInternal(FilterCondition.between(
+      property: 'id',
+      lower: lower,
+      includeLower: includeLower,
+      upper: upper,
+      includeUpper: includeUpper,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> parentIdIsNull() {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.isNull,
+      property: 'parentId',
+      value: null,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> parentIdEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.eq,
+      property: 'parentId',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> parentIdGreaterThan(
+    String? value, {
+    bool caseSensitive = true,
+    bool include = false,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.gt,
+      include: include,
+      property: 'parentId',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> parentIdLessThan(
+    String? value, {
+    bool caseSensitive = true,
+    bool include = false,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.lt,
+      include: include,
+      property: 'parentId',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> parentIdBetween(
+    String? lower,
+    String? upper, {
+    bool caseSensitive = true,
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return addFilterConditionInternal(FilterCondition.between(
+      property: 'parentId',
+      lower: lower,
+      includeLower: includeLower,
+      upper: upper,
+      includeUpper: includeUpper,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> parentIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.startsWith,
+      property: 'parentId',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> parentIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.endsWith,
+      property: 'parentId',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> parentIdContains(String value,
+      {bool caseSensitive = true}) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.contains,
+      property: 'parentId',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> parentIdMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.matches,
+      property: 'parentId',
+      value: pattern,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> stickyEqualTo(bool value) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.eq,
+      property: 'sticky',
+      value: value,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> syncedEqualTo(bool value) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.eq,
+      property: 'synced',
+      value: value,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> titleEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.eq,
+      property: 'title',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> titleGreaterThan(
+    String value, {
+    bool caseSensitive = true,
+    bool include = false,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.gt,
+      include: include,
+      property: 'title',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> titleLessThan(
+    String value, {
+    bool caseSensitive = true,
+    bool include = false,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.lt,
+      include: include,
+      property: 'title',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> titleBetween(
+    String lower,
+    String upper, {
+    bool caseSensitive = true,
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return addFilterConditionInternal(FilterCondition.between(
+      property: 'title',
+      lower: lower,
+      includeLower: includeLower,
+      upper: upper,
+      includeUpper: includeUpper,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> titleStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.startsWith,
+      property: 'title',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> titleEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.endsWith,
+      property: 'title',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> titleContains(String value,
+      {bool caseSensitive = true}) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.contains,
+      property: 'title',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> titleMatches(String pattern,
+      {bool caseSensitive = true}) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.matches,
+      property: 'title',
+      value: pattern,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> uuidEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.eq,
+      property: 'uuid',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> uuidGreaterThan(
+    String value, {
+    bool caseSensitive = true,
+    bool include = false,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.gt,
+      include: include,
+      property: 'uuid',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> uuidLessThan(
+    String value, {
+    bool caseSensitive = true,
+    bool include = false,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.lt,
+      include: include,
+      property: 'uuid',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> uuidBetween(
+    String lower,
+    String upper, {
+    bool caseSensitive = true,
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return addFilterConditionInternal(FilterCondition.between(
+      property: 'uuid',
+      lower: lower,
+      includeLower: includeLower,
+      upper: upper,
+      includeUpper: includeUpper,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> uuidStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.startsWith,
+      property: 'uuid',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> uuidEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.endsWith,
+      property: 'uuid',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> uuidContains(String value,
+      {bool caseSensitive = true}) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.contains,
+      property: 'uuid',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> uuidMatches(String pattern,
+      {bool caseSensitive = true}) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.matches,
+      property: 'uuid',
+      value: pattern,
+      caseSensitive: caseSensitive,
+    ));
+  }
+}
+
+extension TodoQueryLinks on QueryBuilder<Todo, Todo, QFilterCondition> {}
+
+extension TodoQueryWhereSortBy on QueryBuilder<Todo, Todo, QSortBy> {
+  QueryBuilder<Todo, Todo, QAfterSortBy> sortByCreateTime() {
+    return addSortByInternal('createTime', Sort.asc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> sortByCreateTimeDesc() {
+    return addSortByInternal('createTime', Sort.desc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> sortByDeleted() {
+    return addSortByInternal('deleted', Sort.asc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> sortByDeletedDesc() {
+    return addSortByInternal('deleted', Sort.desc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> sortByDone() {
+    return addSortByInternal('done', Sort.asc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> sortByDoneDesc() {
+    return addSortByInternal('done', Sort.desc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> sortByHashCode() {
+    return addSortByInternal('hashCode', Sort.asc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> sortByHashCodeDesc() {
+    return addSortByInternal('hashCode', Sort.desc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> sortById() {
+    return addSortByInternal('id', Sort.asc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> sortByIdDesc() {
+    return addSortByInternal('id', Sort.desc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> sortByParentId() {
+    return addSortByInternal('parentId', Sort.asc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> sortByParentIdDesc() {
+    return addSortByInternal('parentId', Sort.desc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> sortBySticky() {
+    return addSortByInternal('sticky', Sort.asc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> sortByStickyDesc() {
+    return addSortByInternal('sticky', Sort.desc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> sortBySynced() {
+    return addSortByInternal('synced', Sort.asc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> sortBySyncedDesc() {
+    return addSortByInternal('synced', Sort.desc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> sortByTitle() {
+    return addSortByInternal('title', Sort.asc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> sortByTitleDesc() {
+    return addSortByInternal('title', Sort.desc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> sortByUuid() {
+    return addSortByInternal('uuid', Sort.asc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> sortByUuidDesc() {
+    return addSortByInternal('uuid', Sort.desc);
+  }
+}
+
+extension TodoQueryWhereSortThenBy on QueryBuilder<Todo, Todo, QSortThenBy> {
+  QueryBuilder<Todo, Todo, QAfterSortBy> thenByCreateTime() {
+    return addSortByInternal('createTime', Sort.asc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> thenByCreateTimeDesc() {
+    return addSortByInternal('createTime', Sort.desc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> thenByDeleted() {
+    return addSortByInternal('deleted', Sort.asc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> thenByDeletedDesc() {
+    return addSortByInternal('deleted', Sort.desc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> thenByDone() {
+    return addSortByInternal('done', Sort.asc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> thenByDoneDesc() {
+    return addSortByInternal('done', Sort.desc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> thenByHashCode() {
+    return addSortByInternal('hashCode', Sort.asc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> thenByHashCodeDesc() {
+    return addSortByInternal('hashCode', Sort.desc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> thenById() {
+    return addSortByInternal('id', Sort.asc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> thenByIdDesc() {
+    return addSortByInternal('id', Sort.desc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> thenByParentId() {
+    return addSortByInternal('parentId', Sort.asc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> thenByParentIdDesc() {
+    return addSortByInternal('parentId', Sort.desc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> thenBySticky() {
+    return addSortByInternal('sticky', Sort.asc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> thenByStickyDesc() {
+    return addSortByInternal('sticky', Sort.desc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> thenBySynced() {
+    return addSortByInternal('synced', Sort.asc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> thenBySyncedDesc() {
+    return addSortByInternal('synced', Sort.desc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> thenByTitle() {
+    return addSortByInternal('title', Sort.asc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> thenByTitleDesc() {
+    return addSortByInternal('title', Sort.desc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> thenByUuid() {
+    return addSortByInternal('uuid', Sort.asc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> thenByUuidDesc() {
+    return addSortByInternal('uuid', Sort.desc);
+  }
+}
+
+extension TodoQueryWhereDistinct on QueryBuilder<Todo, Todo, QDistinct> {
+  QueryBuilder<Todo, Todo, QDistinct> distinctByCreateTime() {
+    return addDistinctByInternal('createTime');
+  }
+
+  QueryBuilder<Todo, Todo, QDistinct> distinctByDeleted() {
+    return addDistinctByInternal('deleted');
+  }
+
+  QueryBuilder<Todo, Todo, QDistinct> distinctByDone() {
+    return addDistinctByInternal('done');
+  }
+
+  QueryBuilder<Todo, Todo, QDistinct> distinctByHashCode() {
+    return addDistinctByInternal('hashCode');
+  }
+
+  QueryBuilder<Todo, Todo, QDistinct> distinctById() {
+    return addDistinctByInternal('id');
+  }
+
+  QueryBuilder<Todo, Todo, QDistinct> distinctByParentId(
+      {bool caseSensitive = true}) {
+    return addDistinctByInternal('parentId', caseSensitive: caseSensitive);
+  }
+
+  QueryBuilder<Todo, Todo, QDistinct> distinctBySticky() {
+    return addDistinctByInternal('sticky');
+  }
+
+  QueryBuilder<Todo, Todo, QDistinct> distinctBySynced() {
+    return addDistinctByInternal('synced');
+  }
+
+  QueryBuilder<Todo, Todo, QDistinct> distinctByTitle(
+      {bool caseSensitive = true}) {
+    return addDistinctByInternal('title', caseSensitive: caseSensitive);
+  }
+
+  QueryBuilder<Todo, Todo, QDistinct> distinctByUuid(
+      {bool caseSensitive = true}) {
+    return addDistinctByInternal('uuid', caseSensitive: caseSensitive);
+  }
+}
+
+extension TodoQueryProperty on QueryBuilder<Todo, Todo, QQueryProperty> {
+  QueryBuilder<Todo, DateTime, QQueryOperations> createTimeProperty() {
+    return addPropertyNameInternal('createTime');
+  }
+
+  QueryBuilder<Todo, bool, QQueryOperations> deletedProperty() {
+    return addPropertyNameInternal('deleted');
+  }
+
+  QueryBuilder<Todo, bool, QQueryOperations> doneProperty() {
+    return addPropertyNameInternal('done');
+  }
+
+  QueryBuilder<Todo, int, QQueryOperations> hashCodeProperty() {
+    return addPropertyNameInternal('hashCode');
+  }
+
+  QueryBuilder<Todo, int, QQueryOperations> idProperty() {
+    return addPropertyNameInternal('id');
+  }
+
+  QueryBuilder<Todo, String?, QQueryOperations> parentIdProperty() {
+    return addPropertyNameInternal('parentId');
+  }
+
+  QueryBuilder<Todo, bool, QQueryOperations> stickyProperty() {
+    return addPropertyNameInternal('sticky');
+  }
+
+  QueryBuilder<Todo, bool, QQueryOperations> syncedProperty() {
+    return addPropertyNameInternal('synced');
+  }
+
+  QueryBuilder<Todo, String, QQueryOperations> titleProperty() {
+    return addPropertyNameInternal('title');
+  }
+
+  QueryBuilder<Todo, String, QQueryOperations> uuidProperty() {
+    return addPropertyNameInternal('uuid');
+  }
+}
+
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
@@ -2741,3 +3797,36 @@ Map<String, dynamic> _$BookToJson(Book instance) => <String, dynamic>{
       'createTime': instance.createTime.toIso8601String(),
       'sticky': instance.sticky,
     };
+
+Todo _$TodoFromJson(Map<String, dynamic> json) => Todo()
+  ..id = json['id'] as int
+  ..uuid = json['uuid'] as String
+  ..title = json['title'] as String
+  ..done = json['done'] as bool
+  ..synced = json['synced'] as bool
+  ..deleted = json['deleted'] as bool
+  ..sticky = json['sticky'] as bool
+  ..createTime = DateTime.parse(json['createTime'] as String)
+  ..level = $enumDecode(_$TodoLevelEnumMap, json['level'])
+  ..parentId = json['parentId'] as String?;
+
+Map<String, dynamic> _$TodoToJson(Todo instance) => <String, dynamic>{
+      'id': instance.id,
+      'uuid': instance.uuid,
+      'title': instance.title,
+      'done': instance.done,
+      'synced': instance.synced,
+      'deleted': instance.deleted,
+      'sticky': instance.sticky,
+      'createTime': instance.createTime.toIso8601String(),
+      'level': _$TodoLevelEnumMap[instance.level]!,
+      'parentId': instance.parentId,
+    };
+
+const _$TodoLevelEnumMap = {
+  TodoLevel.l1: 'l1',
+  TodoLevel.l2: 'l2',
+  TodoLevel.l3: 'l3',
+  TodoLevel.l4: 'l4',
+  TodoLevel.l5: 'l5',
+};

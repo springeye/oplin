@@ -49,21 +49,21 @@ class Note {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is Note &&
-          runtimeType == other.runtimeType &&
-          id == other.id &&
-          uuid == other.uuid &&
-          title == other.title &&
-          synced == other.synced &&
-          content == other.content &&
-          notebookId == other.notebookId &&
-          createTime == other.createTime &&
-          updateTime == other.updateTime &&
-          syncTime == other.syncTime &&
-          deleted == other.deleted &&
-          version == other.version &&
-          sticky == other.sticky &&
-          conflict == other.conflict;
+          other is Note &&
+              runtimeType == other.runtimeType &&
+              id == other.id &&
+              uuid == other.uuid &&
+              title == other.title &&
+              synced == other.synced &&
+              content == other.content &&
+              notebookId == other.notebookId &&
+              createTime == other.createTime &&
+              updateTime == other.updateTime &&
+              syncTime == other.syncTime &&
+              deleted == other.deleted &&
+              version == other.version &&
+              sticky == other.sticky &&
+              conflict == other.conflict;
 
   @override
   int get hashCode =>
@@ -134,11 +134,13 @@ class Book {
   Book();
 
   static Book get other {
-    return Book()..uuid = "other";
+    return Book()
+      ..uuid = "other";
   }
 
   static Book get recycled {
-    return Book()..uuid = "recycled";
+    return Book()
+      ..uuid = "recycled";
   }
 
   bool get isOther => uuid == "other";
@@ -152,16 +154,16 @@ class Book {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is Book &&
-          runtimeType == other.runtimeType &&
-          id == other.id &&
-          uuid == other.uuid &&
-          name == other.name &&
-          synced == other.synced &&
-          parentId == other.parentId &&
-          deleted == other.deleted &&
-          createTime == other.createTime &&
-          sticky == other.sticky;
+          other is Book &&
+              runtimeType == other.runtimeType &&
+              id == other.id &&
+              uuid == other.uuid &&
+              name == other.name &&
+              synced == other.synced &&
+              parentId == other.parentId &&
+              deleted == other.deleted &&
+              createTime == other.createTime &&
+              sticky == other.sticky;
 
   @override
   int get hashCode =>
@@ -178,4 +180,64 @@ class Book {
   String toString() {
     return 'Book{id: $id, uuid: $uuid, name: $name, synced: $synced, parentId: $parentId, deleted: $deleted, createTime: $createTime, sticky: $sticky}';
   }
+}
+
+enum TodoLevel {
+  l1,
+  l2,
+  l3,
+  l4,
+  l5,
+}
+
+@JsonSerializable()
+@Collection()
+class Todo {
+  int id = Isar.autoIncrement;
+  @Index()
+  String uuid = "";
+  String title = "";
+  bool done = false;
+  bool synced = false;
+  bool deleted = false;
+  bool sticky = false;
+  DateTime createTime = DateTime.now();
+  TodoLevel level = TodoLevel.l1;
+  String? parentId = null;
+
+  Todo();
+
+  factory Todo.fromJson(Map<String, dynamic> json) => _$TodoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$TodoToJson(this);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is Todo &&
+              runtimeType == other.runtimeType &&
+              id == other.id &&
+              uuid == other.uuid &&
+              title == other.title &&
+              done == other.done &&
+              synced == other.synced &&
+              deleted == other.deleted &&
+              sticky == other.sticky &&
+              createTime == other.createTime &&
+              level == other.level &&
+              parentId == other.parentId;
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      uuid.hashCode ^
+      title.hashCode ^
+      done.hashCode ^
+      synced.hashCode ^
+      deleted.hashCode ^
+      sticky.hashCode ^
+      createTime.hashCode ^
+      level.hashCode ^
+      parentId.hashCode;
+
 }
