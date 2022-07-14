@@ -28,6 +28,8 @@ linter:
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
 analyzer:
+  errors:
+    invalid_annotation_target: ignore
   plugins:
     - string_literal_finder
   exclude: [ build/**, lib/**.freezed.dart, lib/**.g.dart,lib/l10n/**.dart ]

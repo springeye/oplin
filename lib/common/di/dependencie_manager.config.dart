@@ -13,7 +13,7 @@ import '../../bloc/book_bloc.dart' as _i13;
 import '../../bloc/edit_note_bloc.dart' as _i4;
 import '../../bloc/note_bloc.dart' as _i14;
 import '../../bloc/sync_bloc.dart' as _i15;
-import '../../bloc/todos_overview_bloc.dart' as _i10;
+import '../../bloc/todo_bloc.dart' as _i10;
 import '../../repository/book_repository.dart' as _i11;
 import '../../repository/note_repository.dart' as _i6;
 import '../../repository/storage/isar_book_repository.dart' as _i12;

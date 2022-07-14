@@ -14,7 +14,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oplin/bloc/book_bloc.dart';
 import 'package:oplin/bloc/edit_note_bloc.dart';
 import 'package:oplin/bloc/note_bloc.dart';
-import 'package:oplin/bloc/todos_overview_bloc.dart';
+import 'package:oplin/bloc/todo_bloc.dart';
 import 'package:oplin/common/di/dependencie_manager.dart';
 import 'package:oplin/common/logging.dart';
 import 'package:oplin/common/fonts.dart';

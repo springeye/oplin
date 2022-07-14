@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oplin/bloc/note_bloc.dart';
-import 'package:oplin/bloc/todos_overview_bloc.dart';
+import 'package:oplin/bloc/todo_bloc.dart';
 import 'package:oplin/db/models.dart';
 import 'package:oplin/gen/S.dart';
 
@@ -17,7 +17,7 @@ class _TodoListSWState extends State<TodoListWidget> {
 
   Widget _buildSearch(BuildContext context) {
     var bloc = context.read<TodosOverviewBloc>();
-    return BlocBuilder<TodosOverviewBloc, TodosOverviewState>(
+    return BlocBuilder<TodosOverviewBloc, TodoState>(
       buildWhen: (p, c) {
         return p.search != c.search;
       },

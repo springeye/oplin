@@ -1,15 +1,15 @@
 import 'package:oplin/db/models.dart';
 
-enum TodosViewFilter { all, activeOnly, completedOnly }
+enum TodoViewFilter { all, activeOnly, completedOnly }
 
-extension TodosViewFilterX on TodosViewFilter {
+extension TodoViewFilterX on TodoViewFilter {
   bool apply(Todo todo) {
     switch (this) {
-      case TodosViewFilter.all:
+      case TodoViewFilter.all:
         return true;
-      case TodosViewFilter.activeOnly:
+      case TodoViewFilter.activeOnly:
         return !todo.isCompleted;
-      case TodosViewFilter.completedOnly:
+      case TodoViewFilter.completedOnly:
         return todo.isCompleted;
     }
   }

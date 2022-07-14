@@ -61,6 +61,7 @@ dependencies:
   injectable: ^1.5.3
   get_it: ^7.2.0
   dio: ^4.0.6
+  freezed_annotation: ^2.0.3
 dev_dependencies:
   bloc_test: ^9.0.3
   build_runner: ^2.1.11
@@ -71,20 +72,21 @@ dev_dependencies:
   flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter
+  freezed: ^2.0.5
   injectable_generator: ^1.5.3
   isar_generator: ^2.5.0
   json_serializable: ^6.2.0
   mockito: ^5.2.0
   string_literal_finder: ^1.1.0+2
 dependency_overrides:
+  ffi: ^2.0.0
+  analyzer: ^4.1.0
   args: ^2.3.0
   flutter_launcher_icons:
     git:
       url: https://github.com/kechankrisna/flutter_launcher_icons.git
       ref: desktop
-#dependency_overrides:
-#  ffi: ^2.0.0
-#  analyzer: ^4.1.0
+
 # The "flutter_lints" package below contains a set of recommended lints to
 # encourage good coding practices. The lint set provided by the package is
 # activated in the `analysis_options.yaml` file located at the root of your
