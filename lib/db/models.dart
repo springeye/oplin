@@ -134,16 +134,36 @@ class Book {
   Book();
 
   static Book get other {
-    return Book()..uuid = "other";
+    return Book()
+      ..uuid = "other"
+      ..name = "未分类";
   }
 
   static Book get recycled {
-    return Book()..uuid = "recycled";
+    return Book()
+      ..uuid = "recycled"
+      ..name = "Recycled";
+  }
+
+  static Book get todoUnCompleted {
+    return Book()
+      ..uuid = "todo_UnCompleted"
+      ..name = "未完成";
+  }
+
+  static Book get todoCompleted {
+    return Book()
+      ..uuid = "todo_Completed"
+      ..name = "已完成";
   }
 
   bool get isOther => uuid == "other";
 
   bool get isRecycled => uuid == "recycled";
+
+  bool get isTodoUnCompleted => uuid == "todo_UnCompleted";
+
+  bool get isTodoCompleted => uuid == "todo_Completed";
 
   factory Book.fromJson(Map<String, dynamic> json) => _$BookFromJson(json);
 

@@ -4,12 +4,14 @@ import 'package:oplin/app/view/common/dialog.dart';
 import 'package:oplin/app/view/desktop/folder_list.dart';
 import 'package:oplin/app/view/desktop/note_edit.dart';
 import 'package:oplin/app/view/desktop/note_list.dart';
+import 'package:oplin/app/view/desktop/todo_list.dart';
 import 'package:oplin/app/view/desktop/vertical_splite_view.dart';
 import 'package:oplin/app/view/mobile/route.dart';
 import 'package:oplin/app/view/common/settings.dart';
 import 'package:oplin/bloc/app_cubit.dart';
 import 'package:oplin/bloc/book_bloc.dart';
 import 'package:oplin/bloc/note_bloc.dart';
+import 'package:oplin/db/models.dart';
 import 'package:oplin/gen/S.dart';
 
 class DesktopHomePage extends StatefulWidget {
@@ -36,8 +38,12 @@ class _DesktopHomePageState extends State<DesktopHomePage> {
   Widget build(BuildContext context) {
     var appConfig = context.watch<AppCubit>().state;
     var noteBloc = context.read<NoteBloc>();
+    var book = context
+        .select<NoteBloc, Book?>((noteBloc) => noteBloc.state.filter.notebook);
     noteBloc.add(const NoteRefreshRequested());
     context.read<BookBloc>().add(const BookRefreshRequested());
+    var showTodo =
+        book != null && (book.isTodoCompleted || book.isTodoUnCompleted);
     return Column(
       children: [
         Row(
@@ -53,20 +59,23 @@ class _DesktopHomePageState extends State<DesktopHomePage> {
           child: Stack(
             children: [
               Row(
-                children: const [
-                  SizedBox(
+                children: [
+                  const SizedBox(
                     width: 250,
                     child: FolderListWidget(),
                   ),
-                  SizedBox(
-                    width: 300,
-                    child: NoteListWidget(),
-                  ),
-                  Expanded(
-                      child: Padding(
-                    padding: EdgeInsets.only(right: 8.0, left: 10),
-                    child: NoteEditWidget(),
-                  ))
+                  if (!showTodo)
+                    const SizedBox(
+                      width: 300,
+                      child: NoteListWidget(),
+                    ),
+                  if (!showTodo)
+                    const Expanded(
+                        child: Padding(
+                      padding: EdgeInsets.only(right: 8.0, left: 10),
+                      child: NoteEditWidget(),
+                    )),
+                  if (showTodo) const Expanded(child: TodoListWidget())
                 ],
               ),
               BlocBuilder<NoteBloc, NoteState>(

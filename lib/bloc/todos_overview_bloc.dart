@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:injectable/injectable.dart';
 import 'package:oplin/bloc/todos_view_filter.dart';
 import 'package:oplin/db/models.dart';
 import 'package:oplin/repository/todo_repository.dart';
@@ -8,6 +9,7 @@ part 'todos_overview_event.dart';
 
 part 'todos_overview_state.dart';
 
+@singleton
 class TodosOverviewBloc extends Bloc<TodosOverviewEvent, TodosOverviewState> {
   TodosOverviewBloc({
     required TodoRepository todosRepository,

@@ -89,9 +89,9 @@ class FolderListWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Container(
-            alignment: Alignment.center,
+            alignment: Alignment.centerLeft,
             width: double.infinity,
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
             color: bgColor,
             child: Text(
               S.of(context).notebook,
@@ -119,6 +119,25 @@ class FolderListWidget extends StatelessWidget {
           ),
           _buildItem(context, Book.recycled, book?.isRecycled == true, () {
             onTapBook(context, Book.recycled);
+          }),
+          Container(
+            alignment: Alignment.centerLeft,
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+            color: bgColor,
+            child: Text(
+              "代办",
+              style: Theme.of(context).primaryTextTheme.titleLarge,
+            ),
+          ),
+          _buildItem(
+              context, Book.todoUnCompleted, book?.isTodoUnCompleted == true,
+              () {
+            onTapBook(context, Book.todoUnCompleted);
+          }),
+          _buildItem(context, Book.todoCompleted, book?.isTodoCompleted == true,
+              () {
+            onTapBook(context, Book.todoCompleted);
           }),
           const Spacer(),
           _buildSetting(context),
@@ -192,13 +211,7 @@ class FolderListWidget extends StatelessWidget {
                   ? const Icon(Icons.folder_open)
                   : const Icon(Icons.folder),
               title: Text(
-                book == null
-                    ? "全部"
-                    : book.isOther
-                        ? "未分类"
-                        : book.isRecycled
-                            ? "回收站"
-                            : book.name,
+                book == null ? "全部" : book.name,
                 style: selected ? selectTitleStyle : titleStyle,
               ),
               onTap: onTap,

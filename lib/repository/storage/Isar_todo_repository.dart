@@ -5,7 +5,7 @@ import 'package:oplin/repository/isar_repository.dart';
 import 'package:oplin/repository/todo_repository.dart';
 import 'package:uuid/uuid.dart';
 
-@Singleton(as: IsarRepository)
+@Singleton(as: TodoRepository)
 class IsarTodoRepository extends IsarRepository implements TodoRepository {
   IsarTodoRepository(super.store);
 

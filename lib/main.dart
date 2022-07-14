@@ -9,6 +9,7 @@ import 'package:oplin/bootstrap.dart';
 import 'app/build_main.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   bootstrap(() => App(
         child: Builder(builder: (context) {
           return buildMainWindow(context);

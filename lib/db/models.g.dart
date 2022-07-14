@@ -1599,7 +1599,7 @@ extension GetBookCollection on Isar {
 const BookSchema = CollectionSchema(
   name: 'Book',
   schema:
-      '{"name":"Book","idName":"id","properties":[{"name":"createTime","type":"Long"},{"name":"deleted","type":"Bool"},{"name":"hashCode","type":"Long"},{"name":"isOther","type":"Bool"},{"name":"isRecycled","type":"Bool"},{"name":"name","type":"String"},{"name":"parentId","type":"String"},{"name":"sticky","type":"Bool"},{"name":"synced","type":"Bool"},{"name":"uuid","type":"String"}],"indexes":[{"name":"uuid","unique":false,"properties":[{"name":"uuid","type":"Hash","caseSensitive":true}]}],"links":[]}',
+      '{"name":"Book","idName":"id","properties":[{"name":"createTime","type":"Long"},{"name":"deleted","type":"Bool"},{"name":"hashCode","type":"Long"},{"name":"isOther","type":"Bool"},{"name":"isRecycled","type":"Bool"},{"name":"isTodoCompleted","type":"Bool"},{"name":"isTodoUnCompleted","type":"Bool"},{"name":"name","type":"String"},{"name":"parentId","type":"String"},{"name":"sticky","type":"Bool"},{"name":"synced","type":"Bool"},{"name":"uuid","type":"String"}],"indexes":[{"name":"uuid","unique":false,"properties":[{"name":"uuid","type":"Hash","caseSensitive":true}]}],"links":[]}',
   idName: 'id',
   propertyIds: {
     'createTime': 0,
@@ -1607,11 +1607,13 @@ const BookSchema = CollectionSchema(
     'hashCode': 2,
     'isOther': 3,
     'isRecycled': 4,
-    'name': 5,
-    'parentId': 6,
-    'sticky': 7,
-    'synced': 8,
-    'uuid': 9
+    'isTodoCompleted': 5,
+    'isTodoUnCompleted': 6,
+    'name': 7,
+    'parentId': 8,
+    'sticky': 9,
+    'synced': 10,
+    'uuid': 11
   },
   listProperties: {},
   indexIds: {'uuid': 0},
@@ -1664,21 +1666,25 @@ void _bookSerializeNative(IsarCollection<Book> collection, IsarRawObject rawObj,
   final _isOther = value3;
   final value4 = object.isRecycled;
   final _isRecycled = value4;
-  final value5 = object.name;
-  final _name = IsarBinaryWriter.utf8Encoder.convert(value5);
+  final value5 = object.isTodoCompleted;
+  final _isTodoCompleted = value5;
+  final value6 = object.isTodoUnCompleted;
+  final _isTodoUnCompleted = value6;
+  final value7 = object.name;
+  final _name = IsarBinaryWriter.utf8Encoder.convert(value7);
   dynamicSize += (_name.length) as int;
-  final value6 = object.parentId;
+  final value8 = object.parentId;
   IsarUint8List? _parentId;
-  if (value6 != null) {
-    _parentId = IsarBinaryWriter.utf8Encoder.convert(value6);
+  if (value8 != null) {
+    _parentId = IsarBinaryWriter.utf8Encoder.convert(value8);
   }
   dynamicSize += (_parentId?.length ?? 0) as int;
-  final value7 = object.sticky;
-  final _sticky = value7;
-  final value8 = object.synced;
-  final _synced = value8;
-  final value9 = object.uuid;
-  final _uuid = IsarBinaryWriter.utf8Encoder.convert(value9);
+  final value9 = object.sticky;
+  final _sticky = value9;
+  final value10 = object.synced;
+  final _synced = value10;
+  final value11 = object.uuid;
+  final _uuid = IsarBinaryWriter.utf8Encoder.convert(value11);
   dynamicSize += (_uuid.length) as int;
   final size = staticSize + dynamicSize;
 
@@ -1691,11 +1697,13 @@ void _bookSerializeNative(IsarCollection<Book> collection, IsarRawObject rawObj,
   writer.writeLong(offsets[2], _hashCode);
   writer.writeBool(offsets[3], _isOther);
   writer.writeBool(offsets[4], _isRecycled);
-  writer.writeBytes(offsets[5], _name);
-  writer.writeBytes(offsets[6], _parentId);
-  writer.writeBool(offsets[7], _sticky);
-  writer.writeBool(offsets[8], _synced);
-  writer.writeBytes(offsets[9], _uuid);
+  writer.writeBool(offsets[5], _isTodoCompleted);
+  writer.writeBool(offsets[6], _isTodoUnCompleted);
+  writer.writeBytes(offsets[7], _name);
+  writer.writeBytes(offsets[8], _parentId);
+  writer.writeBool(offsets[9], _sticky);
+  writer.writeBool(offsets[10], _synced);
+  writer.writeBytes(offsets[11], _uuid);
 }
 
 Book _bookDeserializeNative(IsarCollection<Book> collection, int id,
@@ -1704,11 +1712,11 @@ Book _bookDeserializeNative(IsarCollection<Book> collection, int id,
   object.createTime = reader.readDateTime(offsets[0]);
   object.deleted = reader.readBool(offsets[1]);
   object.id = id;
-  object.name = reader.readString(offsets[5]);
-  object.parentId = reader.readStringOrNull(offsets[6]);
-  object.sticky = reader.readBool(offsets[7]);
-  object.synced = reader.readBool(offsets[8]);
-  object.uuid = reader.readString(offsets[9]);
+  object.name = reader.readString(offsets[7]);
+  object.parentId = reader.readStringOrNull(offsets[8]);
+  object.sticky = reader.readBool(offsets[9]);
+  object.synced = reader.readBool(offsets[10]);
+  object.uuid = reader.readString(offsets[11]);
   return object;
 }
 
@@ -1728,14 +1736,18 @@ P _bookDeserializePropNative<P>(
     case 4:
       return (reader.readBool(offset)) as P;
     case 5:
-      return (reader.readString(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 6:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 7:
-      return (reader.readBool(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 8:
-      return (reader.readBool(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 9:
+      return (reader.readBool(offset)) as P;
+    case 10:
+      return (reader.readBool(offset)) as P;
+    case 11:
       return (reader.readString(offset)) as P;
     default:
       throw 'Illegal propertyIndex';
@@ -1751,6 +1763,8 @@ dynamic _bookSerializeWeb(IsarCollection<Book> collection, Book object) {
   IsarNative.jsObjectSet(jsObj, 'id', object.id);
   IsarNative.jsObjectSet(jsObj, 'isOther', object.isOther);
   IsarNative.jsObjectSet(jsObj, 'isRecycled', object.isRecycled);
+  IsarNative.jsObjectSet(jsObj, 'isTodoCompleted', object.isTodoCompleted);
+  IsarNative.jsObjectSet(jsObj, 'isTodoUnCompleted', object.isTodoUnCompleted);
   IsarNative.jsObjectSet(jsObj, 'name', object.name);
   IsarNative.jsObjectSet(jsObj, 'parentId', object.parentId);
   IsarNative.jsObjectSet(jsObj, 'sticky', object.sticky);
@@ -1798,6 +1812,10 @@ P _bookDeserializePropWeb<P>(Object jsObj, String propertyName) {
       return (IsarNative.jsObjectGet(jsObj, 'isOther') ?? false) as P;
     case 'isRecycled':
       return (IsarNative.jsObjectGet(jsObj, 'isRecycled') ?? false) as P;
+    case 'isTodoCompleted':
+      return (IsarNative.jsObjectGet(jsObj, 'isTodoCompleted') ?? false) as P;
+    case 'isTodoUnCompleted':
+      return (IsarNative.jsObjectGet(jsObj, 'isTodoUnCompleted') ?? false) as P;
     case 'name':
       return (IsarNative.jsObjectGet(jsObj, 'name') ?? '') as P;
     case 'parentId':
@@ -2076,6 +2094,24 @@ extension BookQueryFilter on QueryBuilder<Book, Book, QFilterCondition> {
     return addFilterConditionInternal(FilterCondition(
       type: ConditionType.eq,
       property: 'isRecycled',
+      value: value,
+    ));
+  }
+
+  QueryBuilder<Book, Book, QAfterFilterCondition> isTodoCompletedEqualTo(
+      bool value) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.eq,
+      property: 'isTodoCompleted',
+      value: value,
+    ));
+  }
+
+  QueryBuilder<Book, Book, QAfterFilterCondition> isTodoUnCompletedEqualTo(
+      bool value) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.eq,
+      property: 'isTodoUnCompleted',
       value: value,
     ));
   }
@@ -2460,6 +2496,22 @@ extension BookQueryWhereSortBy on QueryBuilder<Book, Book, QSortBy> {
     return addSortByInternal('isRecycled', Sort.desc);
   }
 
+  QueryBuilder<Book, Book, QAfterSortBy> sortByIsTodoCompleted() {
+    return addSortByInternal('isTodoCompleted', Sort.asc);
+  }
+
+  QueryBuilder<Book, Book, QAfterSortBy> sortByIsTodoCompletedDesc() {
+    return addSortByInternal('isTodoCompleted', Sort.desc);
+  }
+
+  QueryBuilder<Book, Book, QAfterSortBy> sortByIsTodoUnCompleted() {
+    return addSortByInternal('isTodoUnCompleted', Sort.asc);
+  }
+
+  QueryBuilder<Book, Book, QAfterSortBy> sortByIsTodoUnCompletedDesc() {
+    return addSortByInternal('isTodoUnCompleted', Sort.desc);
+  }
+
   QueryBuilder<Book, Book, QAfterSortBy> sortByName() {
     return addSortByInternal('name', Sort.asc);
   }
@@ -2550,6 +2602,22 @@ extension BookQueryWhereSortThenBy on QueryBuilder<Book, Book, QSortThenBy> {
     return addSortByInternal('isRecycled', Sort.desc);
   }
 
+  QueryBuilder<Book, Book, QAfterSortBy> thenByIsTodoCompleted() {
+    return addSortByInternal('isTodoCompleted', Sort.asc);
+  }
+
+  QueryBuilder<Book, Book, QAfterSortBy> thenByIsTodoCompletedDesc() {
+    return addSortByInternal('isTodoCompleted', Sort.desc);
+  }
+
+  QueryBuilder<Book, Book, QAfterSortBy> thenByIsTodoUnCompleted() {
+    return addSortByInternal('isTodoUnCompleted', Sort.asc);
+  }
+
+  QueryBuilder<Book, Book, QAfterSortBy> thenByIsTodoUnCompletedDesc() {
+    return addSortByInternal('isTodoUnCompleted', Sort.desc);
+  }
+
   QueryBuilder<Book, Book, QAfterSortBy> thenByName() {
     return addSortByInternal('name', Sort.asc);
   }
@@ -2616,6 +2684,14 @@ extension BookQueryWhereDistinct on QueryBuilder<Book, Book, QDistinct> {
     return addDistinctByInternal('isRecycled');
   }
 
+  QueryBuilder<Book, Book, QDistinct> distinctByIsTodoCompleted() {
+    return addDistinctByInternal('isTodoCompleted');
+  }
+
+  QueryBuilder<Book, Book, QDistinct> distinctByIsTodoUnCompleted() {
+    return addDistinctByInternal('isTodoUnCompleted');
+  }
+
   QueryBuilder<Book, Book, QDistinct> distinctByName(
       {bool caseSensitive = true}) {
     return addDistinctByInternal('name', caseSensitive: caseSensitive);
@@ -2663,6 +2739,14 @@ extension BookQueryProperty on QueryBuilder<Book, Book, QQueryProperty> {
 
   QueryBuilder<Book, bool, QQueryOperations> isRecycledProperty() {
     return addPropertyNameInternal('isRecycled');
+  }
+
+  QueryBuilder<Book, bool, QQueryOperations> isTodoCompletedProperty() {
+    return addPropertyNameInternal('isTodoCompleted');
+  }
+
+  QueryBuilder<Book, bool, QQueryOperations> isTodoUnCompletedProperty() {
+    return addPropertyNameInternal('isTodoUnCompleted');
   }
 
   QueryBuilder<Book, String, QQueryOperations> nameProperty() {
