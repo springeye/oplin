@@ -49,21 +49,21 @@ class Note {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is Note &&
-              runtimeType == other.runtimeType &&
-              id == other.id &&
-              uuid == other.uuid &&
-              title == other.title &&
-              synced == other.synced &&
-              content == other.content &&
-              notebookId == other.notebookId &&
-              createTime == other.createTime &&
-              updateTime == other.updateTime &&
-              syncTime == other.syncTime &&
-              deleted == other.deleted &&
-              version == other.version &&
-              sticky == other.sticky &&
-              conflict == other.conflict;
+      other is Note &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          uuid == other.uuid &&
+          title == other.title &&
+          synced == other.synced &&
+          content == other.content &&
+          notebookId == other.notebookId &&
+          createTime == other.createTime &&
+          updateTime == other.updateTime &&
+          syncTime == other.syncTime &&
+          deleted == other.deleted &&
+          version == other.version &&
+          sticky == other.sticky &&
+          conflict == other.conflict;
 
   @override
   int get hashCode =>
@@ -134,13 +134,11 @@ class Book {
   Book();
 
   static Book get other {
-    return Book()
-      ..uuid = "other";
+    return Book()..uuid = "other";
   }
 
   static Book get recycled {
-    return Book()
-      ..uuid = "recycled";
+    return Book()..uuid = "recycled";
   }
 
   bool get isOther => uuid == "other";
@@ -154,16 +152,16 @@ class Book {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is Book &&
-              runtimeType == other.runtimeType &&
-              id == other.id &&
-              uuid == other.uuid &&
-              name == other.name &&
-              synced == other.synced &&
-              parentId == other.parentId &&
-              deleted == other.deleted &&
-              createTime == other.createTime &&
-              sticky == other.sticky;
+      other is Book &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          uuid == other.uuid &&
+          name == other.name &&
+          synced == other.synced &&
+          parentId == other.parentId &&
+          deleted == other.deleted &&
+          createTime == other.createTime &&
+          sticky == other.sticky;
 
   @override
   int get hashCode =>
@@ -197,15 +195,24 @@ class Todo {
   @Index()
   String uuid = "";
   String title = "";
-  bool done = false;
+  bool isCompleted = false;
   bool synced = false;
   bool deleted = false;
   bool sticky = false;
-  DateTime createTime = DateTime.now();
   TodoLevel level = TodoLevel.l1;
   String? parentId = null;
 
-  Todo();
+  Todo({
+    this.id = 0,
+    this.uuid = "",
+    this.title = "",
+    this.isCompleted = false,
+    this.synced = false,
+    this.deleted = false,
+    this.sticky = false,
+    this.level = TodoLevel.l1,
+    this.parentId = null,
+  });
 
   factory Todo.fromJson(Map<String, dynamic> json) => _$TodoFromJson(json);
 
@@ -214,30 +221,52 @@ class Todo {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is Todo &&
-              runtimeType == other.runtimeType &&
-              id == other.id &&
-              uuid == other.uuid &&
-              title == other.title &&
-              done == other.done &&
-              synced == other.synced &&
-              deleted == other.deleted &&
-              sticky == other.sticky &&
-              createTime == other.createTime &&
-              level == other.level &&
-              parentId == other.parentId;
+      other is Todo &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          uuid == other.uuid &&
+          title == other.title &&
+          isCompleted == other.isCompleted &&
+          synced == other.synced &&
+          deleted == other.deleted &&
+          sticky == other.sticky &&
+          level == other.level &&
+          parentId == other.parentId;
 
   @override
   int get hashCode =>
       id.hashCode ^
       uuid.hashCode ^
       title.hashCode ^
-      done.hashCode ^
+      isCompleted.hashCode ^
       synced.hashCode ^
       deleted.hashCode ^
       sticky.hashCode ^
-      createTime.hashCode ^
       level.hashCode ^
       parentId.hashCode;
 
+  Todo copyWith({
+    int? id,
+    String? uuid,
+    String? title,
+    bool? isCompleted,
+    bool? synced,
+    bool? deleted,
+    bool? sticky,
+    DateTime? createTime,
+    TodoLevel? level,
+    String? parentId,
+  }) {
+    return Todo(
+      id: id ?? this.id,
+      uuid: uuid ?? this.uuid,
+      title: title ?? this.title,
+      isCompleted: isCompleted ?? this.isCompleted,
+      synced: synced ?? this.synced,
+      deleted: deleted ?? this.deleted,
+      sticky: sticky ?? this.sticky,
+      level: level ?? this.level,
+      parentId: parentId ?? this.parentId,
+    );
+  }
 }

@@ -12,11 +12,15 @@ class IsarTodoRepository extends IsarRepository implements TodoRepository {
   @override
   Future<int> clearCompleted() async {
     return await store.writeTxn<int>((store) async {
-      var todos =
-      await store.todos.filter().doneEqualTo(true).and().deletedEqualTo(false).findAll();
+      var todos = await store.todos
+          .filter()
+          .isCompletedEqualTo(true)
+          .and()
+          .deletedEqualTo(false)
+          .findAll();
       for (var todo in todos) {
         todo.deleted = true;
-        todo.synced=false;
+        todo.synced = false;
       }
       return (await store.todos.putAll(todos)).length;
     });
@@ -26,9 +30,9 @@ class IsarTodoRepository extends IsarRepository implements TodoRepository {
   Future<int> completeAll({required bool isCompleted}) async {
     return await store.writeTxn<int>((store) async {
       var todos =
-          await store.todos.filter().doneEqualTo(!isCompleted).findAll();
+          await store.todos.filter().isCompletedEqualTo(!isCompleted).findAll();
       for (var todo in todos) {
-        todo.done = isCompleted;
+        todo.isCompleted = isCompleted;
       }
       return (await store.todos.putAll(todos)).length;
     });
@@ -36,7 +40,12 @@ class IsarTodoRepository extends IsarRepository implements TodoRepository {
 
   @override
   Future<void> deleteTodo(String id) async {
-    var todo = store.todos.filter().uuidEqualTo(id).and().deletedEqualTo(false).findFirstSync();
+    var todo = store.todos
+        .filter()
+        .uuidEqualTo(id)
+        .and()
+        .deletedEqualTo(false)
+        .findFirstSync();
     if (todo != null) {
       todo.deleted = true;
       todo.synced = false;

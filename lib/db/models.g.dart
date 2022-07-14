@@ -2695,18 +2695,17 @@ extension GetTodoCollection on Isar {
 const TodoSchema = CollectionSchema(
   name: 'Todo',
   schema:
-      '{"name":"Todo","idName":"id","properties":[{"name":"createTime","type":"Long"},{"name":"deleted","type":"Bool"},{"name":"done","type":"Bool"},{"name":"hashCode","type":"Long"},{"name":"parentId","type":"String"},{"name":"sticky","type":"Bool"},{"name":"synced","type":"Bool"},{"name":"title","type":"String"},{"name":"uuid","type":"String"}],"indexes":[{"name":"uuid","unique":false,"properties":[{"name":"uuid","type":"Hash","caseSensitive":true}]}],"links":[]}',
+      '{"name":"Todo","idName":"id","properties":[{"name":"deleted","type":"Bool"},{"name":"hashCode","type":"Long"},{"name":"isCompleted","type":"Bool"},{"name":"parentId","type":"String"},{"name":"sticky","type":"Bool"},{"name":"synced","type":"Bool"},{"name":"title","type":"String"},{"name":"uuid","type":"String"}],"indexes":[{"name":"uuid","unique":false,"properties":[{"name":"uuid","type":"Hash","caseSensitive":true}]}],"links":[]}',
   idName: 'id',
   propertyIds: {
-    'createTime': 0,
-    'deleted': 1,
-    'done': 2,
-    'hashCode': 3,
-    'parentId': 4,
-    'sticky': 5,
-    'synced': 6,
-    'title': 7,
-    'uuid': 8
+    'deleted': 0,
+    'hashCode': 1,
+    'isCompleted': 2,
+    'parentId': 3,
+    'sticky': 4,
+    'synced': 5,
+    'title': 6,
+    'uuid': 7
   },
   listProperties: {},
   indexIds: {'uuid': 0},
@@ -2749,29 +2748,27 @@ List<IsarLinkBase> _todoGetLinks(Todo object) {
 void _todoSerializeNative(IsarCollection<Todo> collection, IsarRawObject rawObj,
     Todo object, int staticSize, List<int> offsets, AdapterAlloc alloc) {
   var dynamicSize = 0;
-  final value0 = object.createTime;
-  final _createTime = value0;
-  final value1 = object.deleted;
-  final _deleted = value1;
-  final value2 = object.done;
-  final _done = value2;
-  final value3 = object.hashCode;
-  final _hashCode = value3;
-  final value4 = object.parentId;
+  final value0 = object.deleted;
+  final _deleted = value0;
+  final value1 = object.hashCode;
+  final _hashCode = value1;
+  final value2 = object.isCompleted;
+  final _isCompleted = value2;
+  final value3 = object.parentId;
   IsarUint8List? _parentId;
-  if (value4 != null) {
-    _parentId = IsarBinaryWriter.utf8Encoder.convert(value4);
+  if (value3 != null) {
+    _parentId = IsarBinaryWriter.utf8Encoder.convert(value3);
   }
   dynamicSize += (_parentId?.length ?? 0) as int;
-  final value5 = object.sticky;
-  final _sticky = value5;
-  final value6 = object.synced;
-  final _synced = value6;
-  final value7 = object.title;
-  final _title = IsarBinaryWriter.utf8Encoder.convert(value7);
+  final value4 = object.sticky;
+  final _sticky = value4;
+  final value5 = object.synced;
+  final _synced = value5;
+  final value6 = object.title;
+  final _title = IsarBinaryWriter.utf8Encoder.convert(value6);
   dynamicSize += (_title.length) as int;
-  final value8 = object.uuid;
-  final _uuid = IsarBinaryWriter.utf8Encoder.convert(value8);
+  final value7 = object.uuid;
+  final _uuid = IsarBinaryWriter.utf8Encoder.convert(value7);
   dynamicSize += (_uuid.length) as int;
   final size = staticSize + dynamicSize;
 
@@ -2779,29 +2776,28 @@ void _todoSerializeNative(IsarCollection<Todo> collection, IsarRawObject rawObj,
   rawObj.buffer_length = size;
   final buffer = IsarNative.bufAsBytes(rawObj.buffer, size);
   final writer = IsarBinaryWriter(buffer, staticSize);
-  writer.writeDateTime(offsets[0], _createTime);
-  writer.writeBool(offsets[1], _deleted);
-  writer.writeBool(offsets[2], _done);
-  writer.writeLong(offsets[3], _hashCode);
-  writer.writeBytes(offsets[4], _parentId);
-  writer.writeBool(offsets[5], _sticky);
-  writer.writeBool(offsets[6], _synced);
-  writer.writeBytes(offsets[7], _title);
-  writer.writeBytes(offsets[8], _uuid);
+  writer.writeBool(offsets[0], _deleted);
+  writer.writeLong(offsets[1], _hashCode);
+  writer.writeBool(offsets[2], _isCompleted);
+  writer.writeBytes(offsets[3], _parentId);
+  writer.writeBool(offsets[4], _sticky);
+  writer.writeBool(offsets[5], _synced);
+  writer.writeBytes(offsets[6], _title);
+  writer.writeBytes(offsets[7], _uuid);
 }
 
 Todo _todoDeserializeNative(IsarCollection<Todo> collection, int id,
     IsarBinaryReader reader, List<int> offsets) {
-  final object = Todo();
-  object.createTime = reader.readDateTime(offsets[0]);
-  object.deleted = reader.readBool(offsets[1]);
-  object.done = reader.readBool(offsets[2]);
-  object.id = id;
-  object.parentId = reader.readStringOrNull(offsets[4]);
-  object.sticky = reader.readBool(offsets[5]);
-  object.synced = reader.readBool(offsets[6]);
-  object.title = reader.readString(offsets[7]);
-  object.uuid = reader.readString(offsets[8]);
+  final object = Todo(
+    deleted: reader.readBool(offsets[0]),
+    id: id,
+    isCompleted: reader.readBool(offsets[2]),
+    parentId: reader.readStringOrNull(offsets[3]),
+    sticky: reader.readBool(offsets[4]),
+    synced: reader.readBool(offsets[5]),
+    title: reader.readString(offsets[6]),
+    uuid: reader.readString(offsets[7]),
+  );
   return object;
 }
 
@@ -2811,22 +2807,20 @@ P _todoDeserializePropNative<P>(
     case -1:
       return id as P;
     case 0:
-      return (reader.readDateTime(offset)) as P;
-    case 1:
       return (reader.readBool(offset)) as P;
+    case 1:
+      return (reader.readLong(offset)) as P;
     case 2:
       return (reader.readBool(offset)) as P;
     case 3:
-      return (reader.readLong(offset)) as P;
-    case 4:
       return (reader.readStringOrNull(offset)) as P;
+    case 4:
+      return (reader.readBool(offset)) as P;
     case 5:
       return (reader.readBool(offset)) as P;
     case 6:
-      return (reader.readBool(offset)) as P;
-    case 7:
       return (reader.readString(offset)) as P;
-    case 8:
+    case 7:
       return (reader.readString(offset)) as P;
     default:
       throw 'Illegal propertyIndex';
@@ -2835,12 +2829,10 @@ P _todoDeserializePropNative<P>(
 
 dynamic _todoSerializeWeb(IsarCollection<Todo> collection, Todo object) {
   final jsObj = IsarNative.newJsObject();
-  IsarNative.jsObjectSet(
-      jsObj, 'createTime', object.createTime.toUtc().millisecondsSinceEpoch);
   IsarNative.jsObjectSet(jsObj, 'deleted', object.deleted);
-  IsarNative.jsObjectSet(jsObj, 'done', object.done);
   IsarNative.jsObjectSet(jsObj, 'hashCode', object.hashCode);
   IsarNative.jsObjectSet(jsObj, 'id', object.id);
+  IsarNative.jsObjectSet(jsObj, 'isCompleted', object.isCompleted);
   IsarNative.jsObjectSet(jsObj, 'parentId', object.parentId);
   IsarNative.jsObjectSet(jsObj, 'sticky', object.sticky);
   IsarNative.jsObjectSet(jsObj, 'synced', object.synced);
@@ -2850,43 +2842,31 @@ dynamic _todoSerializeWeb(IsarCollection<Todo> collection, Todo object) {
 }
 
 Todo _todoDeserializeWeb(IsarCollection<Todo> collection, dynamic jsObj) {
-  final object = Todo();
-  object.createTime = IsarNative.jsObjectGet(jsObj, 'createTime') != null
-      ? DateTime.fromMillisecondsSinceEpoch(
-              IsarNative.jsObjectGet(jsObj, 'createTime'),
-              isUtc: true)
-          .toLocal()
-      : DateTime.fromMillisecondsSinceEpoch(0);
-  object.deleted = IsarNative.jsObjectGet(jsObj, 'deleted') ?? false;
-  object.done = IsarNative.jsObjectGet(jsObj, 'done') ?? false;
-  object.id = IsarNative.jsObjectGet(jsObj, 'id') ?? double.negativeInfinity;
-  object.parentId = IsarNative.jsObjectGet(jsObj, 'parentId');
-  object.sticky = IsarNative.jsObjectGet(jsObj, 'sticky') ?? false;
-  object.synced = IsarNative.jsObjectGet(jsObj, 'synced') ?? false;
-  object.title = IsarNative.jsObjectGet(jsObj, 'title') ?? '';
-  object.uuid = IsarNative.jsObjectGet(jsObj, 'uuid') ?? '';
+  final object = Todo(
+    deleted: IsarNative.jsObjectGet(jsObj, 'deleted') ?? false,
+    id: IsarNative.jsObjectGet(jsObj, 'id') ?? double.negativeInfinity,
+    isCompleted: IsarNative.jsObjectGet(jsObj, 'isCompleted') ?? false,
+    parentId: IsarNative.jsObjectGet(jsObj, 'parentId'),
+    sticky: IsarNative.jsObjectGet(jsObj, 'sticky') ?? false,
+    synced: IsarNative.jsObjectGet(jsObj, 'synced') ?? false,
+    title: IsarNative.jsObjectGet(jsObj, 'title') ?? '',
+    uuid: IsarNative.jsObjectGet(jsObj, 'uuid') ?? '',
+  );
   return object;
 }
 
 P _todoDeserializePropWeb<P>(Object jsObj, String propertyName) {
   switch (propertyName) {
-    case 'createTime':
-      return (IsarNative.jsObjectGet(jsObj, 'createTime') != null
-          ? DateTime.fromMillisecondsSinceEpoch(
-                  IsarNative.jsObjectGet(jsObj, 'createTime'),
-                  isUtc: true)
-              .toLocal()
-          : DateTime.fromMillisecondsSinceEpoch(0)) as P;
     case 'deleted':
       return (IsarNative.jsObjectGet(jsObj, 'deleted') ?? false) as P;
-    case 'done':
-      return (IsarNative.jsObjectGet(jsObj, 'done') ?? false) as P;
     case 'hashCode':
       return (IsarNative.jsObjectGet(jsObj, 'hashCode') ??
           double.negativeInfinity) as P;
     case 'id':
       return (IsarNative.jsObjectGet(jsObj, 'id') ?? double.negativeInfinity)
           as P;
+    case 'isCompleted':
+      return (IsarNative.jsObjectGet(jsObj, 'isCompleted') ?? false) as P;
     case 'parentId':
       return (IsarNative.jsObjectGet(jsObj, 'parentId')) as P;
     case 'sticky':
@@ -3002,66 +2982,10 @@ extension TodoQueryWhere on QueryBuilder<Todo, Todo, QWhereClause> {
 }
 
 extension TodoQueryFilter on QueryBuilder<Todo, Todo, QFilterCondition> {
-  QueryBuilder<Todo, Todo, QAfterFilterCondition> createTimeEqualTo(
-      DateTime value) {
-    return addFilterConditionInternal(FilterCondition(
-      type: ConditionType.eq,
-      property: 'createTime',
-      value: value,
-    ));
-  }
-
-  QueryBuilder<Todo, Todo, QAfterFilterCondition> createTimeGreaterThan(
-    DateTime value, {
-    bool include = false,
-  }) {
-    return addFilterConditionInternal(FilterCondition(
-      type: ConditionType.gt,
-      include: include,
-      property: 'createTime',
-      value: value,
-    ));
-  }
-
-  QueryBuilder<Todo, Todo, QAfterFilterCondition> createTimeLessThan(
-    DateTime value, {
-    bool include = false,
-  }) {
-    return addFilterConditionInternal(FilterCondition(
-      type: ConditionType.lt,
-      include: include,
-      property: 'createTime',
-      value: value,
-    ));
-  }
-
-  QueryBuilder<Todo, Todo, QAfterFilterCondition> createTimeBetween(
-    DateTime lower,
-    DateTime upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return addFilterConditionInternal(FilterCondition.between(
-      property: 'createTime',
-      lower: lower,
-      includeLower: includeLower,
-      upper: upper,
-      includeUpper: includeUpper,
-    ));
-  }
-
   QueryBuilder<Todo, Todo, QAfterFilterCondition> deletedEqualTo(bool value) {
     return addFilterConditionInternal(FilterCondition(
       type: ConditionType.eq,
       property: 'deleted',
-      value: value,
-    ));
-  }
-
-  QueryBuilder<Todo, Todo, QAfterFilterCondition> doneEqualTo(bool value) {
-    return addFilterConditionInternal(FilterCondition(
-      type: ConditionType.eq,
-      property: 'done',
       value: value,
     ));
   }
@@ -3157,6 +3081,15 @@ extension TodoQueryFilter on QueryBuilder<Todo, Todo, QFilterCondition> {
       includeLower: includeLower,
       upper: upper,
       includeUpper: includeUpper,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> isCompletedEqualTo(
+      bool value) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.eq,
+      property: 'isCompleted',
+      value: value,
     ));
   }
 
@@ -3492,28 +3425,12 @@ extension TodoQueryFilter on QueryBuilder<Todo, Todo, QFilterCondition> {
 extension TodoQueryLinks on QueryBuilder<Todo, Todo, QFilterCondition> {}
 
 extension TodoQueryWhereSortBy on QueryBuilder<Todo, Todo, QSortBy> {
-  QueryBuilder<Todo, Todo, QAfterSortBy> sortByCreateTime() {
-    return addSortByInternal('createTime', Sort.asc);
-  }
-
-  QueryBuilder<Todo, Todo, QAfterSortBy> sortByCreateTimeDesc() {
-    return addSortByInternal('createTime', Sort.desc);
-  }
-
   QueryBuilder<Todo, Todo, QAfterSortBy> sortByDeleted() {
     return addSortByInternal('deleted', Sort.asc);
   }
 
   QueryBuilder<Todo, Todo, QAfterSortBy> sortByDeletedDesc() {
     return addSortByInternal('deleted', Sort.desc);
-  }
-
-  QueryBuilder<Todo, Todo, QAfterSortBy> sortByDone() {
-    return addSortByInternal('done', Sort.asc);
-  }
-
-  QueryBuilder<Todo, Todo, QAfterSortBy> sortByDoneDesc() {
-    return addSortByInternal('done', Sort.desc);
   }
 
   QueryBuilder<Todo, Todo, QAfterSortBy> sortByHashCode() {
@@ -3530,6 +3447,14 @@ extension TodoQueryWhereSortBy on QueryBuilder<Todo, Todo, QSortBy> {
 
   QueryBuilder<Todo, Todo, QAfterSortBy> sortByIdDesc() {
     return addSortByInternal('id', Sort.desc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> sortByIsCompleted() {
+    return addSortByInternal('isCompleted', Sort.asc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> sortByIsCompletedDesc() {
+    return addSortByInternal('isCompleted', Sort.desc);
   }
 
   QueryBuilder<Todo, Todo, QAfterSortBy> sortByParentId() {
@@ -3574,28 +3499,12 @@ extension TodoQueryWhereSortBy on QueryBuilder<Todo, Todo, QSortBy> {
 }
 
 extension TodoQueryWhereSortThenBy on QueryBuilder<Todo, Todo, QSortThenBy> {
-  QueryBuilder<Todo, Todo, QAfterSortBy> thenByCreateTime() {
-    return addSortByInternal('createTime', Sort.asc);
-  }
-
-  QueryBuilder<Todo, Todo, QAfterSortBy> thenByCreateTimeDesc() {
-    return addSortByInternal('createTime', Sort.desc);
-  }
-
   QueryBuilder<Todo, Todo, QAfterSortBy> thenByDeleted() {
     return addSortByInternal('deleted', Sort.asc);
   }
 
   QueryBuilder<Todo, Todo, QAfterSortBy> thenByDeletedDesc() {
     return addSortByInternal('deleted', Sort.desc);
-  }
-
-  QueryBuilder<Todo, Todo, QAfterSortBy> thenByDone() {
-    return addSortByInternal('done', Sort.asc);
-  }
-
-  QueryBuilder<Todo, Todo, QAfterSortBy> thenByDoneDesc() {
-    return addSortByInternal('done', Sort.desc);
   }
 
   QueryBuilder<Todo, Todo, QAfterSortBy> thenByHashCode() {
@@ -3612,6 +3521,14 @@ extension TodoQueryWhereSortThenBy on QueryBuilder<Todo, Todo, QSortThenBy> {
 
   QueryBuilder<Todo, Todo, QAfterSortBy> thenByIdDesc() {
     return addSortByInternal('id', Sort.desc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> thenByIsCompleted() {
+    return addSortByInternal('isCompleted', Sort.asc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> thenByIsCompletedDesc() {
+    return addSortByInternal('isCompleted', Sort.desc);
   }
 
   QueryBuilder<Todo, Todo, QAfterSortBy> thenByParentId() {
@@ -3656,16 +3573,8 @@ extension TodoQueryWhereSortThenBy on QueryBuilder<Todo, Todo, QSortThenBy> {
 }
 
 extension TodoQueryWhereDistinct on QueryBuilder<Todo, Todo, QDistinct> {
-  QueryBuilder<Todo, Todo, QDistinct> distinctByCreateTime() {
-    return addDistinctByInternal('createTime');
-  }
-
   QueryBuilder<Todo, Todo, QDistinct> distinctByDeleted() {
     return addDistinctByInternal('deleted');
-  }
-
-  QueryBuilder<Todo, Todo, QDistinct> distinctByDone() {
-    return addDistinctByInternal('done');
   }
 
   QueryBuilder<Todo, Todo, QDistinct> distinctByHashCode() {
@@ -3674,6 +3583,10 @@ extension TodoQueryWhereDistinct on QueryBuilder<Todo, Todo, QDistinct> {
 
   QueryBuilder<Todo, Todo, QDistinct> distinctById() {
     return addDistinctByInternal('id');
+  }
+
+  QueryBuilder<Todo, Todo, QDistinct> distinctByIsCompleted() {
+    return addDistinctByInternal('isCompleted');
   }
 
   QueryBuilder<Todo, Todo, QDistinct> distinctByParentId(
@@ -3701,16 +3614,8 @@ extension TodoQueryWhereDistinct on QueryBuilder<Todo, Todo, QDistinct> {
 }
 
 extension TodoQueryProperty on QueryBuilder<Todo, Todo, QQueryProperty> {
-  QueryBuilder<Todo, DateTime, QQueryOperations> createTimeProperty() {
-    return addPropertyNameInternal('createTime');
-  }
-
   QueryBuilder<Todo, bool, QQueryOperations> deletedProperty() {
     return addPropertyNameInternal('deleted');
-  }
-
-  QueryBuilder<Todo, bool, QQueryOperations> doneProperty() {
-    return addPropertyNameInternal('done');
   }
 
   QueryBuilder<Todo, int, QQueryOperations> hashCodeProperty() {
@@ -3719,6 +3624,10 @@ extension TodoQueryProperty on QueryBuilder<Todo, Todo, QQueryProperty> {
 
   QueryBuilder<Todo, int, QQueryOperations> idProperty() {
     return addPropertyNameInternal('id');
+  }
+
+  QueryBuilder<Todo, bool, QQueryOperations> isCompletedProperty() {
+    return addPropertyNameInternal('isCompleted');
   }
 
   QueryBuilder<Todo, String?, QQueryOperations> parentIdProperty() {
@@ -3798,27 +3707,27 @@ Map<String, dynamic> _$BookToJson(Book instance) => <String, dynamic>{
       'sticky': instance.sticky,
     };
 
-Todo _$TodoFromJson(Map<String, dynamic> json) => Todo()
-  ..id = json['id'] as int
-  ..uuid = json['uuid'] as String
-  ..title = json['title'] as String
-  ..done = json['done'] as bool
-  ..synced = json['synced'] as bool
-  ..deleted = json['deleted'] as bool
-  ..sticky = json['sticky'] as bool
-  ..createTime = DateTime.parse(json['createTime'] as String)
-  ..level = $enumDecode(_$TodoLevelEnumMap, json['level'])
-  ..parentId = json['parentId'] as String?;
+Todo _$TodoFromJson(Map<String, dynamic> json) => Todo(
+      id: json['id'] as int? ?? 0,
+      uuid: json['uuid'] as String? ?? "",
+      title: json['title'] as String? ?? "",
+      isCompleted: json['isCompleted'] as bool? ?? false,
+      synced: json['synced'] as bool? ?? false,
+      deleted: json['deleted'] as bool? ?? false,
+      sticky: json['sticky'] as bool? ?? false,
+      level: $enumDecodeNullable(_$TodoLevelEnumMap, json['level']) ??
+          TodoLevel.l1,
+      parentId: json['parentId'] as String? ?? null,
+    );
 
 Map<String, dynamic> _$TodoToJson(Todo instance) => <String, dynamic>{
       'id': instance.id,
       'uuid': instance.uuid,
       'title': instance.title,
-      'done': instance.done,
+      'isCompleted': instance.isCompleted,
       'synced': instance.synced,
       'deleted': instance.deleted,
       'sticky': instance.sticky,
-      'createTime': instance.createTime.toIso8601String(),
       'level': _$TodoLevelEnumMap[instance.level]!,
       'parentId': instance.parentId,
     };
