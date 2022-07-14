@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oplin/bloc/note_bloc.dart';
+import 'package:oplin/bloc/todo.edit.bloc.dart';
 import 'package:oplin/bloc/todo_bloc.dart';
 import 'package:oplin/db/models.dart';
 import 'package:oplin/gen/S.dart';
@@ -15,8 +16,14 @@ class TodoListWidget extends StatefulWidget {
 class _TodoListSWState extends State<TodoListWidget> {
   final _searchController = TextEditingController();
 
+  @override
+  void initState() {
+    super.initState();
+    context.read<TodoBloc>().add(const TodoEvent.subscriptionRequested());
+  }
+
   Widget _buildCreateButton(BuildContext context) {
-    var bloc = context.read<TodoBloc>();
+    var bloc = context.read<TodoEditBloc>();
     return ClipOval(
       child: Material(
         color: Theme.of(context).primaryColor,
@@ -27,7 +34,7 @@ class _TodoListSWState extends State<TodoListWidget> {
             color: Colors.white,
           ),
           onPressed: () {
-            bloc.add(TodoEvent.create());
+            bloc.add(const TodoEditEvent.created());
           },
         ),
       ),
@@ -89,6 +96,7 @@ class _TodoListSWState extends State<TodoListWidget> {
             p.filter.notebook != book;
       },
       builder: (context, state) {
+        var todos = context.watch<TodoBloc>().state.filteredTodos;
         var book = state.filter.notebook;
         return Scaffold(
           backgroundColor: Colors.transparent,
@@ -127,6 +135,7 @@ class _TodoListSWState extends State<TodoListWidget> {
                         ],
                       ),
                     ),
+                    ...todos.map((e) => Text(e.uuid)).toList()
                   ],
                 ),
               ),

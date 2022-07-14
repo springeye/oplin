@@ -16,16 +16,22 @@ const freezed =
 class TodoEditBloc extends Bloc<TodoEditEvent, TodoEditState> {
   TodoEditBloc({
     required TodoRepository todosRepository,
-    required Todo? initialTodo,
   })  : _todosRepository = todosRepository,
         super(
-          TodoEditState.initial(initialTodo: initialTodo),
+          TodoEditState.initial(initialTodo: null),
         ) {
-    on<TodoEditEvent>((event, emit) {
+    on<TodoEditEvent>((event, emit) async {
       event.map(
-          titleChanged: (event) => _onTitleChanged(event, emit),
-          descriptionChanged: (event) => _onDescriptionChanged(event, emit),
-          submitted: (event) => _onSubmitted(event, emit));
+        titleChanged: (event) => _onTitleChanged(event, emit),
+        descriptionChanged: (event) => _onDescriptionChanged(event, emit),
+        submitted: (event) async {
+          await _onSubmitted(event, emit);
+        },
+        created: (event) async {
+          var todo = await _onCreated(event, emit);
+          // emit(TodoEditState.initial(initialTodo: null));
+        },
+      );
     });
   }
 
@@ -61,6 +67,12 @@ class TodoEditBloc extends Bloc<TodoEditEvent, TodoEditState> {
     } catch (e) {
       emit(state.copyWith(status: EditTodoStatus.failure));
     }
+  }
+
+  Future<Todo> _onCreated(Created event, Emitter<TodoEditState> emit) async {
+    var todo = Todo();
+    await _todosRepository.saveTodo(todo);
+    return todo;
   }
 }
 
@@ -98,4 +110,6 @@ class TodoEditEvent with _$TodoEditEvent {
       DescriptionChanged;
 
   const factory TodoEditEvent.submitted() = Submitted;
+
+  const factory TodoEditEvent.created() = Created;
 }

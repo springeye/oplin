@@ -40,17 +40,19 @@ class IsarTodoRepository extends IsarRepository implements TodoRepository {
 
   @override
   Future<void> deleteTodo(String id) async {
-    var todo = store.todos
-        .filter()
-        .uuidEqualTo(id)
-        .and()
-        .deletedEqualTo(false)
-        .findFirstSync();
-    if (todo != null) {
-      todo.deleted = true;
-      todo.synced = false;
-      await store.todos.put(todo);
-    }
+    await super.store.writeTxn((isar) async {
+      var todo = store.todos
+          .filter()
+          .uuidEqualTo(id)
+          .and()
+          .deletedEqualTo(false)
+          .findFirstSync();
+      if (todo != null) {
+        todo.deleted = true;
+        todo.synced = false;
+        await store.todos.put(todo);
+      }
+    });
   }
 
   @override
@@ -64,6 +66,8 @@ class IsarTodoRepository extends IsarRepository implements TodoRepository {
       todo.id = 0;
       todo.uuid = const Uuid().v4();
     }
-    await store.todos.put(todo);
+    await super.store.writeTxn((store) async {
+      await store.todos.put(todo);
+    });
   }
 }
