@@ -1,22 +1,26 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart' hide freezed;
 import 'package:injectable/injectable.dart';
 import 'package:oplin/bloc/todo_view_filter.dart';
+import 'package:oplin/common/logging.dart';
 import 'package:oplin/db/models.dart';
 import 'package:oplin/repository/todo_repository.dart';
 
-import 'todo_event.dart';
+part 'todo_bloc.freezed.dart';
 
-part 'todo_state.dart';
+part 'todo_bloc.g.dart';
+
+const freezed =
+    Freezed(fromJson: true, toJson: true, toStringOverride: true, equal: true);
 
 @singleton
-class TodosOverviewBloc extends Bloc<TodoEvent, TodoState> {
-  TodosOverviewBloc({
+class TodoBloc extends Bloc<TodoEvent, TodoState> {
+  TodoBloc({
     required TodoRepository todosRepository,
   })  : _todosRepository = todosRepository,
-        super(const TodoState()) {
+        super(TodoState.initial()) {
     on<TodoEvent>((event, emit) {
       event.map(
           subscriptionRequested: (event) =>
@@ -37,16 +41,16 @@ class TodosOverviewBloc extends Bloc<TodoEvent, TodoState> {
     SubscriptionRequested event,
     Emitter<TodoState> emit,
   ) async {
-    emit(state.copyWith(status: () => TodosOverviewStatus.loading));
+    emit(state.copyWith(status: TodosOverviewStatus.loading));
 
     await emit.forEach<List<Todo>>(
       _todosRepository.getTodos(),
       onData: (todos) => state.copyWith(
-        status: () => TodosOverviewStatus.success,
-        todos: () => todos,
+        status: TodosOverviewStatus.success,
+        todos: todos,
       ),
       onError: (_, __) => state.copyWith(
-        status: () => TodosOverviewStatus.failure,
+        status: TodosOverviewStatus.failure,
       ),
     );
   }
@@ -63,7 +67,7 @@ class TodosOverviewBloc extends Bloc<TodoEvent, TodoState> {
     Deleted event,
     Emitter<TodoState> emit,
   ) async {
-    emit(state.copyWith(lastDeletedTodo: () => event.todo));
+    emit(state.copyWith(lastDeletedTodo: event.todo));
     await _todosRepository.deleteTodo(event.todo.uuid);
   }
 
@@ -77,7 +81,7 @@ class TodosOverviewBloc extends Bloc<TodoEvent, TodoState> {
     );
 
     final todo = state.lastDeletedTodo!;
-    emit(state.copyWith(lastDeletedTodo: () => null));
+    emit(state.copyWith(lastDeletedTodo: null));
     await _todosRepository.saveTodo(todo);
   }
 
@@ -85,7 +89,7 @@ class TodosOverviewBloc extends Bloc<TodoEvent, TodoState> {
     FilterChanged event,
     Emitter<TodoState> emit,
   ) {
-    emit(state.copyWith(filter: () => event.filter));
+    emit(state.copyWith(filter: event.filter));
   }
 
   Future<void> _onToggleAllRequested(
@@ -104,6 +108,54 @@ class TodosOverviewBloc extends Bloc<TodoEvent, TodoState> {
   }
 
   FutureOr<void> _onSearch(Search event, Emitter<TodoState> emit) {
-    emit(state.copyWith(search: () => event.search));
+    appLog.debug('Searching for ${event.search}');
+    emit(state.copyWith(search: event.search));
   }
+}
+
+enum TodosOverviewStatus { initial, loading, success, failure }
+
+@freezed
+abstract class TodoState with _$TodoState {
+  const TodoState._();
+
+  const factory TodoState(
+      {required TodosOverviewStatus status,
+      required List<Todo> todos,
+      String? search,
+      required TodoViewFilter filter,
+      Todo? lastDeletedTodo}) = _TodoState;
+
+  factory TodoState.initial() => const TodoState(
+        status: TodosOverviewStatus.initial,
+        todos: [],
+        search: null,
+        filter: TodoViewFilter.all,
+        lastDeletedTodo: null,
+      );
+
+  Iterable<Todo> get filteredTodos => filter.applyAll(todos);
+}
+
+@freezed
+class TodoEvent with _$TodoEvent {
+  const factory TodoEvent.subscriptionRequested() = SubscriptionRequested;
+
+  const factory TodoEvent.completionToggled(Todo todo, bool isCompleted) =
+      CompletionToggled;
+
+  const factory TodoEvent.deleted(Todo todo) = Deleted;
+
+  const factory TodoEvent.unDoDeleted() = UnDoDeleted;
+
+  const factory TodoEvent.filterChanged(TodoViewFilter filter) = FilterChanged;
+
+  const factory TodoEvent.search(String? search) = Search;
+
+  const factory TodoEvent.toggleAll() = ToggleAll;
+
+  const factory TodoEvent.clearCompleted() = ClearCompleted;
+
+  factory TodoEvent.fromJson(Map<String, Object?> json) =>
+      _$TodoEventFromJson(json);
 }

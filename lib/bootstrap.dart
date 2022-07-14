@@ -14,6 +14,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oplin/bloc/book_bloc.dart';
 import 'package:oplin/bloc/edit_note_bloc.dart';
 import 'package:oplin/bloc/note_bloc.dart';
+import 'package:oplin/bloc/todo.edit.bloc.dart';
 import 'package:oplin/bloc/todo_bloc.dart';
 import 'package:oplin/common/di/dependencie_manager.dart';
 import 'package:oplin/common/logging.dart';
@@ -57,7 +58,8 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
       NoteBloc noteLogic = await getIt.getAsync<NoteBloc>();
       AppCubit appCubit = await getIt.getAsync<AppCubit>();
       SyncCubit syncCubit = await getIt.getAsync<SyncCubit>();
-      TodosOverviewBloc todoBloc = await getIt.getAsync<TodosOverviewBloc>();
+      TodoBloc todoBloc = await getIt.getAsync<TodoBloc>();
+      TodoEditBloc todoEditBloc = await getIt.getAsync<TodoEditBloc>();
       await BlocOverrides.runZoned(
         () async {
           runApp(
@@ -68,6 +70,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
                 BlocProvider(create: (context) => noteLogic),
                 BlocProvider(create: (context) => bookLogic),
                 BlocProvider(create: (context) => todoBloc),
+                BlocProvider(create: (context) => todoEditBloc),
                 BlocProvider(create: (context) => syncCubit),
               ],
               child: MultiRepositoryProvider(

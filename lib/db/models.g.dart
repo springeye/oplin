@@ -2779,17 +2779,18 @@ extension GetTodoCollection on Isar {
 const TodoSchema = CollectionSchema(
   name: 'Todo',
   schema:
-      '{"name":"Todo","idName":"id","properties":[{"name":"deleted","type":"Bool"},{"name":"hashCode","type":"Long"},{"name":"isCompleted","type":"Bool"},{"name":"parentId","type":"String"},{"name":"sticky","type":"Bool"},{"name":"synced","type":"Bool"},{"name":"title","type":"String"},{"name":"uuid","type":"String"}],"indexes":[{"name":"uuid","unique":false,"properties":[{"name":"uuid","type":"Hash","caseSensitive":true}]}],"links":[]}',
+      '{"name":"Todo","idName":"id","properties":[{"name":"deleted","type":"Bool"},{"name":"description","type":"String"},{"name":"hashCode","type":"Long"},{"name":"isCompleted","type":"Bool"},{"name":"parentId","type":"String"},{"name":"sticky","type":"Bool"},{"name":"synced","type":"Bool"},{"name":"title","type":"String"},{"name":"uuid","type":"String"}],"indexes":[{"name":"uuid","unique":false,"properties":[{"name":"uuid","type":"Hash","caseSensitive":true}]}],"links":[]}',
   idName: 'id',
   propertyIds: {
     'deleted': 0,
-    'hashCode': 1,
-    'isCompleted': 2,
-    'parentId': 3,
-    'sticky': 4,
-    'synced': 5,
-    'title': 6,
-    'uuid': 7
+    'description': 1,
+    'hashCode': 2,
+    'isCompleted': 3,
+    'parentId': 4,
+    'sticky': 5,
+    'synced': 6,
+    'title': 7,
+    'uuid': 8
   },
   listProperties: {},
   indexIds: {'uuid': 0},
@@ -2834,25 +2835,28 @@ void _todoSerializeNative(IsarCollection<Todo> collection, IsarRawObject rawObj,
   var dynamicSize = 0;
   final value0 = object.deleted;
   final _deleted = value0;
-  final value1 = object.hashCode;
-  final _hashCode = value1;
-  final value2 = object.isCompleted;
-  final _isCompleted = value2;
-  final value3 = object.parentId;
+  final value1 = object.description;
+  final _description = IsarBinaryWriter.utf8Encoder.convert(value1);
+  dynamicSize += (_description.length) as int;
+  final value2 = object.hashCode;
+  final _hashCode = value2;
+  final value3 = object.isCompleted;
+  final _isCompleted = value3;
+  final value4 = object.parentId;
   IsarUint8List? _parentId;
-  if (value3 != null) {
-    _parentId = IsarBinaryWriter.utf8Encoder.convert(value3);
+  if (value4 != null) {
+    _parentId = IsarBinaryWriter.utf8Encoder.convert(value4);
   }
   dynamicSize += (_parentId?.length ?? 0) as int;
-  final value4 = object.sticky;
-  final _sticky = value4;
-  final value5 = object.synced;
-  final _synced = value5;
-  final value6 = object.title;
-  final _title = IsarBinaryWriter.utf8Encoder.convert(value6);
+  final value5 = object.sticky;
+  final _sticky = value5;
+  final value6 = object.synced;
+  final _synced = value6;
+  final value7 = object.title;
+  final _title = IsarBinaryWriter.utf8Encoder.convert(value7);
   dynamicSize += (_title.length) as int;
-  final value7 = object.uuid;
-  final _uuid = IsarBinaryWriter.utf8Encoder.convert(value7);
+  final value8 = object.uuid;
+  final _uuid = IsarBinaryWriter.utf8Encoder.convert(value8);
   dynamicSize += (_uuid.length) as int;
   final size = staticSize + dynamicSize;
 
@@ -2861,26 +2865,28 @@ void _todoSerializeNative(IsarCollection<Todo> collection, IsarRawObject rawObj,
   final buffer = IsarNative.bufAsBytes(rawObj.buffer, size);
   final writer = IsarBinaryWriter(buffer, staticSize);
   writer.writeBool(offsets[0], _deleted);
-  writer.writeLong(offsets[1], _hashCode);
-  writer.writeBool(offsets[2], _isCompleted);
-  writer.writeBytes(offsets[3], _parentId);
-  writer.writeBool(offsets[4], _sticky);
-  writer.writeBool(offsets[5], _synced);
-  writer.writeBytes(offsets[6], _title);
-  writer.writeBytes(offsets[7], _uuid);
+  writer.writeBytes(offsets[1], _description);
+  writer.writeLong(offsets[2], _hashCode);
+  writer.writeBool(offsets[3], _isCompleted);
+  writer.writeBytes(offsets[4], _parentId);
+  writer.writeBool(offsets[5], _sticky);
+  writer.writeBool(offsets[6], _synced);
+  writer.writeBytes(offsets[7], _title);
+  writer.writeBytes(offsets[8], _uuid);
 }
 
 Todo _todoDeserializeNative(IsarCollection<Todo> collection, int id,
     IsarBinaryReader reader, List<int> offsets) {
   final object = Todo(
     deleted: reader.readBool(offsets[0]),
+    description: reader.readString(offsets[1]),
     id: id,
-    isCompleted: reader.readBool(offsets[2]),
-    parentId: reader.readStringOrNull(offsets[3]),
-    sticky: reader.readBool(offsets[4]),
-    synced: reader.readBool(offsets[5]),
-    title: reader.readString(offsets[6]),
-    uuid: reader.readString(offsets[7]),
+    isCompleted: reader.readBool(offsets[3]),
+    parentId: reader.readStringOrNull(offsets[4]),
+    sticky: reader.readBool(offsets[5]),
+    synced: reader.readBool(offsets[6]),
+    title: reader.readString(offsets[7]),
+    uuid: reader.readString(offsets[8]),
   );
   return object;
 }
@@ -2893,18 +2899,20 @@ P _todoDeserializePropNative<P>(
     case 0:
       return (reader.readBool(offset)) as P;
     case 1:
-      return (reader.readLong(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 2:
-      return (reader.readBool(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 3:
-      return (reader.readStringOrNull(offset)) as P;
-    case 4:
       return (reader.readBool(offset)) as P;
+    case 4:
+      return (reader.readStringOrNull(offset)) as P;
     case 5:
       return (reader.readBool(offset)) as P;
     case 6:
-      return (reader.readString(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 7:
+      return (reader.readString(offset)) as P;
+    case 8:
       return (reader.readString(offset)) as P;
     default:
       throw 'Illegal propertyIndex';
@@ -2914,6 +2922,7 @@ P _todoDeserializePropNative<P>(
 dynamic _todoSerializeWeb(IsarCollection<Todo> collection, Todo object) {
   final jsObj = IsarNative.newJsObject();
   IsarNative.jsObjectSet(jsObj, 'deleted', object.deleted);
+  IsarNative.jsObjectSet(jsObj, 'description', object.description);
   IsarNative.jsObjectSet(jsObj, 'hashCode', object.hashCode);
   IsarNative.jsObjectSet(jsObj, 'id', object.id);
   IsarNative.jsObjectSet(jsObj, 'isCompleted', object.isCompleted);
@@ -2928,6 +2937,7 @@ dynamic _todoSerializeWeb(IsarCollection<Todo> collection, Todo object) {
 Todo _todoDeserializeWeb(IsarCollection<Todo> collection, dynamic jsObj) {
   final object = Todo(
     deleted: IsarNative.jsObjectGet(jsObj, 'deleted') ?? false,
+    description: IsarNative.jsObjectGet(jsObj, 'description') ?? '',
     id: IsarNative.jsObjectGet(jsObj, 'id') ?? double.negativeInfinity,
     isCompleted: IsarNative.jsObjectGet(jsObj, 'isCompleted') ?? false,
     parentId: IsarNative.jsObjectGet(jsObj, 'parentId'),
@@ -2943,6 +2953,8 @@ P _todoDeserializePropWeb<P>(Object jsObj, String propertyName) {
   switch (propertyName) {
     case 'deleted':
       return (IsarNative.jsObjectGet(jsObj, 'deleted') ?? false) as P;
+    case 'description':
+      return (IsarNative.jsObjectGet(jsObj, 'description') ?? '') as P;
     case 'hashCode':
       return (IsarNative.jsObjectGet(jsObj, 'hashCode') ??
           double.negativeInfinity) as P;
@@ -3071,6 +3083,109 @@ extension TodoQueryFilter on QueryBuilder<Todo, Todo, QFilterCondition> {
       type: ConditionType.eq,
       property: 'deleted',
       value: value,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> descriptionEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.eq,
+      property: 'description',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> descriptionGreaterThan(
+    String value, {
+    bool caseSensitive = true,
+    bool include = false,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.gt,
+      include: include,
+      property: 'description',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> descriptionLessThan(
+    String value, {
+    bool caseSensitive = true,
+    bool include = false,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.lt,
+      include: include,
+      property: 'description',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> descriptionBetween(
+    String lower,
+    String upper, {
+    bool caseSensitive = true,
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return addFilterConditionInternal(FilterCondition.between(
+      property: 'description',
+      lower: lower,
+      includeLower: includeLower,
+      upper: upper,
+      includeUpper: includeUpper,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> descriptionStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.startsWith,
+      property: 'description',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> descriptionEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.endsWith,
+      property: 'description',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> descriptionContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.contains,
+      property: 'description',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<Todo, Todo, QAfterFilterCondition> descriptionMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.matches,
+      property: 'description',
+      value: pattern,
+      caseSensitive: caseSensitive,
     ));
   }
 
@@ -3517,6 +3632,14 @@ extension TodoQueryWhereSortBy on QueryBuilder<Todo, Todo, QSortBy> {
     return addSortByInternal('deleted', Sort.desc);
   }
 
+  QueryBuilder<Todo, Todo, QAfterSortBy> sortByDescription() {
+    return addSortByInternal('description', Sort.asc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> sortByDescriptionDesc() {
+    return addSortByInternal('description', Sort.desc);
+  }
+
   QueryBuilder<Todo, Todo, QAfterSortBy> sortByHashCode() {
     return addSortByInternal('hashCode', Sort.asc);
   }
@@ -3591,6 +3714,14 @@ extension TodoQueryWhereSortThenBy on QueryBuilder<Todo, Todo, QSortThenBy> {
     return addSortByInternal('deleted', Sort.desc);
   }
 
+  QueryBuilder<Todo, Todo, QAfterSortBy> thenByDescription() {
+    return addSortByInternal('description', Sort.asc);
+  }
+
+  QueryBuilder<Todo, Todo, QAfterSortBy> thenByDescriptionDesc() {
+    return addSortByInternal('description', Sort.desc);
+  }
+
   QueryBuilder<Todo, Todo, QAfterSortBy> thenByHashCode() {
     return addSortByInternal('hashCode', Sort.asc);
   }
@@ -3661,6 +3792,11 @@ extension TodoQueryWhereDistinct on QueryBuilder<Todo, Todo, QDistinct> {
     return addDistinctByInternal('deleted');
   }
 
+  QueryBuilder<Todo, Todo, QDistinct> distinctByDescription(
+      {bool caseSensitive = true}) {
+    return addDistinctByInternal('description', caseSensitive: caseSensitive);
+  }
+
   QueryBuilder<Todo, Todo, QDistinct> distinctByHashCode() {
     return addDistinctByInternal('hashCode');
   }
@@ -3700,6 +3836,10 @@ extension TodoQueryWhereDistinct on QueryBuilder<Todo, Todo, QDistinct> {
 extension TodoQueryProperty on QueryBuilder<Todo, Todo, QQueryProperty> {
   QueryBuilder<Todo, bool, QQueryOperations> deletedProperty() {
     return addPropertyNameInternal('deleted');
+  }
+
+  QueryBuilder<Todo, String, QQueryOperations> descriptionProperty() {
+    return addPropertyNameInternal('description');
   }
 
   QueryBuilder<Todo, int, QQueryOperations> hashCodeProperty() {
@@ -3795,6 +3935,7 @@ Todo _$TodoFromJson(Map<String, dynamic> json) => Todo(
       id: json['id'] as int? ?? 0,
       uuid: json['uuid'] as String? ?? "",
       title: json['title'] as String? ?? "",
+      description: json['description'] as String? ?? "",
       isCompleted: json['isCompleted'] as bool? ?? false,
       synced: json['synced'] as bool? ?? false,
       deleted: json['deleted'] as bool? ?? false,
@@ -3808,6 +3949,7 @@ Map<String, dynamic> _$TodoToJson(Todo instance) => <String, dynamic>{
       'id': instance.id,
       'uuid': instance.uuid,
       'title': instance.title,
+      'description': instance.description,
       'isCompleted': instance.isCompleted,
       'synced': instance.synced,
       'deleted': instance.deleted,

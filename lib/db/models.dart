@@ -215,6 +215,7 @@ class Todo {
   @Index()
   String uuid = "";
   String title = "";
+  String description = "";
   bool isCompleted = false;
   bool synced = false;
   bool deleted = false;
@@ -226,6 +227,7 @@ class Todo {
     this.id = 0,
     this.uuid = "",
     this.title = "",
+    this.description = "",
     this.isCompleted = false,
     this.synced = false,
     this.deleted = false,
@@ -269,6 +271,7 @@ class Todo {
     int? id,
     String? uuid,
     String? title,
+    String? description,
     bool? isCompleted,
     bool? synced,
     bool? deleted,
@@ -281,6 +284,7 @@ class Todo {
       id: id ?? this.id,
       uuid: uuid ?? this.uuid,
       title: title ?? this.title,
+      description: description ?? this.description,
       isCompleted: isCompleted ?? this.isCompleted,
       synced: synced ?? this.synced,
       deleted: deleted ?? this.deleted,
