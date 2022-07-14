@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
@@ -17,6 +19,7 @@ class TodosOverviewBloc extends Bloc<TodosOverviewEvent, TodosOverviewState> {
         super(const TodosOverviewState()) {
     on<TodosOverviewSubscriptionRequested>(_onSubscriptionRequested);
     on<TodosOverviewTodoCompletionToggled>(_onTodoCompletionToggled);
+    on<TodosOverviewSearch>(_onSearch);
     on<TodosOverviewTodoDeleted>(_onTodoDeleted);
     on<TodosOverviewUndoDeletionRequested>(_onUndoDeletionRequested);
     on<TodosOverviewFilterChanged>(_onFilterChanged);
@@ -94,5 +97,10 @@ class TodosOverviewBloc extends Bloc<TodosOverviewEvent, TodosOverviewState> {
     Emitter<TodosOverviewState> emit,
   ) async {
     await _todosRepository.clearCompleted();
+  }
+
+  FutureOr<void> _onSearch(
+      TodosOverviewSearch event, Emitter<TodosOverviewState> emit) {
+    emit(state.copyWith(search: () => event.search));
   }
 }

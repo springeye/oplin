@@ -46,6 +46,12 @@ class TodosOverviewFilterChanged extends TodosOverviewEvent {
   List<Object> get props => [filter];
 }
 
+class TodosOverviewSearch extends TodosOverviewEvent {
+  final String? search;
+
+  const TodosOverviewSearch(this.search);
+}
+
 class TodosOverviewToggleAllRequested extends TodosOverviewEvent {
   const TodosOverviewToggleAllRequested();
 }
