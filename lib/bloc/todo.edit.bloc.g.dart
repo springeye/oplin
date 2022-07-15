@@ -74,7 +74,9 @@ Map<String, dynamic> _$$CreatedToJson(_$Created instance) => <String, dynamic>{
     };
 
 _$Current _$$CurrentFromJson(Map<String, dynamic> json) => _$Current(
-      Todo.fromJson(json['todo'] as Map<String, dynamic>),
+      json['todo'] == null
+          ? null
+          : Todo.fromJson(json['todo'] as Map<String, dynamic>),
       $type: json['runtimeType'] as String?,
     );
 

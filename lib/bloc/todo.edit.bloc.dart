@@ -86,7 +86,7 @@ class TodoEditBloc extends Bloc<TodoEditEvent, TodoEditState> {
   }
 
   FutureOr<void> _onCurrent(Current event, Emitter<TodoEditState> emit) {
-    emit(state.copyWith(initialTodo: event.todo,status: EditTodoStatus.initial,title: event.todo.title,description: event.todo.description));
+    emit(state.copyWith(initialTodo: event.todo,status: EditTodoStatus.initial,title: event.todo?.title,description: event.todo?.description));
   }
 }
 
@@ -126,6 +126,6 @@ class TodoEditEvent with _$TodoEditEvent {
   const factory TodoEditEvent.submitted() = Submitted;
 
   const factory TodoEditEvent.created() = Created;
-  const factory TodoEditEvent.current(Todo todo) = Current;
+  const factory TodoEditEvent.current(Todo? todo) = Current;
 }
 

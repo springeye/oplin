@@ -4,6 +4,7 @@ import 'package:oplin/app/view/desktop/todo_edit.dart';
 import 'package:oplin/bloc/note_bloc.dart';
 import 'package:oplin/bloc/todo.edit.bloc.dart';
 import 'package:oplin/bloc/todo_bloc.dart';
+import 'package:oplin/common/logging.dart';
 import 'package:oplin/db/models.dart';
 import 'package:oplin/gen/S.dart';
 
@@ -99,6 +100,7 @@ class _TodoListSWState extends State<TodoListWidget> {
       builder: (context, state) {
         var book = state.filter.notebook;
         var todos = context.watch<TodoBloc>().state.filteredTodos;
+        appLog.debug("刷新todos");
         todos = todos
             .where((element) =>
                 (book?.isTodoCompleted == true &&
@@ -142,7 +144,17 @@ class _TodoListSWState extends State<TodoListWidget> {
                         ],
                       ),
                     ),
-                    ...todos.map((e) => _buildTodo(context, e)).toList()
+                    ...todos.map((e) {
+                      return InkWell(
+                        onTap: () {
+                          var bloc = context.read<TodoEditBloc>();
+                          bloc.add(const TodoEditEvent.submitted());
+                          // bloc.add(const TodoEditEvent.current(null));
+                          bloc.add(TodoEditEvent.current(e));
+                        },
+                        child: _buildTodo(context, e),
+                      );
+                    }).toList()
                   ],
                 ),
               ),
@@ -154,40 +166,14 @@ class _TodoListSWState extends State<TodoListWidget> {
   }
 
   Widget _buildTodo(BuildContext context, Todo todo) {
-    return Row(
-      children: [
-        Checkbox(
-            value: todo.isCompleted,
-            fillColor: MaterialStateProperty.resolveWith<Color?>((states) {
-              if (states.contains(MaterialState.disabled)) {
-                return Colors.orange.withOpacity(.32);
-              }
-              if (states.contains(MaterialState.selected)) {
-                return Colors.grey;
-              }
-              return null;
-            }),
-            onChanged: (v) {
-              context
-                  .read<TodoBloc>()
-                  .add(TodoEvent.completionToggled(todo, v == true));
-            }),
-        if (todo.isCompleted)
-          Text(
-            todo.title.isEmpty ? "请输入标题=>${todo.uuid}" : todo.title,
-            style: const TextStyle(
-              color: Colors.grey,
-              decoration: TextDecoration.lineThrough,
-              decorationColor: Colors.grey,
-            ),
-          ),
-        if (!todo.isCompleted)
-          Expanded(
-            child: TodoEdit(
-              todo: todo,
-            ),
-          ),
-      ],
+    return BlocBuilder<TodoEditBloc, TodoEditState>(
+      buildWhen: (p, c) => p.initialTodo?.uuid != c.initialTodo?.uuid,
+      builder: (context, state) {
+        return TodoEdit(
+          todo: todo,
+          isEditing: state.initialTodo?.uuid == todo.uuid,
+        );
+      },
     );
   }
 }
