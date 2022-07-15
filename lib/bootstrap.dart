@@ -11,6 +11,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:oplin/bloc/book_bloc.dart';
 import 'package:oplin/bloc/edit_note_bloc.dart';
 import 'package:oplin/bloc/note_bloc.dart';
@@ -21,6 +22,7 @@ import 'package:oplin/common/logging.dart';
 import 'package:oplin/common/fonts.dart';
 import 'package:oplin/repository/book_repository.dart';
 import 'package:oplin/repository/note_repository.dart';
+import 'package:oplin/repository/storage/sqlite_book_repository.dart';
 import 'package:oplin/repository/todo_repository.dart';
 
 import 'bloc/app_cubit.dart';
@@ -30,12 +32,12 @@ class AppBlocObserver extends BlocObserver {
   @override
   void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
     super.onChange(bloc, change);
-    appLog.debug('onChange(${bloc.runtimeType}, $change)');
+    appLog.debug('onChange======>(${bloc.runtimeType}, $change)');
   }
 
   @override
   void onError(BlocBase<dynamic> bloc, Object error, StackTrace stackTrace) {
-    appLog.debug('onError(${bloc.runtimeType}, $error, $stackTrace)');
+    appLog.debug('onError======>(${bloc.runtimeType}, $error, $stackTrace)');
     super.onError(bloc, error, stackTrace);
   }
 }
@@ -46,22 +48,26 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
     FlutterError.presentError(details);
     if (kReleaseMode) exit(1);
   };
-  configureDependencies();
   await runZonedGuarded(
     () async {
-      loadRemoteFonts();
-      NoteRepository noteRepository = await getIt.getAsync<NoteRepository>();
-      BookRepository bookRepository = await getIt.getAsync<BookRepository>();
-      TodoRepository todoRepository = await getIt.getAsync<TodoRepository>();
-      BookBloc bookLogic = await getIt.getAsync<BookBloc>();
-      EditNoteBloc showBloc = getIt.get<EditNoteBloc>();
-      NoteBloc noteLogic = await getIt.getAsync<NoteBloc>();
-      AppCubit appCubit = await getIt.getAsync<AppCubit>();
-      SyncCubit syncCubit = await getIt.getAsync<SyncCubit>();
-      TodoBloc todoBloc = await getIt.getAsync<TodoBloc>();
-      TodoEditBloc todoEditBloc = await getIt.getAsync<TodoEditBloc>();
       await BlocOverrides.runZoned(
         () async {
+          configureDependencies();
+          loadRemoteFonts();
+          NoteRepository noteRepository =
+              await getIt.getAsync<NoteRepository>();
+          BookRepository bookRepository =
+              await getIt.getAsync<BookRepository>();
+
+          TodoRepository todoRepository =
+              await getIt.getAsync<TodoRepository>(instanceName: "sqlite");
+          BookBloc bookLogic = await getIt.getAsync<BookBloc>();
+          EditNoteBloc showBloc = getIt.get<EditNoteBloc>();
+          NoteBloc noteLogic = await getIt.getAsync<NoteBloc>();
+          AppCubit appCubit = await getIt.getAsync<AppCubit>();
+          SyncCubit syncCubit = await getIt.getAsync<SyncCubit>();
+          TodoBloc todoBloc = await getIt.getAsync<TodoBloc>();
+          TodoEditBloc todoEditBloc = await getIt.getAsync<TodoEditBloc>();
           runApp(
             MultiBlocProvider(
               providers: [

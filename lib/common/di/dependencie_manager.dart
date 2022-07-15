@@ -2,6 +2,8 @@ import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:oplin/bloc/app_cubit.dart';
 import 'package:oplin/common/di/dependencie_manager.config.dart';
+import 'package:oplin/db/app_database.dart';
+import 'package:oplin/db/dao/todo_dao.dart';
 import 'package:oplin/db/models.dart';
 import 'package:isar/isar.dart';
 import 'package:oplin/db/models.dart';
@@ -26,4 +28,7 @@ abstract class RegisterModule {
 
   @singleton
   Future<AppConfig> get appConfig async => await AppCubit.getDefaultConfig();
+
+  @singleton
+  TodoDao getTodoDao(AppDatabase database) => database.todoDao;
 }

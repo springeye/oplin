@@ -18,21 +18,30 @@ const freezed =
 @singleton
 class TodoBloc extends Bloc<TodoEvent, TodoState> {
   TodoBloc({
-    required TodoRepository todosRepository,
+    @Named("sqlite") required TodoRepository todosRepository,
   })  : _todosRepository = todosRepository,
         super(TodoState.initial()) {
-    on<TodoEvent>((event, emit) {
-      event.map(
-          subscriptionRequested: (event) =>
-              _onSubscriptionRequested(event, emit),
-          completionToggled: (event) => _onTodoCompletionToggled(event, emit),
-          deleted: (event) => _onTodoDeleted(event, emit),
-          unDoDeleted: (event) => _onUndoDeletionRequested(event, emit),
-          filterChanged: (event) => _onFilterChanged(event, emit),
-          search: (event) => _onSearch(event, emit),
-          toggleAll: (event) => _onToggleAllRequested(event, emit),
-          clearCompleted: (event) => _onClearCompletedRequested(event, emit));
-    });
+    on<SubscriptionRequested>(_onSubscriptionRequested);
+    on<CompletionToggled>(_onTodoCompletionToggled);
+    on<Deleted>(_onTodoDeleted);
+    on<UnDoDeleted>(_onUndoDeletionRequested);
+    on<FilterChanged>(_onFilterChanged);
+    on<Search>(_onSearch);
+    on<ToggleAll>(_onToggleAllRequested);
+    on<ClearCompleted>(_onClearCompletedRequested);
+
+    // on<TodoEvent>((event, emit) {
+    //   event.map(
+    //       subscriptionRequested: (event)  =>
+    //            _onSubscriptionRequested(event, emit),
+    //       completionToggled: (event) async=> await _onTodoCompletionToggled(event, emit),
+    //       deleted: (event) async=> await _onTodoDeleted(event, emit),
+    //       unDoDeleted: (event) async=> await _onUndoDeletionRequested(event, emit),
+    //       filterChanged: (event)=> _onFilterChanged(event, emit),
+    //       search: (event) async=> await _onSearch(event, emit),
+    //       toggleAll: (event) async=> await _onToggleAllRequested(event, emit),
+    //       clearCompleted: (event) async=> await _onClearCompletedRequested(event, emit));
+    // });
   }
 
   final TodoRepository _todosRepository;
@@ -42,7 +51,6 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     Emitter<TodoState> emit,
   ) async {
     emit(state.copyWith(status: TodosOverviewStatus.loading));
-
     await emit.forEach<List<Todo>>(
       _todosRepository.getTodos(),
       onData: (todos) => state.copyWith(

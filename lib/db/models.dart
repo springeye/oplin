@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:floor/floor.dart' hide Index;
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:isar/isar.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -210,8 +211,10 @@ enum TodoLevel {
 
 @JsonSerializable()
 @Collection()
+@entity
 class Todo {
   int id = Isar.autoIncrement;
+  @primaryKey
   @Index()
   String uuid = "";
   String title = "";

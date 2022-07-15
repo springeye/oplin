@@ -96,8 +96,14 @@ class _TodoListSWState extends State<TodoListWidget> {
             p.filter.notebook != book;
       },
       builder: (context, state) {
-        var todos = context.watch<TodoBloc>().state.filteredTodos;
         var book = state.filter.notebook;
+        var todos = context.watch<TodoBloc>().state.filteredTodos;
+        todos = todos
+            .where((element) =>
+                (book?.isTodoCompleted == true &&
+                    element.isCompleted == true) ||
+                book?.isTodoCompleted == false && element.isCompleted == false)
+            .toList();
         return Scaffold(
           backgroundColor: Colors.transparent,
           body: Padding(
@@ -135,7 +141,7 @@ class _TodoListSWState extends State<TodoListWidget> {
                         ],
                       ),
                     ),
-                    ...todos.map((e) => Text(e.uuid)).toList()
+                    ...todos.map((e) => _buildTodo(context, e)).toList()
                   ],
                 ),
               ),
@@ -143,6 +149,42 @@ class _TodoListSWState extends State<TodoListWidget> {
           ),
         );
       },
+    );
+  }
+
+  Widget _buildTodo(BuildContext context, Todo todo) {
+    return Row(
+      children: [
+        Checkbox(
+            value: todo.isCompleted,
+            fillColor: MaterialStateProperty.resolveWith<Color?>((states) {
+              if (states.contains(MaterialState.disabled)) {
+                return Colors.orange.withOpacity(.32);
+              }
+              if (states.contains(MaterialState.selected)) {
+                return Colors.grey;
+              }
+              return null;
+            }),
+            onChanged: (v) {
+              context
+                  .read<TodoBloc>()
+                  .add(TodoEvent.completionToggled(todo, v == true));
+            }),
+        if (todo.isCompleted)
+          Text(
+            todo.title.isEmpty ? "请输入标题=>${todo.uuid}" : todo.title,
+            style: const TextStyle(
+              color: Colors.grey,
+              decoration: TextDecoration.lineThrough,
+              decorationColor: Colors.grey,
+            ),
+          ),
+        if (!todo.isCompleted)
+          Text(
+            todo.title.isEmpty ? "请输入标题=>${todo.uuid}" : todo.title,
+          ),
+      ],
     );
   }
 }

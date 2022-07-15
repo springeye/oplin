@@ -14,10 +14,6 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-TodoState _$TodoStateFromJson(Map<String, dynamic> json) {
-  return _TodoState.fromJson(json);
-}
-
 /// @nodoc
 mixin _$TodoState {
   TodosOverviewStatus get status => throw _privateConstructorUsedError;
@@ -26,7 +22,6 @@ mixin _$TodoState {
   TodoViewFilter get filter => throw _privateConstructorUsedError;
   Todo? get lastDeletedTodo => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $TodoStateCopyWith<TodoState> get copyWith =>
       throw _privateConstructorUsedError;
@@ -143,7 +138,7 @@ class __$$_TodoStateCopyWithImpl<$Res> extends _$TodoStateCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
 class _$_TodoState extends _TodoState {
   const _$_TodoState(
       {required this.status,
@@ -153,9 +148,6 @@ class _$_TodoState extends _TodoState {
       this.lastDeletedTodo})
       : _todos = todos,
         super._();
-
-  factory _$_TodoState.fromJson(Map<String, dynamic> json) =>
-      _$$_TodoStateFromJson(json);
 
   @override
   final TodosOverviewStatus status;
@@ -191,7 +183,6 @@ class _$_TodoState extends _TodoState {
                 .equals(other.lastDeletedTodo, lastDeletedTodo));
   }
 
-  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -205,11 +196,6 @@ class _$_TodoState extends _TodoState {
   @override
   _$$_TodoStateCopyWith<_$_TodoState> get copyWith =>
       __$$_TodoStateCopyWithImpl<_$_TodoState>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$_TodoStateToJson(this);
-  }
 }
 
 abstract class _TodoState extends TodoState {
@@ -220,9 +206,6 @@ abstract class _TodoState extends TodoState {
       required final TodoViewFilter filter,
       final Todo? lastDeletedTodo}) = _$_TodoState;
   const _TodoState._() : super._();
-
-  factory _TodoState.fromJson(Map<String, dynamic> json) =
-      _$_TodoState.fromJson;
 
   @override
   TodosOverviewStatus get status;

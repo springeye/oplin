@@ -62,10 +62,6 @@ class IsarTodoRepository extends IsarRepository implements TodoRepository {
 
   @override
   Future<void> saveTodo(Todo todo) async {
-    if (todo.uuid.isEmpty) {
-      todo.id = 0;
-      todo.uuid = const Uuid().v4();
-    }
     await super.store.writeTxn((store) async {
       await store.todos.put(todo);
     });

@@ -4,6 +4,7 @@ import 'package:oplin/bloc/todo_bloc.dart';
 import 'package:oplin/db/models.dart';
 import 'package:freezed_annotation/freezed_annotation.dart' hide freezed;
 import 'package:oplin/repository/todo_repository.dart';
+import 'package:uuid/uuid.dart';
 
 part 'todo.edit.bloc.freezed.dart';
 
@@ -15,24 +16,28 @@ const freezed =
 @singleton
 class TodoEditBloc extends Bloc<TodoEditEvent, TodoEditState> {
   TodoEditBloc({
-    required TodoRepository todosRepository,
+    @Named("sqlite") required TodoRepository todosRepository,
   })  : _todosRepository = todosRepository,
         super(
           TodoEditState.initial(initialTodo: null),
         ) {
-    on<TodoEditEvent>((event, emit) async {
-      event.map(
-        titleChanged: (event) => _onTitleChanged(event, emit),
-        descriptionChanged: (event) => _onDescriptionChanged(event, emit),
-        submitted: (event) async {
-          await _onSubmitted(event, emit);
-        },
-        created: (event) async {
-          var todo = await _onCreated(event, emit);
-          // emit(TodoEditState.initial(initialTodo: null));
-        },
-      );
-    });
+    on<TitleChanged>(_onTitleChanged);
+    on<DescriptionChanged>(_onDescriptionChanged);
+    on<Submitted>(_onSubmitted);
+    on<Created>(_onCreated);
+    // on<TodoEditEvent>((event, emit) async {
+    //   event.map(
+    //     titleChanged: (event) => _onTitleChanged(event, emit),
+    //     descriptionChanged: (event) => _onDescriptionChanged(event, emit),
+    //     submitted: (event) async {
+    //       await _onSubmitted(event, emit);
+    //     },
+    //     created: (event) async {
+    //       var todo = await _onCreated(event, emit);
+    //       // emit(TodoEditState.initial(initialTodo: null));
+    //     },
+    //   );
+    // });
   }
 
   final TodoRepository _todosRepository;
@@ -71,6 +76,7 @@ class TodoEditBloc extends Bloc<TodoEditEvent, TodoEditState> {
 
   Future<Todo> _onCreated(Created event, Emitter<TodoEditState> emit) async {
     var todo = Todo();
+    todo.uuid= const Uuid().v4();
     await _todosRepository.saveTodo(todo);
     return todo;
   }
@@ -113,3 +119,4 @@ class TodoEditEvent with _$TodoEditEvent {
 
   const factory TodoEditEvent.created() = Created;
 }
+
