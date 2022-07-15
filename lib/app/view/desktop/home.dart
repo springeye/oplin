@@ -42,8 +42,7 @@ class _DesktopHomePageState extends State<DesktopHomePage> {
         .select<NoteBloc, Book?>((noteBloc) => noteBloc.state.filter.notebook);
     noteBloc.add(const NoteRefreshRequested());
     context.read<BookBloc>().add(const BookRefreshRequested());
-    var showTodo =
-        book != null && (book.isTodoCompleted || book.isTodoUnCompleted);
+    var showTodo = book != null && (book.isTodo);
     return Column(
       children: [
         Row(

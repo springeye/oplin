@@ -23,8 +23,16 @@ class _TodoEditState extends State<TodoEdit> {
   final _focusNode = FocusNode();
 
   Widget _buildNormalTodo(BuildContext context) {
+    var todo = widget.todo;
     return Container(
-      child: Text(widget.todo.title.isEmpty ? "请输入标题" : widget.todo.title),
+      child: Text(
+        todo.title.isEmpty ? "请输入标题" : todo.title,
+        style: TextStyle(
+          color: todo.isCompleted ? Colors.grey : null,
+          decoration: todo.isCompleted ? TextDecoration.lineThrough : null,
+          decorationColor: Colors.grey,
+        ),
+      ),
     );
   }
 

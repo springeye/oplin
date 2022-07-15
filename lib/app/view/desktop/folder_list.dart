@@ -130,6 +130,9 @@ class FolderListWidget extends StatelessWidget {
               style: Theme.of(context).primaryTextTheme.titleLarge,
             ),
           ),
+          _buildItem(context, Book.todoAll, book?.isTodoAll == true, () {
+            onTapBook(context, Book.todoAll);
+          }),
           _buildItem(
               context, Book.todoUnCompleted, book?.isTodoUnCompleted == true,
               () {

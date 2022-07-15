@@ -1599,7 +1599,7 @@ extension GetBookCollection on Isar {
 const BookSchema = CollectionSchema(
   name: 'Book',
   schema:
-      '{"name":"Book","idName":"id","properties":[{"name":"createTime","type":"Long"},{"name":"deleted","type":"Bool"},{"name":"hashCode","type":"Long"},{"name":"isOther","type":"Bool"},{"name":"isRecycled","type":"Bool"},{"name":"isTodoCompleted","type":"Bool"},{"name":"isTodoUnCompleted","type":"Bool"},{"name":"name","type":"String"},{"name":"parentId","type":"String"},{"name":"sticky","type":"Bool"},{"name":"synced","type":"Bool"},{"name":"uuid","type":"String"}],"indexes":[{"name":"uuid","unique":false,"properties":[{"name":"uuid","type":"Hash","caseSensitive":true}]}],"links":[]}',
+      '{"name":"Book","idName":"id","properties":[{"name":"createTime","type":"Long"},{"name":"deleted","type":"Bool"},{"name":"hashCode","type":"Long"},{"name":"isOther","type":"Bool"},{"name":"isRecycled","type":"Bool"},{"name":"isTodo","type":"Bool"},{"name":"isTodoAll","type":"Bool"},{"name":"isTodoCompleted","type":"Bool"},{"name":"isTodoUnCompleted","type":"Bool"},{"name":"name","type":"String"},{"name":"parentId","type":"String"},{"name":"sticky","type":"Bool"},{"name":"synced","type":"Bool"},{"name":"uuid","type":"String"}],"indexes":[{"name":"uuid","unique":false,"properties":[{"name":"uuid","type":"Hash","caseSensitive":true}]}],"links":[]}',
   idName: 'id',
   propertyIds: {
     'createTime': 0,
@@ -1607,13 +1607,15 @@ const BookSchema = CollectionSchema(
     'hashCode': 2,
     'isOther': 3,
     'isRecycled': 4,
-    'isTodoCompleted': 5,
-    'isTodoUnCompleted': 6,
-    'name': 7,
-    'parentId': 8,
-    'sticky': 9,
-    'synced': 10,
-    'uuid': 11
+    'isTodo': 5,
+    'isTodoAll': 6,
+    'isTodoCompleted': 7,
+    'isTodoUnCompleted': 8,
+    'name': 9,
+    'parentId': 10,
+    'sticky': 11,
+    'synced': 12,
+    'uuid': 13
   },
   listProperties: {},
   indexIds: {'uuid': 0},
@@ -1666,25 +1668,29 @@ void _bookSerializeNative(IsarCollection<Book> collection, IsarRawObject rawObj,
   final _isOther = value3;
   final value4 = object.isRecycled;
   final _isRecycled = value4;
-  final value5 = object.isTodoCompleted;
-  final _isTodoCompleted = value5;
-  final value6 = object.isTodoUnCompleted;
-  final _isTodoUnCompleted = value6;
-  final value7 = object.name;
-  final _name = IsarBinaryWriter.utf8Encoder.convert(value7);
+  final value5 = object.isTodo;
+  final _isTodo = value5;
+  final value6 = object.isTodoAll;
+  final _isTodoAll = value6;
+  final value7 = object.isTodoCompleted;
+  final _isTodoCompleted = value7;
+  final value8 = object.isTodoUnCompleted;
+  final _isTodoUnCompleted = value8;
+  final value9 = object.name;
+  final _name = IsarBinaryWriter.utf8Encoder.convert(value9);
   dynamicSize += (_name.length) as int;
-  final value8 = object.parentId;
+  final value10 = object.parentId;
   IsarUint8List? _parentId;
-  if (value8 != null) {
-    _parentId = IsarBinaryWriter.utf8Encoder.convert(value8);
+  if (value10 != null) {
+    _parentId = IsarBinaryWriter.utf8Encoder.convert(value10);
   }
   dynamicSize += (_parentId?.length ?? 0) as int;
-  final value9 = object.sticky;
-  final _sticky = value9;
-  final value10 = object.synced;
-  final _synced = value10;
-  final value11 = object.uuid;
-  final _uuid = IsarBinaryWriter.utf8Encoder.convert(value11);
+  final value11 = object.sticky;
+  final _sticky = value11;
+  final value12 = object.synced;
+  final _synced = value12;
+  final value13 = object.uuid;
+  final _uuid = IsarBinaryWriter.utf8Encoder.convert(value13);
   dynamicSize += (_uuid.length) as int;
   final size = staticSize + dynamicSize;
 
@@ -1697,13 +1703,15 @@ void _bookSerializeNative(IsarCollection<Book> collection, IsarRawObject rawObj,
   writer.writeLong(offsets[2], _hashCode);
   writer.writeBool(offsets[3], _isOther);
   writer.writeBool(offsets[4], _isRecycled);
-  writer.writeBool(offsets[5], _isTodoCompleted);
-  writer.writeBool(offsets[6], _isTodoUnCompleted);
-  writer.writeBytes(offsets[7], _name);
-  writer.writeBytes(offsets[8], _parentId);
-  writer.writeBool(offsets[9], _sticky);
-  writer.writeBool(offsets[10], _synced);
-  writer.writeBytes(offsets[11], _uuid);
+  writer.writeBool(offsets[5], _isTodo);
+  writer.writeBool(offsets[6], _isTodoAll);
+  writer.writeBool(offsets[7], _isTodoCompleted);
+  writer.writeBool(offsets[8], _isTodoUnCompleted);
+  writer.writeBytes(offsets[9], _name);
+  writer.writeBytes(offsets[10], _parentId);
+  writer.writeBool(offsets[11], _sticky);
+  writer.writeBool(offsets[12], _synced);
+  writer.writeBytes(offsets[13], _uuid);
 }
 
 Book _bookDeserializeNative(IsarCollection<Book> collection, int id,
@@ -1712,11 +1720,11 @@ Book _bookDeserializeNative(IsarCollection<Book> collection, int id,
   object.createTime = reader.readDateTime(offsets[0]);
   object.deleted = reader.readBool(offsets[1]);
   object.id = id;
-  object.name = reader.readString(offsets[7]);
-  object.parentId = reader.readStringOrNull(offsets[8]);
-  object.sticky = reader.readBool(offsets[9]);
-  object.synced = reader.readBool(offsets[10]);
-  object.uuid = reader.readString(offsets[11]);
+  object.name = reader.readString(offsets[9]);
+  object.parentId = reader.readStringOrNull(offsets[10]);
+  object.sticky = reader.readBool(offsets[11]);
+  object.synced = reader.readBool(offsets[12]);
+  object.uuid = reader.readString(offsets[13]);
   return object;
 }
 
@@ -1740,14 +1748,18 @@ P _bookDeserializePropNative<P>(
     case 6:
       return (reader.readBool(offset)) as P;
     case 7:
-      return (reader.readString(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 8:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 9:
-      return (reader.readBool(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 10:
-      return (reader.readBool(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 11:
+      return (reader.readBool(offset)) as P;
+    case 12:
+      return (reader.readBool(offset)) as P;
+    case 13:
       return (reader.readString(offset)) as P;
     default:
       throw 'Illegal propertyIndex';
@@ -1763,6 +1775,8 @@ dynamic _bookSerializeWeb(IsarCollection<Book> collection, Book object) {
   IsarNative.jsObjectSet(jsObj, 'id', object.id);
   IsarNative.jsObjectSet(jsObj, 'isOther', object.isOther);
   IsarNative.jsObjectSet(jsObj, 'isRecycled', object.isRecycled);
+  IsarNative.jsObjectSet(jsObj, 'isTodo', object.isTodo);
+  IsarNative.jsObjectSet(jsObj, 'isTodoAll', object.isTodoAll);
   IsarNative.jsObjectSet(jsObj, 'isTodoCompleted', object.isTodoCompleted);
   IsarNative.jsObjectSet(jsObj, 'isTodoUnCompleted', object.isTodoUnCompleted);
   IsarNative.jsObjectSet(jsObj, 'name', object.name);
@@ -1812,6 +1826,10 @@ P _bookDeserializePropWeb<P>(Object jsObj, String propertyName) {
       return (IsarNative.jsObjectGet(jsObj, 'isOther') ?? false) as P;
     case 'isRecycled':
       return (IsarNative.jsObjectGet(jsObj, 'isRecycled') ?? false) as P;
+    case 'isTodo':
+      return (IsarNative.jsObjectGet(jsObj, 'isTodo') ?? false) as P;
+    case 'isTodoAll':
+      return (IsarNative.jsObjectGet(jsObj, 'isTodoAll') ?? false) as P;
     case 'isTodoCompleted':
       return (IsarNative.jsObjectGet(jsObj, 'isTodoCompleted') ?? false) as P;
     case 'isTodoUnCompleted':
@@ -2094,6 +2112,22 @@ extension BookQueryFilter on QueryBuilder<Book, Book, QFilterCondition> {
     return addFilterConditionInternal(FilterCondition(
       type: ConditionType.eq,
       property: 'isRecycled',
+      value: value,
+    ));
+  }
+
+  QueryBuilder<Book, Book, QAfterFilterCondition> isTodoEqualTo(bool value) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.eq,
+      property: 'isTodo',
+      value: value,
+    ));
+  }
+
+  QueryBuilder<Book, Book, QAfterFilterCondition> isTodoAllEqualTo(bool value) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.eq,
+      property: 'isTodoAll',
       value: value,
     ));
   }
@@ -2496,6 +2530,22 @@ extension BookQueryWhereSortBy on QueryBuilder<Book, Book, QSortBy> {
     return addSortByInternal('isRecycled', Sort.desc);
   }
 
+  QueryBuilder<Book, Book, QAfterSortBy> sortByIsTodo() {
+    return addSortByInternal('isTodo', Sort.asc);
+  }
+
+  QueryBuilder<Book, Book, QAfterSortBy> sortByIsTodoDesc() {
+    return addSortByInternal('isTodo', Sort.desc);
+  }
+
+  QueryBuilder<Book, Book, QAfterSortBy> sortByIsTodoAll() {
+    return addSortByInternal('isTodoAll', Sort.asc);
+  }
+
+  QueryBuilder<Book, Book, QAfterSortBy> sortByIsTodoAllDesc() {
+    return addSortByInternal('isTodoAll', Sort.desc);
+  }
+
   QueryBuilder<Book, Book, QAfterSortBy> sortByIsTodoCompleted() {
     return addSortByInternal('isTodoCompleted', Sort.asc);
   }
@@ -2602,6 +2652,22 @@ extension BookQueryWhereSortThenBy on QueryBuilder<Book, Book, QSortThenBy> {
     return addSortByInternal('isRecycled', Sort.desc);
   }
 
+  QueryBuilder<Book, Book, QAfterSortBy> thenByIsTodo() {
+    return addSortByInternal('isTodo', Sort.asc);
+  }
+
+  QueryBuilder<Book, Book, QAfterSortBy> thenByIsTodoDesc() {
+    return addSortByInternal('isTodo', Sort.desc);
+  }
+
+  QueryBuilder<Book, Book, QAfterSortBy> thenByIsTodoAll() {
+    return addSortByInternal('isTodoAll', Sort.asc);
+  }
+
+  QueryBuilder<Book, Book, QAfterSortBy> thenByIsTodoAllDesc() {
+    return addSortByInternal('isTodoAll', Sort.desc);
+  }
+
   QueryBuilder<Book, Book, QAfterSortBy> thenByIsTodoCompleted() {
     return addSortByInternal('isTodoCompleted', Sort.asc);
   }
@@ -2684,6 +2750,14 @@ extension BookQueryWhereDistinct on QueryBuilder<Book, Book, QDistinct> {
     return addDistinctByInternal('isRecycled');
   }
 
+  QueryBuilder<Book, Book, QDistinct> distinctByIsTodo() {
+    return addDistinctByInternal('isTodo');
+  }
+
+  QueryBuilder<Book, Book, QDistinct> distinctByIsTodoAll() {
+    return addDistinctByInternal('isTodoAll');
+  }
+
   QueryBuilder<Book, Book, QDistinct> distinctByIsTodoCompleted() {
     return addDistinctByInternal('isTodoCompleted');
   }
@@ -2739,6 +2813,14 @@ extension BookQueryProperty on QueryBuilder<Book, Book, QQueryProperty> {
 
   QueryBuilder<Book, bool, QQueryOperations> isRecycledProperty() {
     return addPropertyNameInternal('isRecycled');
+  }
+
+  QueryBuilder<Book, bool, QQueryOperations> isTodoProperty() {
+    return addPropertyNameInternal('isTodo');
+  }
+
+  QueryBuilder<Book, bool, QQueryOperations> isTodoAllProperty() {
+    return addPropertyNameInternal('isTodoAll');
   }
 
   QueryBuilder<Book, bool, QQueryOperations> isTodoCompletedProperty() {

@@ -3,10 +3,10 @@ import 'package:oplin/db/models.dart';
 
 @dao
 abstract class TodoDao {
-  @Query('SELECT * FROM Todo order by createTime desc ')
+  @Query('SELECT * FROM Todo order by isCompleted, createTime desc ')
   Stream<List<Todo>> subscribeAll();
 
-  @Query('SELECT * FROM Todo order by createTime desc ')
+  @Query('SELECT * FROM Todo order by isCompleted,createTime desc ')
   Future<List<Todo>> findAll();
 
   @Query('SELECT * FROM Todo where uuid = :id')

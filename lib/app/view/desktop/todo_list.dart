@@ -93,20 +93,20 @@ class _TodoListSWState extends State<TodoListWidget> {
     return BlocBuilder<NoteBloc, NoteState>(
       buildWhen: (p, c) {
         var book = c.filter.notebook;
-        return book != null &&
-            (book.isTodoUnCompleted || book.isTodoCompleted) &&
-            p.filter.notebook != book;
+        return book != null && (book.isTodo) && p.filter.notebook != book;
       },
       builder: (context, state) {
         var book = state.filter.notebook;
         var todos = context.watch<TodoBloc>().state.filteredTodos;
         appLog.debug("刷新todos");
-        todos = todos
-            .where((element) =>
-                (book?.isTodoCompleted == true &&
-                    element.isCompleted == true) ||
-                book?.isTodoCompleted == false && element.isCompleted == false)
-            .toList();
+        if (book != null && book.isTodoAll == false) {
+          todos = todos
+              .where((element) =>
+                  (book.isTodoCompleted == true &&
+                      element.isCompleted == true) ||
+                  book.isTodoCompleted == false && element.isCompleted == false)
+              .toList();
+        }
         return Scaffold(
           backgroundColor: Colors.transparent,
           body: Padding(
@@ -127,7 +127,11 @@ class _TodoListSWState extends State<TodoListWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      book?.isTodoCompleted == true ? "已完成" : "为完成",
+                      book?.isTodoCompleted == true
+                          ? "已完成"
+                          : book?.isTodoUnCompleted == true
+                              ? "未完成"
+                              : "全部",
                     ),
                     Container(
                       padding: const EdgeInsets.only(top: 20),

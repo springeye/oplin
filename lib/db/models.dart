@@ -158,6 +158,12 @@ class Book {
       ..name = "已完成";
   }
 
+  static Book get todoAll {
+    return Book()
+      ..uuid = "todo_All"
+      ..name = "全部";
+  }
+
   bool get isOther => uuid == "other";
 
   bool get isRecycled => uuid == "recycled";
@@ -165,6 +171,10 @@ class Book {
   bool get isTodoUnCompleted => uuid == "todo_UnCompleted";
 
   bool get isTodoCompleted => uuid == "todo_Completed";
+
+  bool get isTodoAll => uuid == "todo_All";
+
+  bool get isTodo => isTodoCompleted || isTodoUnCompleted || isTodoAll;
 
   factory Book.fromJson(Map<String, dynamic> json) => _$BookFromJson(json);
 

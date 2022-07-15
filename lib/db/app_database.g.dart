@@ -128,7 +128,7 @@ class _$TodoDao extends TodoDao {
   @override
   Stream<List<Todo>> subscribeAll() {
     return _queryAdapter.queryListStream(
-        'SELECT * FROM Todo order by createTime desc',
+        'SELECT * FROM Todo order by isCompleted, createTime desc',
         mapper: (Map<String, Object?> row) => Todo(
             id: row['id'] as int,
             uuid: row['uuid'] as String,
@@ -148,7 +148,7 @@ class _$TodoDao extends TodoDao {
   @override
   Future<List<Todo>> findAll() async {
     return _queryAdapter.queryList(
-        'SELECT * FROM Todo order by createTime desc',
+        'SELECT * FROM Todo order by isCompleted,createTime desc',
         mapper: (Map<String, Object?> row) => Todo(
             id: row['id'] as int,
             uuid: row['uuid'] as String,
