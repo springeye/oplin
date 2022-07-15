@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:oplin/bloc/todo_bloc.dart';
@@ -25,6 +27,7 @@ class TodoEditBloc extends Bloc<TodoEditEvent, TodoEditState> {
     on<DescriptionChanged>(_onDescriptionChanged);
     on<Submitted>(_onSubmitted);
     on<Created>(_onCreated);
+    on<Current>(_onCurrent);
     // on<TodoEditEvent>((event, emit) async {
     //   event.map(
     //     titleChanged: (event) => _onTitleChanged(event, emit),
@@ -77,8 +80,13 @@ class TodoEditBloc extends Bloc<TodoEditEvent, TodoEditState> {
   Future<Todo> _onCreated(Created event, Emitter<TodoEditState> emit) async {
     var todo = Todo();
     todo.uuid= const Uuid().v4();
+    todo.createTime=DateTime.now().millisecond;
     await _todosRepository.saveTodo(todo);
     return todo;
+  }
+
+  FutureOr<void> _onCurrent(Current event, Emitter<TodoEditState> emit) {
+    emit(state.copyWith(initialTodo: event.todo,status: EditTodoStatus.initial,title: event.todo.title,description: event.todo.description));
   }
 }
 
@@ -118,5 +126,6 @@ class TodoEditEvent with _$TodoEditEvent {
   const factory TodoEditEvent.submitted() = Submitted;
 
   const factory TodoEditEvent.created() = Created;
+  const factory TodoEditEvent.current(Todo todo) = Current;
 }
 

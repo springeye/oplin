@@ -225,6 +225,8 @@ TodoEditEvent _$TodoEditEventFromJson(Map<String, dynamic> json) {
       return Submitted.fromJson(json);
     case 'created':
       return Created.fromJson(json);
+    case 'current':
+      return Current.fromJson(json);
 
     default:
       throw CheckedFromJsonException(json, 'runtimeType', 'TodoEditEvent',
@@ -240,6 +242,7 @@ mixin _$TodoEditEvent {
     required TResult Function(String description) descriptionChanged,
     required TResult Function() submitted,
     required TResult Function() created,
+    required TResult Function(Todo todo) current,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -248,6 +251,7 @@ mixin _$TodoEditEvent {
     TResult Function(String description)? descriptionChanged,
     TResult Function()? submitted,
     TResult Function()? created,
+    TResult Function(Todo todo)? current,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -256,6 +260,7 @@ mixin _$TodoEditEvent {
     TResult Function(String description)? descriptionChanged,
     TResult Function()? submitted,
     TResult Function()? created,
+    TResult Function(Todo todo)? current,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -265,6 +270,7 @@ mixin _$TodoEditEvent {
     required TResult Function(DescriptionChanged value) descriptionChanged,
     required TResult Function(Submitted value) submitted,
     required TResult Function(Created value) created,
+    required TResult Function(Current value) current,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -273,6 +279,7 @@ mixin _$TodoEditEvent {
     TResult Function(DescriptionChanged value)? descriptionChanged,
     TResult Function(Submitted value)? submitted,
     TResult Function(Created value)? created,
+    TResult Function(Current value)? current,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -281,6 +288,7 @@ mixin _$TodoEditEvent {
     TResult Function(DescriptionChanged value)? descriptionChanged,
     TResult Function(Submitted value)? submitted,
     TResult Function(Created value)? created,
+    TResult Function(Current value)? current,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -381,6 +389,7 @@ class _$TitleChanged implements TitleChanged {
     required TResult Function(String description) descriptionChanged,
     required TResult Function() submitted,
     required TResult Function() created,
+    required TResult Function(Todo todo) current,
   }) {
     return titleChanged(title);
   }
@@ -392,6 +401,7 @@ class _$TitleChanged implements TitleChanged {
     TResult Function(String description)? descriptionChanged,
     TResult Function()? submitted,
     TResult Function()? created,
+    TResult Function(Todo todo)? current,
   }) {
     return titleChanged?.call(title);
   }
@@ -403,6 +413,7 @@ class _$TitleChanged implements TitleChanged {
     TResult Function(String description)? descriptionChanged,
     TResult Function()? submitted,
     TResult Function()? created,
+    TResult Function(Todo todo)? current,
     required TResult orElse(),
   }) {
     if (titleChanged != null) {
@@ -418,6 +429,7 @@ class _$TitleChanged implements TitleChanged {
     required TResult Function(DescriptionChanged value) descriptionChanged,
     required TResult Function(Submitted value) submitted,
     required TResult Function(Created value) created,
+    required TResult Function(Current value) current,
   }) {
     return titleChanged(this);
   }
@@ -429,6 +441,7 @@ class _$TitleChanged implements TitleChanged {
     TResult Function(DescriptionChanged value)? descriptionChanged,
     TResult Function(Submitted value)? submitted,
     TResult Function(Created value)? created,
+    TResult Function(Current value)? current,
   }) {
     return titleChanged?.call(this);
   }
@@ -440,6 +453,7 @@ class _$TitleChanged implements TitleChanged {
     TResult Function(DescriptionChanged value)? descriptionChanged,
     TResult Function(Submitted value)? submitted,
     TResult Function(Created value)? created,
+    TResult Function(Current value)? current,
     required TResult orElse(),
   }) {
     if (titleChanged != null) {
@@ -545,6 +559,7 @@ class _$DescriptionChanged implements DescriptionChanged {
     required TResult Function(String description) descriptionChanged,
     required TResult Function() submitted,
     required TResult Function() created,
+    required TResult Function(Todo todo) current,
   }) {
     return descriptionChanged(description);
   }
@@ -556,6 +571,7 @@ class _$DescriptionChanged implements DescriptionChanged {
     TResult Function(String description)? descriptionChanged,
     TResult Function()? submitted,
     TResult Function()? created,
+    TResult Function(Todo todo)? current,
   }) {
     return descriptionChanged?.call(description);
   }
@@ -567,6 +583,7 @@ class _$DescriptionChanged implements DescriptionChanged {
     TResult Function(String description)? descriptionChanged,
     TResult Function()? submitted,
     TResult Function()? created,
+    TResult Function(Todo todo)? current,
     required TResult orElse(),
   }) {
     if (descriptionChanged != null) {
@@ -582,6 +599,7 @@ class _$DescriptionChanged implements DescriptionChanged {
     required TResult Function(DescriptionChanged value) descriptionChanged,
     required TResult Function(Submitted value) submitted,
     required TResult Function(Created value) created,
+    required TResult Function(Current value) current,
   }) {
     return descriptionChanged(this);
   }
@@ -593,6 +611,7 @@ class _$DescriptionChanged implements DescriptionChanged {
     TResult Function(DescriptionChanged value)? descriptionChanged,
     TResult Function(Submitted value)? submitted,
     TResult Function(Created value)? created,
+    TResult Function(Current value)? current,
   }) {
     return descriptionChanged?.call(this);
   }
@@ -604,6 +623,7 @@ class _$DescriptionChanged implements DescriptionChanged {
     TResult Function(DescriptionChanged value)? descriptionChanged,
     TResult Function(Submitted value)? submitted,
     TResult Function(Created value)? created,
+    TResult Function(Current value)? current,
     required TResult orElse(),
   }) {
     if (descriptionChanged != null) {
@@ -682,6 +702,7 @@ class _$Submitted implements Submitted {
     required TResult Function(String description) descriptionChanged,
     required TResult Function() submitted,
     required TResult Function() created,
+    required TResult Function(Todo todo) current,
   }) {
     return submitted();
   }
@@ -693,6 +714,7 @@ class _$Submitted implements Submitted {
     TResult Function(String description)? descriptionChanged,
     TResult Function()? submitted,
     TResult Function()? created,
+    TResult Function(Todo todo)? current,
   }) {
     return submitted?.call();
   }
@@ -704,6 +726,7 @@ class _$Submitted implements Submitted {
     TResult Function(String description)? descriptionChanged,
     TResult Function()? submitted,
     TResult Function()? created,
+    TResult Function(Todo todo)? current,
     required TResult orElse(),
   }) {
     if (submitted != null) {
@@ -719,6 +742,7 @@ class _$Submitted implements Submitted {
     required TResult Function(DescriptionChanged value) descriptionChanged,
     required TResult Function(Submitted value) submitted,
     required TResult Function(Created value) created,
+    required TResult Function(Current value) current,
   }) {
     return submitted(this);
   }
@@ -730,6 +754,7 @@ class _$Submitted implements Submitted {
     TResult Function(DescriptionChanged value)? descriptionChanged,
     TResult Function(Submitted value)? submitted,
     TResult Function(Created value)? created,
+    TResult Function(Current value)? current,
   }) {
     return submitted?.call(this);
   }
@@ -741,6 +766,7 @@ class _$Submitted implements Submitted {
     TResult Function(DescriptionChanged value)? descriptionChanged,
     TResult Function(Submitted value)? submitted,
     TResult Function(Created value)? created,
+    TResult Function(Current value)? current,
     required TResult orElse(),
   }) {
     if (submitted != null) {
@@ -810,6 +836,7 @@ class _$Created implements Created {
     required TResult Function(String description) descriptionChanged,
     required TResult Function() submitted,
     required TResult Function() created,
+    required TResult Function(Todo todo) current,
   }) {
     return created();
   }
@@ -821,6 +848,7 @@ class _$Created implements Created {
     TResult Function(String description)? descriptionChanged,
     TResult Function()? submitted,
     TResult Function()? created,
+    TResult Function(Todo todo)? current,
   }) {
     return created?.call();
   }
@@ -832,6 +860,7 @@ class _$Created implements Created {
     TResult Function(String description)? descriptionChanged,
     TResult Function()? submitted,
     TResult Function()? created,
+    TResult Function(Todo todo)? current,
     required TResult orElse(),
   }) {
     if (created != null) {
@@ -847,6 +876,7 @@ class _$Created implements Created {
     required TResult Function(DescriptionChanged value) descriptionChanged,
     required TResult Function(Submitted value) submitted,
     required TResult Function(Created value) created,
+    required TResult Function(Current value) current,
   }) {
     return created(this);
   }
@@ -858,6 +888,7 @@ class _$Created implements Created {
     TResult Function(DescriptionChanged value)? descriptionChanged,
     TResult Function(Submitted value)? submitted,
     TResult Function(Created value)? created,
+    TResult Function(Current value)? current,
   }) {
     return created?.call(this);
   }
@@ -869,6 +900,7 @@ class _$Created implements Created {
     TResult Function(DescriptionChanged value)? descriptionChanged,
     TResult Function(Submitted value)? submitted,
     TResult Function(Created value)? created,
+    TResult Function(Current value)? current,
     required TResult orElse(),
   }) {
     if (created != null) {
@@ -887,4 +919,168 @@ abstract class Created implements TodoEditEvent {
   const factory Created() = _$Created;
 
   factory Created.fromJson(Map<String, dynamic> json) = _$Created.fromJson;
+}
+
+/// @nodoc
+abstract class _$$CurrentCopyWith<$Res> {
+  factory _$$CurrentCopyWith(_$Current value, $Res Function(_$Current) then) =
+      __$$CurrentCopyWithImpl<$Res>;
+  $Res call({Todo todo});
+}
+
+/// @nodoc
+class __$$CurrentCopyWithImpl<$Res> extends _$TodoEditEventCopyWithImpl<$Res>
+    implements _$$CurrentCopyWith<$Res> {
+  __$$CurrentCopyWithImpl(_$Current _value, $Res Function(_$Current) _then)
+      : super(_value, (v) => _then(v as _$Current));
+
+  @override
+  _$Current get _value => super._value as _$Current;
+
+  @override
+  $Res call({
+    Object? todo = freezed,
+  }) {
+    return _then(_$Current(
+      todo == freezed
+          ? _value.todo
+          : todo // ignore: cast_nullable_to_non_nullable
+              as Todo,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$Current implements Current {
+  const _$Current(this.todo, {final String? $type})
+      : $type = $type ?? 'current';
+
+  factory _$Current.fromJson(Map<String, dynamic> json) =>
+      _$$CurrentFromJson(json);
+
+  @override
+  final Todo todo;
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
+
+  @override
+  String toString() {
+    return 'TodoEditEvent.current(todo: $todo)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$Current &&
+            const DeepCollectionEquality().equals(other.todo, todo));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(todo));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$CurrentCopyWith<_$Current> get copyWith =>
+      __$$CurrentCopyWithImpl<_$Current>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String title) titleChanged,
+    required TResult Function(String description) descriptionChanged,
+    required TResult Function() submitted,
+    required TResult Function() created,
+    required TResult Function(Todo todo) current,
+  }) {
+    return current(todo);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String title)? titleChanged,
+    TResult Function(String description)? descriptionChanged,
+    TResult Function()? submitted,
+    TResult Function()? created,
+    TResult Function(Todo todo)? current,
+  }) {
+    return current?.call(todo);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String title)? titleChanged,
+    TResult Function(String description)? descriptionChanged,
+    TResult Function()? submitted,
+    TResult Function()? created,
+    TResult Function(Todo todo)? current,
+    required TResult orElse(),
+  }) {
+    if (current != null) {
+      return current(todo);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(TitleChanged value) titleChanged,
+    required TResult Function(DescriptionChanged value) descriptionChanged,
+    required TResult Function(Submitted value) submitted,
+    required TResult Function(Created value) created,
+    required TResult Function(Current value) current,
+  }) {
+    return current(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(TitleChanged value)? titleChanged,
+    TResult Function(DescriptionChanged value)? descriptionChanged,
+    TResult Function(Submitted value)? submitted,
+    TResult Function(Created value)? created,
+    TResult Function(Current value)? current,
+  }) {
+    return current?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(TitleChanged value)? titleChanged,
+    TResult Function(DescriptionChanged value)? descriptionChanged,
+    TResult Function(Submitted value)? submitted,
+    TResult Function(Created value)? created,
+    TResult Function(Current value)? current,
+    required TResult orElse(),
+  }) {
+    if (current != null) {
+      return current(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$CurrentToJson(this);
+  }
+}
+
+abstract class Current implements TodoEditEvent {
+  const factory Current(final Todo todo) = _$Current;
+
+  factory Current.fromJson(Map<String, dynamic> json) = _$Current.fromJson;
+
+  Todo get todo;
+  @JsonKey(ignore: true)
+  _$$CurrentCopyWith<_$Current> get copyWith =>
+      throw _privateConstructorUsedError;
 }

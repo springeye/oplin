@@ -82,7 +82,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Todo` (`id` INTEGER NOT NULL, `uuid` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT NOT NULL, `isCompleted` INTEGER NOT NULL, `synced` INTEGER NOT NULL, `deleted` INTEGER NOT NULL, `sticky` INTEGER NOT NULL, `level` TEXT NOT NULL, `parentId` TEXT, PRIMARY KEY (`uuid`))');
+            'CREATE TABLE IF NOT EXISTS `Todo` (`id` INTEGER NOT NULL, `uuid` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT NOT NULL, `isCompleted` INTEGER NOT NULL, `synced` INTEGER NOT NULL, `deleted` INTEGER NOT NULL, `sticky` INTEGER NOT NULL, `level` TEXT NOT NULL, `parentId` TEXT, `createTime` INTEGER NOT NULL, PRIMARY KEY (`uuid`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -112,7 +112,8 @@ class _$TodoDao extends TodoDao {
                   'deleted': item.deleted ? 1 : 0,
                   'sticky': item.sticky ? 1 : 0,
                   'level': _todoLevelConverter.encode(item.level),
-                  'parentId': item.parentId
+                  'parentId': item.parentId,
+                  'createTime': item.createTime
                 },
             changeListener);
 
@@ -126,7 +127,8 @@ class _$TodoDao extends TodoDao {
 
   @override
   Stream<List<Todo>> subscribeAll() {
-    return _queryAdapter.queryListStream('SELECT * FROM Todo',
+    return _queryAdapter.queryListStream(
+        'SELECT * FROM Todo order by createTime desc',
         mapper: (Map<String, Object?> row) => Todo(
             id: row['id'] as int,
             uuid: row['uuid'] as String,
@@ -137,14 +139,16 @@ class _$TodoDao extends TodoDao {
             deleted: (row['deleted'] as int) != 0,
             sticky: (row['sticky'] as int) != 0,
             level: _todoLevelConverter.decode(row['level'] as String),
-            parentId: row['parentId'] as String?),
+            parentId: row['parentId'] as String?,
+            createTime: row['createTime'] as int),
         queryableName: 'Todo',
         isView: false);
   }
 
   @override
   Future<List<Todo>> findAll() async {
-    return _queryAdapter.queryList('SELECT * FROM Todo',
+    return _queryAdapter.queryList(
+        'SELECT * FROM Todo order by createTime desc',
         mapper: (Map<String, Object?> row) => Todo(
             id: row['id'] as int,
             uuid: row['uuid'] as String,
@@ -155,7 +159,8 @@ class _$TodoDao extends TodoDao {
             deleted: (row['deleted'] as int) != 0,
             sticky: (row['sticky'] as int) != 0,
             level: _todoLevelConverter.decode(row['level'] as String),
-            parentId: row['parentId'] as String?));
+            parentId: row['parentId'] as String?,
+            createTime: row['createTime'] as int));
   }
 
   @override
@@ -171,7 +176,8 @@ class _$TodoDao extends TodoDao {
             deleted: (row['deleted'] as int) != 0,
             sticky: (row['sticky'] as int) != 0,
             level: _todoLevelConverter.decode(row['level'] as String),
-            parentId: row['parentId'] as String?),
+            parentId: row['parentId'] as String?,
+            createTime: row['createTime'] as int),
         arguments: [id]);
   }
 

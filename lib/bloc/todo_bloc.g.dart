@@ -6,6 +6,40 @@ part of 'todo_bloc.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+_$_TodoState _$$_TodoStateFromJson(Map<String, dynamic> json) => _$_TodoState(
+      status: $enumDecode(_$TodosOverviewStatusEnumMap, json['status']),
+      todos: (json['todos'] as List<dynamic>)
+          .map((e) => Todo.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      search: json['search'] as String?,
+      filter: $enumDecode(_$TodoViewFilterEnumMap, json['filter']),
+      lastDeletedTodo: json['lastDeletedTodo'] == null
+          ? null
+          : Todo.fromJson(json['lastDeletedTodo'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$$_TodoStateToJson(_$_TodoState instance) =>
+    <String, dynamic>{
+      'status': _$TodosOverviewStatusEnumMap[instance.status]!,
+      'todos': instance.todos,
+      'search': instance.search,
+      'filter': _$TodoViewFilterEnumMap[instance.filter]!,
+      'lastDeletedTodo': instance.lastDeletedTodo,
+    };
+
+const _$TodosOverviewStatusEnumMap = {
+  TodosOverviewStatus.initial: 'initial',
+  TodosOverviewStatus.loading: 'loading',
+  TodosOverviewStatus.success: 'success',
+  TodosOverviewStatus.failure: 'failure',
+};
+
+const _$TodoViewFilterEnumMap = {
+  TodoViewFilter.all: 'all',
+  TodoViewFilter.activeOnly: 'activeOnly',
+  TodoViewFilter.completedOnly: 'completedOnly',
+};
+
 _$SubscriptionRequested _$$SubscriptionRequestedFromJson(
         Map<String, dynamic> json) =>
     _$SubscriptionRequested(
@@ -63,12 +97,6 @@ Map<String, dynamic> _$$FilterChangedToJson(_$FilterChanged instance) =>
       'filter': _$TodoViewFilterEnumMap[instance.filter]!,
       'runtimeType': instance.$type,
     };
-
-const _$TodoViewFilterEnumMap = {
-  TodoViewFilter.all: 'all',
-  TodoViewFilter.activeOnly: 'activeOnly',
-  TodoViewFilter.completedOnly: 'completedOnly',
-};
 
 _$Search _$$SearchFromJson(Map<String, dynamic> json) => _$Search(
       json['search'] as String?,

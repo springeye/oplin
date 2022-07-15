@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:oplin/app/view/desktop/todo_edit.dart';
 import 'package:oplin/bloc/note_bloc.dart';
 import 'package:oplin/bloc/todo.edit.bloc.dart';
 import 'package:oplin/bloc/todo_bloc.dart';
@@ -181,8 +182,10 @@ class _TodoListSWState extends State<TodoListWidget> {
             ),
           ),
         if (!todo.isCompleted)
-          Text(
-            todo.title.isEmpty ? "请输入标题=>${todo.uuid}" : todo.title,
+          Expanded(
+            child: TodoEdit(
+              todo: todo,
+            ),
           ),
       ],
     );

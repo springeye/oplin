@@ -225,19 +225,20 @@ class Todo {
   bool sticky = false;
   TodoLevel level = TodoLevel.l1;
   String? parentId = null;
+  int createTime = 0;
 
-  Todo({
-    this.id = 0,
-    this.uuid = "",
-    this.title = "",
-    this.description = "",
-    this.isCompleted = false,
-    this.synced = false,
-    this.deleted = false,
-    this.sticky = false,
-    this.level = TodoLevel.l1,
-    this.parentId = null,
-  });
+  Todo(
+      {this.id = 0,
+      this.uuid = "",
+      this.title = "",
+      this.description = "",
+      this.isCompleted = false,
+      this.synced = false,
+      this.deleted = false,
+      this.sticky = false,
+      this.level = TodoLevel.l1,
+      this.parentId = null,
+      this.createTime = 0});
 
   factory Todo.fromJson(Map<String, dynamic> json) => _$TodoFromJson(json);
 
@@ -256,6 +257,7 @@ class Todo {
           deleted == other.deleted &&
           sticky == other.sticky &&
           level == other.level &&
+          createTime == other.createTime &&
           parentId == other.parentId;
 
   @override
@@ -268,6 +270,7 @@ class Todo {
       deleted.hashCode ^
       sticky.hashCode ^
       level.hashCode ^
+      createTime.hashCode ^
       parentId.hashCode;
 
   Todo copyWith({
@@ -279,7 +282,7 @@ class Todo {
     bool? synced,
     bool? deleted,
     bool? sticky,
-    DateTime? createTime,
+    int? createTime,
     TodoLevel? level,
     String? parentId,
   }) {
@@ -293,6 +296,7 @@ class Todo {
       deleted: deleted ?? this.deleted,
       sticky: sticky ?? this.sticky,
       level: level ?? this.level,
+      createTime: createTime ?? this.createTime,
       parentId: parentId ?? this.parentId,
     );
   }
