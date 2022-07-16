@@ -97,7 +97,11 @@ class _TodoListSWState extends State<TodoListWidget> {
       },
       builder: (context, state) {
         var book = state.filter.notebook;
-        var todos = context.watch<TodoBloc>().state.filteredTodos;
+        var todos = context
+            .watch<TodoBloc>()
+            .state
+            .filteredTodos
+            .where((element) => element.parentId == null);
         appLog.debug("刷新todos");
         if (book != null && book.isTodoAll == false) {
           todos = todos

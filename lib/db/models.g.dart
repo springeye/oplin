@@ -4110,7 +4110,9 @@ Todo _$TodoFromJson(Map<String, dynamic> json) => Todo(
           TodoLevel.l1,
       parentId: json['parentId'] as String? ?? null,
       createTime: json['createTime'] as int? ?? 0,
-    );
+    )..children = (json['children'] as List<dynamic>)
+        .map((e) => Todo.fromJson(e as Map<String, dynamic>))
+        .toList();
 
 Map<String, dynamic> _$TodoToJson(Todo instance) => <String, dynamic>{
       'id': instance.id,
@@ -4124,6 +4126,7 @@ Map<String, dynamic> _$TodoToJson(Todo instance) => <String, dynamic>{
       'level': _$TodoLevelEnumMap[instance.level]!,
       'parentId': instance.parentId,
       'createTime': instance.createTime,
+      'children': instance.children,
     };
 
 const _$TodoLevelEnumMap = {

@@ -254,6 +254,8 @@ TodoEvent _$TodoEventFromJson(Map<String, dynamic> json) {
       return FilterChanged.fromJson(json);
     case 'search':
       return Search.fromJson(json);
+    case 'addSubTodo':
+      return AddSubTodo.fromJson(json);
     case 'toggleAll':
       return ToggleAll.fromJson(json);
     case 'clearCompleted':
@@ -275,6 +277,7 @@ mixin _$TodoEvent {
     required TResult Function() unDoDeleted,
     required TResult Function(TodoViewFilter filter) filterChanged,
     required TResult Function(String? search) search,
+    required TResult Function(Todo parent, Todo todo) addSubTodo,
     required TResult Function() toggleAll,
     required TResult Function() clearCompleted,
   }) =>
@@ -287,6 +290,7 @@ mixin _$TodoEvent {
     TResult Function()? unDoDeleted,
     TResult Function(TodoViewFilter filter)? filterChanged,
     TResult Function(String? search)? search,
+    TResult Function(Todo parent, Todo todo)? addSubTodo,
     TResult Function()? toggleAll,
     TResult Function()? clearCompleted,
   }) =>
@@ -299,6 +303,7 @@ mixin _$TodoEvent {
     TResult Function()? unDoDeleted,
     TResult Function(TodoViewFilter filter)? filterChanged,
     TResult Function(String? search)? search,
+    TResult Function(Todo parent, Todo todo)? addSubTodo,
     TResult Function()? toggleAll,
     TResult Function()? clearCompleted,
     required TResult orElse(),
@@ -313,6 +318,7 @@ mixin _$TodoEvent {
     required TResult Function(UnDoDeleted value) unDoDeleted,
     required TResult Function(FilterChanged value) filterChanged,
     required TResult Function(Search value) search,
+    required TResult Function(AddSubTodo value) addSubTodo,
     required TResult Function(ToggleAll value) toggleAll,
     required TResult Function(ClearCompleted value) clearCompleted,
   }) =>
@@ -325,6 +331,7 @@ mixin _$TodoEvent {
     TResult Function(UnDoDeleted value)? unDoDeleted,
     TResult Function(FilterChanged value)? filterChanged,
     TResult Function(Search value)? search,
+    TResult Function(AddSubTodo value)? addSubTodo,
     TResult Function(ToggleAll value)? toggleAll,
     TResult Function(ClearCompleted value)? clearCompleted,
   }) =>
@@ -337,6 +344,7 @@ mixin _$TodoEvent {
     TResult Function(UnDoDeleted value)? unDoDeleted,
     TResult Function(FilterChanged value)? filterChanged,
     TResult Function(Search value)? search,
+    TResult Function(AddSubTodo value)? addSubTodo,
     TResult Function(ToggleAll value)? toggleAll,
     TResult Function(ClearCompleted value)? clearCompleted,
     required TResult orElse(),
@@ -415,6 +423,7 @@ class _$SubscriptionRequested implements SubscriptionRequested {
     required TResult Function() unDoDeleted,
     required TResult Function(TodoViewFilter filter) filterChanged,
     required TResult Function(String? search) search,
+    required TResult Function(Todo parent, Todo todo) addSubTodo,
     required TResult Function() toggleAll,
     required TResult Function() clearCompleted,
   }) {
@@ -430,6 +439,7 @@ class _$SubscriptionRequested implements SubscriptionRequested {
     TResult Function()? unDoDeleted,
     TResult Function(TodoViewFilter filter)? filterChanged,
     TResult Function(String? search)? search,
+    TResult Function(Todo parent, Todo todo)? addSubTodo,
     TResult Function()? toggleAll,
     TResult Function()? clearCompleted,
   }) {
@@ -445,6 +455,7 @@ class _$SubscriptionRequested implements SubscriptionRequested {
     TResult Function()? unDoDeleted,
     TResult Function(TodoViewFilter filter)? filterChanged,
     TResult Function(String? search)? search,
+    TResult Function(Todo parent, Todo todo)? addSubTodo,
     TResult Function()? toggleAll,
     TResult Function()? clearCompleted,
     required TResult orElse(),
@@ -465,6 +476,7 @@ class _$SubscriptionRequested implements SubscriptionRequested {
     required TResult Function(UnDoDeleted value) unDoDeleted,
     required TResult Function(FilterChanged value) filterChanged,
     required TResult Function(Search value) search,
+    required TResult Function(AddSubTodo value) addSubTodo,
     required TResult Function(ToggleAll value) toggleAll,
     required TResult Function(ClearCompleted value) clearCompleted,
   }) {
@@ -480,6 +492,7 @@ class _$SubscriptionRequested implements SubscriptionRequested {
     TResult Function(UnDoDeleted value)? unDoDeleted,
     TResult Function(FilterChanged value)? filterChanged,
     TResult Function(Search value)? search,
+    TResult Function(AddSubTodo value)? addSubTodo,
     TResult Function(ToggleAll value)? toggleAll,
     TResult Function(ClearCompleted value)? clearCompleted,
   }) {
@@ -495,6 +508,7 @@ class _$SubscriptionRequested implements SubscriptionRequested {
     TResult Function(UnDoDeleted value)? unDoDeleted,
     TResult Function(FilterChanged value)? filterChanged,
     TResult Function(Search value)? search,
+    TResult Function(AddSubTodo value)? addSubTodo,
     TResult Function(ToggleAll value)? toggleAll,
     TResult Function(ClearCompleted value)? clearCompleted,
     required TResult orElse(),
@@ -608,6 +622,7 @@ class _$CompletionToggled implements CompletionToggled {
     required TResult Function() unDoDeleted,
     required TResult Function(TodoViewFilter filter) filterChanged,
     required TResult Function(String? search) search,
+    required TResult Function(Todo parent, Todo todo) addSubTodo,
     required TResult Function() toggleAll,
     required TResult Function() clearCompleted,
   }) {
@@ -623,6 +638,7 @@ class _$CompletionToggled implements CompletionToggled {
     TResult Function()? unDoDeleted,
     TResult Function(TodoViewFilter filter)? filterChanged,
     TResult Function(String? search)? search,
+    TResult Function(Todo parent, Todo todo)? addSubTodo,
     TResult Function()? toggleAll,
     TResult Function()? clearCompleted,
   }) {
@@ -638,6 +654,7 @@ class _$CompletionToggled implements CompletionToggled {
     TResult Function()? unDoDeleted,
     TResult Function(TodoViewFilter filter)? filterChanged,
     TResult Function(String? search)? search,
+    TResult Function(Todo parent, Todo todo)? addSubTodo,
     TResult Function()? toggleAll,
     TResult Function()? clearCompleted,
     required TResult orElse(),
@@ -658,6 +675,7 @@ class _$CompletionToggled implements CompletionToggled {
     required TResult Function(UnDoDeleted value) unDoDeleted,
     required TResult Function(FilterChanged value) filterChanged,
     required TResult Function(Search value) search,
+    required TResult Function(AddSubTodo value) addSubTodo,
     required TResult Function(ToggleAll value) toggleAll,
     required TResult Function(ClearCompleted value) clearCompleted,
   }) {
@@ -673,6 +691,7 @@ class _$CompletionToggled implements CompletionToggled {
     TResult Function(UnDoDeleted value)? unDoDeleted,
     TResult Function(FilterChanged value)? filterChanged,
     TResult Function(Search value)? search,
+    TResult Function(AddSubTodo value)? addSubTodo,
     TResult Function(ToggleAll value)? toggleAll,
     TResult Function(ClearCompleted value)? clearCompleted,
   }) {
@@ -688,6 +707,7 @@ class _$CompletionToggled implements CompletionToggled {
     TResult Function(UnDoDeleted value)? unDoDeleted,
     TResult Function(FilterChanged value)? filterChanged,
     TResult Function(Search value)? search,
+    TResult Function(AddSubTodo value)? addSubTodo,
     TResult Function(ToggleAll value)? toggleAll,
     TResult Function(ClearCompleted value)? clearCompleted,
     required TResult orElse(),
@@ -794,6 +814,7 @@ class _$Deleted implements Deleted {
     required TResult Function() unDoDeleted,
     required TResult Function(TodoViewFilter filter) filterChanged,
     required TResult Function(String? search) search,
+    required TResult Function(Todo parent, Todo todo) addSubTodo,
     required TResult Function() toggleAll,
     required TResult Function() clearCompleted,
   }) {
@@ -809,6 +830,7 @@ class _$Deleted implements Deleted {
     TResult Function()? unDoDeleted,
     TResult Function(TodoViewFilter filter)? filterChanged,
     TResult Function(String? search)? search,
+    TResult Function(Todo parent, Todo todo)? addSubTodo,
     TResult Function()? toggleAll,
     TResult Function()? clearCompleted,
   }) {
@@ -824,6 +846,7 @@ class _$Deleted implements Deleted {
     TResult Function()? unDoDeleted,
     TResult Function(TodoViewFilter filter)? filterChanged,
     TResult Function(String? search)? search,
+    TResult Function(Todo parent, Todo todo)? addSubTodo,
     TResult Function()? toggleAll,
     TResult Function()? clearCompleted,
     required TResult orElse(),
@@ -844,6 +867,7 @@ class _$Deleted implements Deleted {
     required TResult Function(UnDoDeleted value) unDoDeleted,
     required TResult Function(FilterChanged value) filterChanged,
     required TResult Function(Search value) search,
+    required TResult Function(AddSubTodo value) addSubTodo,
     required TResult Function(ToggleAll value) toggleAll,
     required TResult Function(ClearCompleted value) clearCompleted,
   }) {
@@ -859,6 +883,7 @@ class _$Deleted implements Deleted {
     TResult Function(UnDoDeleted value)? unDoDeleted,
     TResult Function(FilterChanged value)? filterChanged,
     TResult Function(Search value)? search,
+    TResult Function(AddSubTodo value)? addSubTodo,
     TResult Function(ToggleAll value)? toggleAll,
     TResult Function(ClearCompleted value)? clearCompleted,
   }) {
@@ -874,6 +899,7 @@ class _$Deleted implements Deleted {
     TResult Function(UnDoDeleted value)? unDoDeleted,
     TResult Function(FilterChanged value)? filterChanged,
     TResult Function(Search value)? search,
+    TResult Function(AddSubTodo value)? addSubTodo,
     TResult Function(ToggleAll value)? toggleAll,
     TResult Function(ClearCompleted value)? clearCompleted,
     required TResult orElse(),
@@ -954,6 +980,7 @@ class _$UnDoDeleted implements UnDoDeleted {
     required TResult Function() unDoDeleted,
     required TResult Function(TodoViewFilter filter) filterChanged,
     required TResult Function(String? search) search,
+    required TResult Function(Todo parent, Todo todo) addSubTodo,
     required TResult Function() toggleAll,
     required TResult Function() clearCompleted,
   }) {
@@ -969,6 +996,7 @@ class _$UnDoDeleted implements UnDoDeleted {
     TResult Function()? unDoDeleted,
     TResult Function(TodoViewFilter filter)? filterChanged,
     TResult Function(String? search)? search,
+    TResult Function(Todo parent, Todo todo)? addSubTodo,
     TResult Function()? toggleAll,
     TResult Function()? clearCompleted,
   }) {
@@ -984,6 +1012,7 @@ class _$UnDoDeleted implements UnDoDeleted {
     TResult Function()? unDoDeleted,
     TResult Function(TodoViewFilter filter)? filterChanged,
     TResult Function(String? search)? search,
+    TResult Function(Todo parent, Todo todo)? addSubTodo,
     TResult Function()? toggleAll,
     TResult Function()? clearCompleted,
     required TResult orElse(),
@@ -1004,6 +1033,7 @@ class _$UnDoDeleted implements UnDoDeleted {
     required TResult Function(UnDoDeleted value) unDoDeleted,
     required TResult Function(FilterChanged value) filterChanged,
     required TResult Function(Search value) search,
+    required TResult Function(AddSubTodo value) addSubTodo,
     required TResult Function(ToggleAll value) toggleAll,
     required TResult Function(ClearCompleted value) clearCompleted,
   }) {
@@ -1019,6 +1049,7 @@ class _$UnDoDeleted implements UnDoDeleted {
     TResult Function(UnDoDeleted value)? unDoDeleted,
     TResult Function(FilterChanged value)? filterChanged,
     TResult Function(Search value)? search,
+    TResult Function(AddSubTodo value)? addSubTodo,
     TResult Function(ToggleAll value)? toggleAll,
     TResult Function(ClearCompleted value)? clearCompleted,
   }) {
@@ -1034,6 +1065,7 @@ class _$UnDoDeleted implements UnDoDeleted {
     TResult Function(UnDoDeleted value)? unDoDeleted,
     TResult Function(FilterChanged value)? filterChanged,
     TResult Function(Search value)? search,
+    TResult Function(AddSubTodo value)? addSubTodo,
     TResult Function(ToggleAll value)? toggleAll,
     TResult Function(ClearCompleted value)? clearCompleted,
     required TResult orElse(),
@@ -1135,6 +1167,7 @@ class _$FilterChanged implements FilterChanged {
     required TResult Function() unDoDeleted,
     required TResult Function(TodoViewFilter filter) filterChanged,
     required TResult Function(String? search) search,
+    required TResult Function(Todo parent, Todo todo) addSubTodo,
     required TResult Function() toggleAll,
     required TResult Function() clearCompleted,
   }) {
@@ -1150,6 +1183,7 @@ class _$FilterChanged implements FilterChanged {
     TResult Function()? unDoDeleted,
     TResult Function(TodoViewFilter filter)? filterChanged,
     TResult Function(String? search)? search,
+    TResult Function(Todo parent, Todo todo)? addSubTodo,
     TResult Function()? toggleAll,
     TResult Function()? clearCompleted,
   }) {
@@ -1165,6 +1199,7 @@ class _$FilterChanged implements FilterChanged {
     TResult Function()? unDoDeleted,
     TResult Function(TodoViewFilter filter)? filterChanged,
     TResult Function(String? search)? search,
+    TResult Function(Todo parent, Todo todo)? addSubTodo,
     TResult Function()? toggleAll,
     TResult Function()? clearCompleted,
     required TResult orElse(),
@@ -1185,6 +1220,7 @@ class _$FilterChanged implements FilterChanged {
     required TResult Function(UnDoDeleted value) unDoDeleted,
     required TResult Function(FilterChanged value) filterChanged,
     required TResult Function(Search value) search,
+    required TResult Function(AddSubTodo value) addSubTodo,
     required TResult Function(ToggleAll value) toggleAll,
     required TResult Function(ClearCompleted value) clearCompleted,
   }) {
@@ -1200,6 +1236,7 @@ class _$FilterChanged implements FilterChanged {
     TResult Function(UnDoDeleted value)? unDoDeleted,
     TResult Function(FilterChanged value)? filterChanged,
     TResult Function(Search value)? search,
+    TResult Function(AddSubTodo value)? addSubTodo,
     TResult Function(ToggleAll value)? toggleAll,
     TResult Function(ClearCompleted value)? clearCompleted,
   }) {
@@ -1215,6 +1252,7 @@ class _$FilterChanged implements FilterChanged {
     TResult Function(UnDoDeleted value)? unDoDeleted,
     TResult Function(FilterChanged value)? filterChanged,
     TResult Function(Search value)? search,
+    TResult Function(AddSubTodo value)? addSubTodo,
     TResult Function(ToggleAll value)? toggleAll,
     TResult Function(ClearCompleted value)? clearCompleted,
     required TResult orElse(),
@@ -1319,6 +1357,7 @@ class _$Search implements Search {
     required TResult Function() unDoDeleted,
     required TResult Function(TodoViewFilter filter) filterChanged,
     required TResult Function(String? search) search,
+    required TResult Function(Todo parent, Todo todo) addSubTodo,
     required TResult Function() toggleAll,
     required TResult Function() clearCompleted,
   }) {
@@ -1334,6 +1373,7 @@ class _$Search implements Search {
     TResult Function()? unDoDeleted,
     TResult Function(TodoViewFilter filter)? filterChanged,
     TResult Function(String? search)? search,
+    TResult Function(Todo parent, Todo todo)? addSubTodo,
     TResult Function()? toggleAll,
     TResult Function()? clearCompleted,
   }) {
@@ -1349,6 +1389,7 @@ class _$Search implements Search {
     TResult Function()? unDoDeleted,
     TResult Function(TodoViewFilter filter)? filterChanged,
     TResult Function(String? search)? search,
+    TResult Function(Todo parent, Todo todo)? addSubTodo,
     TResult Function()? toggleAll,
     TResult Function()? clearCompleted,
     required TResult orElse(),
@@ -1369,6 +1410,7 @@ class _$Search implements Search {
     required TResult Function(UnDoDeleted value) unDoDeleted,
     required TResult Function(FilterChanged value) filterChanged,
     required TResult Function(Search value) search,
+    required TResult Function(AddSubTodo value) addSubTodo,
     required TResult Function(ToggleAll value) toggleAll,
     required TResult Function(ClearCompleted value) clearCompleted,
   }) {
@@ -1384,6 +1426,7 @@ class _$Search implements Search {
     TResult Function(UnDoDeleted value)? unDoDeleted,
     TResult Function(FilterChanged value)? filterChanged,
     TResult Function(Search value)? search,
+    TResult Function(AddSubTodo value)? addSubTodo,
     TResult Function(ToggleAll value)? toggleAll,
     TResult Function(ClearCompleted value)? clearCompleted,
   }) {
@@ -1399,6 +1442,7 @@ class _$Search implements Search {
     TResult Function(UnDoDeleted value)? unDoDeleted,
     TResult Function(FilterChanged value)? filterChanged,
     TResult Function(Search value)? search,
+    TResult Function(AddSubTodo value)? addSubTodo,
     TResult Function(ToggleAll value)? toggleAll,
     TResult Function(ClearCompleted value)? clearCompleted,
     required TResult orElse(),
@@ -1423,6 +1467,209 @@ abstract class Search implements TodoEvent {
   String? get search;
   @JsonKey(ignore: true)
   _$$SearchCopyWith<_$Search> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$AddSubTodoCopyWith<$Res> {
+  factory _$$AddSubTodoCopyWith(
+          _$AddSubTodo value, $Res Function(_$AddSubTodo) then) =
+      __$$AddSubTodoCopyWithImpl<$Res>;
+  $Res call({Todo parent, Todo todo});
+}
+
+/// @nodoc
+class __$$AddSubTodoCopyWithImpl<$Res> extends _$TodoEventCopyWithImpl<$Res>
+    implements _$$AddSubTodoCopyWith<$Res> {
+  __$$AddSubTodoCopyWithImpl(
+      _$AddSubTodo _value, $Res Function(_$AddSubTodo) _then)
+      : super(_value, (v) => _then(v as _$AddSubTodo));
+
+  @override
+  _$AddSubTodo get _value => super._value as _$AddSubTodo;
+
+  @override
+  $Res call({
+    Object? parent = freezed,
+    Object? todo = freezed,
+  }) {
+    return _then(_$AddSubTodo(
+      parent == freezed
+          ? _value.parent
+          : parent // ignore: cast_nullable_to_non_nullable
+              as Todo,
+      todo == freezed
+          ? _value.todo
+          : todo // ignore: cast_nullable_to_non_nullable
+              as Todo,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$AddSubTodo implements AddSubTodo {
+  const _$AddSubTodo(this.parent, this.todo, {final String? $type})
+      : $type = $type ?? 'addSubTodo';
+
+  factory _$AddSubTodo.fromJson(Map<String, dynamic> json) =>
+      _$$AddSubTodoFromJson(json);
+
+  @override
+  final Todo parent;
+  @override
+  final Todo todo;
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
+
+  @override
+  String toString() {
+    return 'TodoEvent.addSubTodo(parent: $parent, todo: $todo)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$AddSubTodo &&
+            const DeepCollectionEquality().equals(other.parent, parent) &&
+            const DeepCollectionEquality().equals(other.todo, todo));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(parent),
+      const DeepCollectionEquality().hash(todo));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$AddSubTodoCopyWith<_$AddSubTodo> get copyWith =>
+      __$$AddSubTodoCopyWithImpl<_$AddSubTodo>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() subscriptionRequested,
+    required TResult Function(Todo todo, bool isCompleted) completionToggled,
+    required TResult Function(Todo todo) deleted,
+    required TResult Function() unDoDeleted,
+    required TResult Function(TodoViewFilter filter) filterChanged,
+    required TResult Function(String? search) search,
+    required TResult Function(Todo parent, Todo todo) addSubTodo,
+    required TResult Function() toggleAll,
+    required TResult Function() clearCompleted,
+  }) {
+    return addSubTodo(parent, todo);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function()? subscriptionRequested,
+    TResult Function(Todo todo, bool isCompleted)? completionToggled,
+    TResult Function(Todo todo)? deleted,
+    TResult Function()? unDoDeleted,
+    TResult Function(TodoViewFilter filter)? filterChanged,
+    TResult Function(String? search)? search,
+    TResult Function(Todo parent, Todo todo)? addSubTodo,
+    TResult Function()? toggleAll,
+    TResult Function()? clearCompleted,
+  }) {
+    return addSubTodo?.call(parent, todo);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? subscriptionRequested,
+    TResult Function(Todo todo, bool isCompleted)? completionToggled,
+    TResult Function(Todo todo)? deleted,
+    TResult Function()? unDoDeleted,
+    TResult Function(TodoViewFilter filter)? filterChanged,
+    TResult Function(String? search)? search,
+    TResult Function(Todo parent, Todo todo)? addSubTodo,
+    TResult Function()? toggleAll,
+    TResult Function()? clearCompleted,
+    required TResult orElse(),
+  }) {
+    if (addSubTodo != null) {
+      return addSubTodo(parent, todo);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SubscriptionRequested value)
+        subscriptionRequested,
+    required TResult Function(CompletionToggled value) completionToggled,
+    required TResult Function(Deleted value) deleted,
+    required TResult Function(UnDoDeleted value) unDoDeleted,
+    required TResult Function(FilterChanged value) filterChanged,
+    required TResult Function(Search value) search,
+    required TResult Function(AddSubTodo value) addSubTodo,
+    required TResult Function(ToggleAll value) toggleAll,
+    required TResult Function(ClearCompleted value) clearCompleted,
+  }) {
+    return addSubTodo(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(SubscriptionRequested value)? subscriptionRequested,
+    TResult Function(CompletionToggled value)? completionToggled,
+    TResult Function(Deleted value)? deleted,
+    TResult Function(UnDoDeleted value)? unDoDeleted,
+    TResult Function(FilterChanged value)? filterChanged,
+    TResult Function(Search value)? search,
+    TResult Function(AddSubTodo value)? addSubTodo,
+    TResult Function(ToggleAll value)? toggleAll,
+    TResult Function(ClearCompleted value)? clearCompleted,
+  }) {
+    return addSubTodo?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SubscriptionRequested value)? subscriptionRequested,
+    TResult Function(CompletionToggled value)? completionToggled,
+    TResult Function(Deleted value)? deleted,
+    TResult Function(UnDoDeleted value)? unDoDeleted,
+    TResult Function(FilterChanged value)? filterChanged,
+    TResult Function(Search value)? search,
+    TResult Function(AddSubTodo value)? addSubTodo,
+    TResult Function(ToggleAll value)? toggleAll,
+    TResult Function(ClearCompleted value)? clearCompleted,
+    required TResult orElse(),
+  }) {
+    if (addSubTodo != null) {
+      return addSubTodo(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$AddSubTodoToJson(this);
+  }
+}
+
+abstract class AddSubTodo implements TodoEvent {
+  const factory AddSubTodo(final Todo parent, final Todo todo) = _$AddSubTodo;
+
+  factory AddSubTodo.fromJson(Map<String, dynamic> json) =
+      _$AddSubTodo.fromJson;
+
+  Todo get parent;
+  Todo get todo;
+  @JsonKey(ignore: true)
+  _$$AddSubTodoCopyWith<_$AddSubTodo> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -1479,6 +1726,7 @@ class _$ToggleAll implements ToggleAll {
     required TResult Function() unDoDeleted,
     required TResult Function(TodoViewFilter filter) filterChanged,
     required TResult Function(String? search) search,
+    required TResult Function(Todo parent, Todo todo) addSubTodo,
     required TResult Function() toggleAll,
     required TResult Function() clearCompleted,
   }) {
@@ -1494,6 +1742,7 @@ class _$ToggleAll implements ToggleAll {
     TResult Function()? unDoDeleted,
     TResult Function(TodoViewFilter filter)? filterChanged,
     TResult Function(String? search)? search,
+    TResult Function(Todo parent, Todo todo)? addSubTodo,
     TResult Function()? toggleAll,
     TResult Function()? clearCompleted,
   }) {
@@ -1509,6 +1758,7 @@ class _$ToggleAll implements ToggleAll {
     TResult Function()? unDoDeleted,
     TResult Function(TodoViewFilter filter)? filterChanged,
     TResult Function(String? search)? search,
+    TResult Function(Todo parent, Todo todo)? addSubTodo,
     TResult Function()? toggleAll,
     TResult Function()? clearCompleted,
     required TResult orElse(),
@@ -1529,6 +1779,7 @@ class _$ToggleAll implements ToggleAll {
     required TResult Function(UnDoDeleted value) unDoDeleted,
     required TResult Function(FilterChanged value) filterChanged,
     required TResult Function(Search value) search,
+    required TResult Function(AddSubTodo value) addSubTodo,
     required TResult Function(ToggleAll value) toggleAll,
     required TResult Function(ClearCompleted value) clearCompleted,
   }) {
@@ -1544,6 +1795,7 @@ class _$ToggleAll implements ToggleAll {
     TResult Function(UnDoDeleted value)? unDoDeleted,
     TResult Function(FilterChanged value)? filterChanged,
     TResult Function(Search value)? search,
+    TResult Function(AddSubTodo value)? addSubTodo,
     TResult Function(ToggleAll value)? toggleAll,
     TResult Function(ClearCompleted value)? clearCompleted,
   }) {
@@ -1559,6 +1811,7 @@ class _$ToggleAll implements ToggleAll {
     TResult Function(UnDoDeleted value)? unDoDeleted,
     TResult Function(FilterChanged value)? filterChanged,
     TResult Function(Search value)? search,
+    TResult Function(AddSubTodo value)? addSubTodo,
     TResult Function(ToggleAll value)? toggleAll,
     TResult Function(ClearCompleted value)? clearCompleted,
     required TResult orElse(),
@@ -1635,6 +1888,7 @@ class _$ClearCompleted implements ClearCompleted {
     required TResult Function() unDoDeleted,
     required TResult Function(TodoViewFilter filter) filterChanged,
     required TResult Function(String? search) search,
+    required TResult Function(Todo parent, Todo todo) addSubTodo,
     required TResult Function() toggleAll,
     required TResult Function() clearCompleted,
   }) {
@@ -1650,6 +1904,7 @@ class _$ClearCompleted implements ClearCompleted {
     TResult Function()? unDoDeleted,
     TResult Function(TodoViewFilter filter)? filterChanged,
     TResult Function(String? search)? search,
+    TResult Function(Todo parent, Todo todo)? addSubTodo,
     TResult Function()? toggleAll,
     TResult Function()? clearCompleted,
   }) {
@@ -1665,6 +1920,7 @@ class _$ClearCompleted implements ClearCompleted {
     TResult Function()? unDoDeleted,
     TResult Function(TodoViewFilter filter)? filterChanged,
     TResult Function(String? search)? search,
+    TResult Function(Todo parent, Todo todo)? addSubTodo,
     TResult Function()? toggleAll,
     TResult Function()? clearCompleted,
     required TResult orElse(),
@@ -1685,6 +1941,7 @@ class _$ClearCompleted implements ClearCompleted {
     required TResult Function(UnDoDeleted value) unDoDeleted,
     required TResult Function(FilterChanged value) filterChanged,
     required TResult Function(Search value) search,
+    required TResult Function(AddSubTodo value) addSubTodo,
     required TResult Function(ToggleAll value) toggleAll,
     required TResult Function(ClearCompleted value) clearCompleted,
   }) {
@@ -1700,6 +1957,7 @@ class _$ClearCompleted implements ClearCompleted {
     TResult Function(UnDoDeleted value)? unDoDeleted,
     TResult Function(FilterChanged value)? filterChanged,
     TResult Function(Search value)? search,
+    TResult Function(AddSubTodo value)? addSubTodo,
     TResult Function(ToggleAll value)? toggleAll,
     TResult Function(ClearCompleted value)? clearCompleted,
   }) {
@@ -1715,6 +1973,7 @@ class _$ClearCompleted implements ClearCompleted {
     TResult Function(UnDoDeleted value)? unDoDeleted,
     TResult Function(FilterChanged value)? filterChanged,
     TResult Function(Search value)? search,
+    TResult Function(AddSubTodo value)? addSubTodo,
     TResult Function(ToggleAll value)? toggleAll,
     TResult Function(ClearCompleted value)? clearCompleted,
     required TResult orElse(),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:oplin/app/view/desktop/sub_todo.dart';
 import 'package:oplin/bloc/app_cubit.dart';
 import 'package:oplin/bloc/todo.edit.bloc.dart';
 import 'package:oplin/bloc/todo_bloc.dart';
@@ -52,22 +53,6 @@ class _TodoEditState extends State<TodoEdit> {
     super.dispose();
   }
 
-  Widget _subTodo(BuildContext context, Todo parent) {
-    return Row(
-      children: [
-        Checkbox(value: false, onChanged: (v) {}),
-        Expanded(
-          child: FocusScope(
-            onFocusChange: (hasFocus) {
-              appLog.debug("子todo焦点改变 $hasFocus");
-            },
-            child: TextField(),
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _buildEditTodo(BuildContext context) {
     // var bloc = context.read<TodoEditBloc>();
     // var state = bloc.state;
@@ -115,7 +100,9 @@ class _TodoEditState extends State<TodoEdit> {
             icon: const Icon(Icons.alarm),
             label: const Text("设置提醒"),
           ),
-          _subTodo(context, widget.todo),
+          SubTodoWidget(
+            parent: widget.todo,
+          ),
         ],
       ),
     );

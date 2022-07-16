@@ -24,6 +24,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     on<SubscriptionRequested>(_onSubscriptionRequested);
     on<CompletionToggled>(_onTodoCompletionToggled);
     on<Deleted>(_onTodoDeleted);
+    on<AddSubTodo>(_onAddSubTodo);
     on<UnDoDeleted>(_onUndoDeletionRequested);
     on<FilterChanged>(_onFilterChanged);
     on<Search>(_onSearch);
@@ -53,10 +54,12 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     emit(state.copyWith(status: TodosOverviewStatus.loading));
     await emit.forEach<List<Todo>>(
       _todosRepository.getTodos(),
-      onData: (todos) => state.copyWith(
-        status: TodosOverviewStatus.success,
-        todos: todos,
-      ),
+      onData: (todos){
+        return state.copyWith(
+          status: TodosOverviewStatus.success,
+          todos: todos,
+        );
+      },
       onError: (_, __) => state.copyWith(
         status: TodosOverviewStatus.failure,
       ),
@@ -119,6 +122,12 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     appLog.debug('Searching for ${event.search}');
     emit(state.copyWith(search: event.search));
   }
+
+  FutureOr<void> _onAddSubTodo(AddSubTodo event, Emitter<TodoState> emit) {
+    var todo = event.todo;
+    todo.parentId=event.parent.uuid;
+    _todosRepository.saveTodo(todo);
+  }
 }
 
 enum TodosOverviewStatus { initial, loading, success, failure }
@@ -159,6 +168,7 @@ class TodoEvent with _$TodoEvent {
   const factory TodoEvent.filterChanged(TodoViewFilter filter) = FilterChanged;
 
   const factory TodoEvent.search(String? search) = Search;
+  const factory TodoEvent.addSubTodo(Todo parent,Todo todo) = AddSubTodo;
 
   const factory TodoEvent.toggleAll() = ToggleAll;
 

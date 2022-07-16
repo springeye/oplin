@@ -236,6 +236,8 @@ class Todo {
   TodoLevel level = TodoLevel.l1;
   String? parentId = null;
   int createTime = 0;
+  @ignore
+  List<Todo> children = [];
 
   Todo(
       {this.id = 0,

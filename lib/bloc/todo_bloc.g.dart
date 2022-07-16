@@ -108,6 +108,19 @@ Map<String, dynamic> _$$SearchToJson(_$Search instance) => <String, dynamic>{
       'runtimeType': instance.$type,
     };
 
+_$AddSubTodo _$$AddSubTodoFromJson(Map<String, dynamic> json) => _$AddSubTodo(
+      Todo.fromJson(json['parent'] as Map<String, dynamic>),
+      Todo.fromJson(json['todo'] as Map<String, dynamic>),
+      $type: json['runtimeType'] as String?,
+    );
+
+Map<String, dynamic> _$$AddSubTodoToJson(_$AddSubTodo instance) =>
+    <String, dynamic>{
+      'parent': instance.parent,
+      'todo': instance.todo,
+      'runtimeType': instance.$type,
+    };
+
 _$ToggleAll _$$ToggleAllFromJson(Map<String, dynamic> json) => _$ToggleAll(
       $type: json['runtimeType'] as String?,
     );
