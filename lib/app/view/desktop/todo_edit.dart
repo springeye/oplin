@@ -44,19 +44,28 @@ class _TodoEditState extends State<TodoEdit> {
       appLog.debug("titleController.text: ${_titleController.text}");
       bloc.add(TodoEditEvent.titleChanged(_titleController.text));
     });
-    _focusNode.addListener(() {
-      if (!_focusNode.hasFocus) {
-        var bloc = context.read<TodoEditBloc>();
-        bloc.add(const TodoEditEvent.submitted());
-        bloc.add(const TodoEditEvent.current(null));
-      }
-    });
   }
 
   @override
   dispose() {
     _titleController.dispose();
     super.dispose();
+  }
+
+  Widget _subTodo(BuildContext context, Todo parent) {
+    return Row(
+      children: [
+        Checkbox(value: false, onChanged: (v) {}),
+        Expanded(
+          child: FocusScope(
+            onFocusChange: (hasFocus) {
+              appLog.debug("子todo焦点改变 $hasFocus");
+            },
+            child: TextField(),
+          ),
+        ),
+      ],
+    );
   }
 
   Widget _buildEditTodo(BuildContext context) {
@@ -68,30 +77,45 @@ class _TodoEditState extends State<TodoEdit> {
     _focusNode.requestFocus();
     return FocusScope(
       onFocusChange: (has) {
-        appLog.debug("_buildEditTodo: onFocusChange: $has");
+        appLog.debug("当前编辑的焦点改变: $has");
+        if (!has) {
+          var bloc = context.read<TodoEditBloc>();
+          bloc.add(const TodoEditEvent.submitted());
+          bloc.add(const TodoEditEvent.current(null));
+        }
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TextField(
-            focusNode: _focusNode,
-            controller: _titleController,
-            style: const TextStyle(fontSize: 20),
-            decoration: const InputDecoration(
-              isCollapsed: true,
-              contentPadding: EdgeInsets.symmetric(vertical: 6.0),
-              border: InputBorder.none,
-              hintText: "请输入标题",
+          FocusScope(
+            // canRequestFocus: false,
+            onFocusChange: (has) {
+              appLog.debug("todo焦点改变 $has");
+              // var bloc = context.read<TodoEditBloc>();
+              // bloc.add(const TodoEditEvent.submitted());
+            },
+            child: TextField(
+              focusNode: _focusNode,
+              controller: _titleController,
+              style: const TextStyle(fontSize: 20),
+              decoration: const InputDecoration(
+                isCollapsed: true,
+                contentPadding: EdgeInsets.symmetric(vertical: 6.0),
+                border: InputBorder.none,
+                hintText: "请输入标题",
+              ),
             ),
           ),
           TextButton.icon(
-              style:
-                  TextButton.styleFrom(primary: Colors.black.withOpacity(0.65)),
-              onPressed: () {
-                DatePicker.showDateTimePicker(context);
-              },
-              icon: const Icon(Icons.alarm),
-              label: const Text("设置提醒"))
+            style:
+                TextButton.styleFrom(primary: Colors.black.withOpacity(0.65)),
+            onPressed: () {
+              DatePicker.showDateTimePicker(context);
+            },
+            icon: const Icon(Icons.alarm),
+            label: const Text("设置提醒"),
+          ),
+          _subTodo(context, widget.todo),
         ],
       ),
     );

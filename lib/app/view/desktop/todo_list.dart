@@ -152,8 +152,9 @@ class _TodoListSWState extends State<TodoListWidget> {
                       return InkWell(
                         onTap: () {
                           var bloc = context.read<TodoEditBloc>();
-                          bloc.add(const TodoEditEvent.submitted());
+                          // bloc.add(const TodoEditEvent.submitted());
                           // bloc.add(const TodoEditEvent.current(null));
+                          appLog.debug("显示新todo");
                           bloc.add(TodoEditEvent.current(e));
                         },
                         child: _buildTodo(context, e),
