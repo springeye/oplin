@@ -1,8 +1,9 @@
 import 'package:floor/floor.dart';
+import 'package:oplin/db/dao/sqlite_dao.dart';
 import 'package:oplin/db/models.dart';
 
 @dao
-abstract class TodoDao {
+abstract class TodoDao extends SQLiteDao<Todo> {
   @Query('SELECT * FROM Todo order by isCompleted, createTime desc ')
   Stream<List<Todo>> subscribeAll();
 
@@ -11,10 +12,4 @@ abstract class TodoDao {
 
   @Query('SELECT * FROM Todo where uuid = :id')
   Future<Todo?> findById(String id);
-
-  @Insert(onConflict: OnConflictStrategy.replace)
-  Future<void> put(Todo todo);
-
-  @Insert(onConflict: OnConflictStrategy.replace)
-  Future<void> putAll(List<Todo> todos);
 }

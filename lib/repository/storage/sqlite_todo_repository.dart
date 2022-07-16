@@ -2,6 +2,7 @@ import 'package:injectable/injectable.dart';
 import 'package:oplin/db/dao/todo_dao.dart';
 import 'package:oplin/db/models.dart';
 import 'package:oplin/repository/book_repository.dart';
+import 'package:oplin/db/dao/sqlite_dao.dart';
 import 'package:oplin/repository/todo_repository.dart';
 
 @Named("sqlite")
@@ -19,7 +20,7 @@ class SQLiteTodoRepository implements TodoRepository {
       element.deleted = true;
       element.synced = false;
     }
-    await todoDao.putAll(notes.toList());
+    await todoDao.putMany(notes.toList());
     return notes.length;
   }
 
@@ -31,7 +32,7 @@ class SQLiteTodoRepository implements TodoRepository {
       element.isCompleted = true;
       element.synced = false;
     }
-    await todoDao.putAll(notes.toList());
+    await todoDao.putMany(notes.toList());
     return notes.length;
   }
 
@@ -41,7 +42,7 @@ class SQLiteTodoRepository implements TodoRepository {
     if (todo != null) {
       todo.deleted = true;
       todo.synced = false;
-      await todoDao.put(todo);
+      await todoDao.putOne(todo);
     }
   }
 
@@ -52,6 +53,6 @@ class SQLiteTodoRepository implements TodoRepository {
 
   @override
   Future<void> saveTodo(Todo todo) async {
-    await todoDao.put(todo);
+    await todoDao.putOne(todo);
   }
 }

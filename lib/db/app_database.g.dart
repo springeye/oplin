@@ -115,6 +115,24 @@ class _$TodoDao extends TodoDao {
                   'parentId': item.parentId,
                   'createTime': item.createTime
                 },
+            changeListener),
+        _todoDeletionAdapter = DeletionAdapter(
+            database,
+            'Todo',
+            ['uuid'],
+            (Todo item) => <String, Object?>{
+                  'id': item.id,
+                  'uuid': item.uuid,
+                  'title': item.title,
+                  'description': item.description,
+                  'isCompleted': item.isCompleted ? 1 : 0,
+                  'synced': item.synced ? 1 : 0,
+                  'deleted': item.deleted ? 1 : 0,
+                  'sticky': item.sticky ? 1 : 0,
+                  'level': _todoLevelConverter.encode(item.level),
+                  'parentId': item.parentId,
+                  'createTime': item.createTime
+                },
             changeListener);
 
   final sqflite.DatabaseExecutor database;
@@ -124,6 +142,8 @@ class _$TodoDao extends TodoDao {
   final QueryAdapter _queryAdapter;
 
   final InsertionAdapter<Todo> _todoInsertionAdapter;
+
+  final DeletionAdapter<Todo> _todoDeletionAdapter;
 
   @override
   Stream<List<Todo>> subscribeAll() {
@@ -182,13 +202,23 @@ class _$TodoDao extends TodoDao {
   }
 
   @override
-  Future<void> put(Todo todo) async {
-    await _todoInsertionAdapter.insert(todo, OnConflictStrategy.replace);
+  Future<void> putOne(Todo item) async {
+    await _todoInsertionAdapter.insert(item, OnConflictStrategy.replace);
   }
 
   @override
-  Future<void> putAll(List<Todo> todos) async {
-    await _todoInsertionAdapter.insertList(todos, OnConflictStrategy.replace);
+  Future<void> putMany(List<Todo> items) async {
+    await _todoInsertionAdapter.insertList(items, OnConflictStrategy.replace);
+  }
+
+  @override
+  Future<void> deleteOne(Todo item) async {
+    await _todoDeletionAdapter.delete(item);
+  }
+
+  @override
+  Future<int> deleteMany(List<Todo> persons) {
+    return _todoDeletionAdapter.deleteListAndReturnChangedRows(persons);
   }
 }
 
